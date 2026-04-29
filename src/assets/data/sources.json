@@ -1,0 +1,130 @@
+[
+  {
+    "id": "disney-parks-blog",
+    "name": "Disney Parks Blog",
+    "sourceType": "rssArticle",
+    "feedURL": "https://disneyparksblog.com/feed/",
+    "homepageURL": "https://disneyparksblog.com/",
+    "trustLabel": "official",
+    "categoryTags": [
+      "parksNews",
+      "official"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Official Disney Parks news and announcements.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  },
+  {
+    "id": "chip-and-company",
+    "name": "Chip and Company",
+    "sourceType": "rssArticle",
+    "feedURL": "https://chipandco.com/feed/",
+    "homepageURL": "https://chipandco.com/",
+    "trustLabel": "verifiedNews",
+    "categoryTags": [
+      "parksNews",
+      "food",
+      "community"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Popular Disney news, food, and parks coverage.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  },
+  {
+    "id": "disney-parks-youtube",
+    "name": "Disney Parks",
+    "sourceType": "youtubeChannel",
+    "feedURL": "https://www.youtube.com/feeds/videos.xml?channel_id=UC1xwwLwm6WSMbUn_Tp597hQ",
+    "homepageURL": "https://www.youtube.com/user/DisneyParks",
+    "trustLabel": "official",
+    "categoryTags": [
+      "video",
+      "official"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Official Disney Parks YouTube channel.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  },
+  {
+    "id": "mammoth-club-youtube",
+    "name": "Mammoth Club",
+    "sourceType": "youtubeChannel",
+    "feedURL": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXGQTkyIfrJJ7ZT1A9MuJ0A",
+    "homepageURL": "https://www.youtube.com/channel/UCXGQTkyIfrJJ7ZT1A9MuJ0A",
+    "trustLabel": "communitySource",
+    "categoryTags": [
+      "video",
+      "community"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Popular Disney and theme park video coverage.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  },
+  {
+    "id": "window-to-the-magic",
+    "name": "Window to the Magic",
+    "sourceType": "podcastRSS",
+    "feedURL": "https://rss.libsyn.com/shows/18340/destinations/12109.xml",
+    "homepageURL": "https://windowtothemagic.com/",
+    "trustLabel": "communitySource",
+    "categoryTags": [
+      "podcast",
+      "community"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Featured Disney podcast and top-priority default show.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  },
+  {
+    "id": "be-our-guest-podcast",
+    "name": "Be Our Guest Podcast",
+    "sourceType": "podcastRSS",
+    "feedURL": "https://feed.podbean.com/beourguestpodcast/feed.xml",
+    "homepageURL": "https://beourguestpodcast.com/",
+    "trustLabel": "communitySource",
+    "categoryTags": [
+      "podcast",
+      "planning",
+      "community"
+    ],
+    "isEnabled": true,
+    "isDefaultEnabled": true,
+    "isCustom": false,
+    "isRecommended": true,
+    "description": "Popular Disney trip planning and discussion podcast.",
+    "artworkURL": null,
+    "lastRefreshAt": null,
+    "lastRefreshSucceeded": null,
+    "lastErrorMessage": null
+  }
+]

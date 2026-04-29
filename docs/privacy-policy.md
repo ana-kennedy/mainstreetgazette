@@ -46,4 +46,6 @@ This privacy policy may be updated as the app changes. Updates will be posted on
 
 ## Contact
 
-For privacy questions, contact the app developer through the public GitHub repository for Main Street Gazette.
+For privacy questions, contact the app developer through the public GitHub repository for Main Street Gazette:
+
+https://github.com/ana-kennedy/mainstreetgazette

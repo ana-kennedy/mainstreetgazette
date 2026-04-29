@@ -1,8 +1,11 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Divider, List, SegmentedButtons, Switch, Text } from "react-native-paper";
+import { Linking, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Divider, List, SegmentedButtons, Switch, Text } from "react-native-paper";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
+
+const PRIVACY_POLICY_URL = "https://ana-kennedy.github.io/mainstreetgazette/privacy-policy/";
+const SUPPORT_URL = "https://ana-kennedy.github.io/mainstreetgazette/support/";
 
 export function SettingsScreen() {
   const app = useAppContext();
@@ -164,9 +167,26 @@ export function SettingsScreen() {
           <Text variant="bodyMedium">
             Main Street Gazette is an independent feed reader and podcast player. It is not affiliated with, endorsed by, or sponsored by Disney or the listed publishers.
           </Text>
-          <Text variant="bodyMedium">
-            Before App Store submission, add hosted Privacy Policy and Support URLs in App Store Connect.
-          </Text>
+          <Button
+            mode="outlined"
+            icon="open-in-new"
+            onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+            accessibilityLabel="Open Privacy Policy"
+            accessibilityRole="button"
+            accessibilityHint="Double tap to open the Main Street Gazette privacy policy in your browser."
+          >
+            Privacy Policy
+          </Button>
+          <Button
+            mode="outlined"
+            icon="lifebuoy"
+            onPress={() => Linking.openURL(SUPPORT_URL)}
+            accessibilityLabel="Open Support"
+            accessibilityRole="button"
+            accessibilityHint="Double tap to open the Main Street Gazette support page in your browser."
+          >
+            Support
+          </Button>
         </View>
       </ScrollView>
     </Screen>

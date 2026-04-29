@@ -109,13 +109,6 @@ A minimal privacy policy for App Store submission is available at:
 docs/privacy-policy.md
 ```
 
-If this repository is published with GitHub Pages, that file can be used as the public Privacy Policy URL.
-
-For GitHub Pages, publish from the `docs` folder. The policy URL will usually look like:
-
-```text
-https://<github-username>.github.io/<repo-name>/privacy-policy/
-```
 
 ## Network Security
 

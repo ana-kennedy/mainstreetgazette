@@ -4,6 +4,14 @@ import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
 import { loadQueue, savePlaybackProgress, saveQueue } from "../services/storage";
 
+function isHTTPSURL(value: string): boolean {
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 interface PlaybackContextValue {
   currentItem: FeedItem | null;
   queue: PlaybackQueueItem[];
@@ -94,6 +102,10 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const playItem = useCallback(
     async (item: FeedItem) => {
       if (item.contentType !== "podcast") return;
+      if (!isHTTPSURL(item.canonicalURL)) {
+        AccessibilityInfo.announceForAccessibility("Podcast playback requires an HTTPS audio URL.");
+        return;
+      }
       if (isLoadingRef.current) return;
       if (currentItemRef.current?.id === item.id && soundRef.current) {
         await play();

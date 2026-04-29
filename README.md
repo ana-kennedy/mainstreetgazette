@@ -103,6 +103,26 @@ Main Street Gazette is local-first. It does not include accounts, ads, analytics
 
 Main Street Gazette is an independent feed reader and podcast player. It is not affiliated with, endorsed by, or sponsored by Disney or the listed publishers.
 
+A minimal privacy policy for App Store submission is available at:
+
+```text
+docs/privacy-policy.md
+```
+
+If this repository is published with GitHub Pages, that file can be used as the public Privacy Policy URL.
+
+For GitHub Pages, publish from the `docs` folder. The policy URL will usually look like:
+
+```text
+https://<github-username>.github.io/<repo-name>/privacy-policy/
+```
+
+## Network Security
+
+The bundled source catalog uses HTTPS feed and homepage URLs. Feed fetching, generated YouTube URLs, feed artwork, thumbnails, and podcast playback are constrained to HTTPS URLs.
+
+The iOS Expo config does not enable arbitrary HTTP loads.
+
 ## Requirements
 
 - Node.js

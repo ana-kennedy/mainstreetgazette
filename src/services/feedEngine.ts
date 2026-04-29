@@ -73,6 +73,25 @@ const xmlParser = new XMLParser({
   isArray: (_tagName, jPath) => ["rss.channel.item", "feed.entry"].includes(String(jPath))
 });
 
+function httpsURLOrNull(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  try {
+    const parsed = new URL(trimmed);
+    return parsed.protocol === "https:" ? trimmed : null;
+  } catch {
+    return null;
+  }
+}
+
+function requireHTTPSURL(value: string): string {
+  const httpsURL = httpsURLOrNull(value);
+  if (!httpsURL) {
+    throw new Error("Only HTTPS URLs are supported.");
+  }
+  return httpsURL;
+}
+
 async function withTimeout<T>(promise: Promise<T>, timeoutMS: number, message: string, onTimeout?: () => void): Promise<T> {
   let timeout: ReturnType<typeof setTimeout> | null = null;
   const timeoutPromise = new Promise<T>((_, reject) => {
@@ -114,7 +133,7 @@ function channelArtwork(feed: RSSFeed): string | null {
 }
 
 function itemArtwork(feed: RSSFeed, source: Source, item: RSSItem): string | null {
-  return item.itunes?.image ?? item.imageUrl ?? channelArtwork(feed) ?? source.artworkURL ?? null;
+  return httpsURLOrNull(item.itunes?.image ?? item.imageUrl ?? channelArtwork(feed) ?? source.artworkURL);
 }
 
 function itemTags(item: RSSItem): string[] {
@@ -238,9 +257,10 @@ function parseFeed(text: string): RSSFeed {
 }
 
 async function fetchText(url: string): Promise<string> {
+  const httpsURL = requireHTTPSURL(url);
   const controller = new AbortController();
   const request = (async () => {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(httpsURL, { signal: controller.signal });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
@@ -271,7 +291,7 @@ async function fetchFeedText(source: Source): Promise<string> {
 }
 
 function normalizeArticle(source: Source, feed: RSSFeed, item: RSSItem): FeedItem | null {
-  const link = firstLink(item);
+  const link = httpsURLOrNull(firstLink(item));
   const title = item.title ? stripHTML(item.title) : "";
   if (!link || !title) return null;
   const summary = itemSummary(item);
@@ -289,7 +309,7 @@ function normalizeArticle(source: Source, feed: RSSFeed, item: RSSItem): FeedIte
     publishedAt: publishedDate(item),
     authorOrChannel: authorOrSource(source, item),
     durationSeconds: null,
-    artworkURL: channelArtwork(feed),
+    artworkURL: httpsURLOrNull(channelArtwork(feed)),
     thumbnailURL: itemArtwork(feed, source, item),
     isSaved: false,
     isNewRelativeToCheckpoint: false,
@@ -339,7 +359,7 @@ function relativeYouTubeDate(value: string | null): string {
 }
 
 function fallbackYouTubeURL(source: Source): string | null {
-  const homepage = source.homepageURL?.replace(/\/$/, "");
+  const homepage = httpsURLOrNull(source.homepageURL)?.replace(/\/$/, "");
   if (homepage) return `${homepage}/videos`;
   const channelID = /[?&]channel_id=([^&]+)/.exec(source.feedURL)?.[1];
   return channelID ? `https://www.youtube.com/channel/${channelID}/videos` : null;
@@ -400,7 +420,7 @@ function normalizeYouTube(source: Source, item: RSSItem): FeedItem | null {
   const title = item.title ? stripHTML(item.title) : "";
   if (!videoID || !title) return null;
   const link = `https://www.youtube.com/watch?v=${videoID}`;
-  const thumb = item.imageUrl ?? `https://i.ytimg.com/vi/${videoID}/hqdefault.jpg`;
+  const thumb = httpsURLOrNull(item.imageUrl) ?? `https://i.ytimg.com/vi/${videoID}/hqdefault.jpg`;
   const summary = itemSummary(item);
 
   return {
@@ -431,10 +451,11 @@ function normalizeYouTube(source: Source, item: RSSItem): FeedItem | null {
 }
 
 function normalizePodcast(source: Source, feed: RSSFeed, item: RSSItem): FeedItem | null {
-  const enclosureURL =
+  const enclosureURL = httpsURLOrNull(
     item.enclosures?.find((enclosure) => enclosure.url && (!enclosure.mimeType || enclosure.mimeType.startsWith("audio/")))?.url?.trim() ??
     item.enclosures?.find((enclosure) => enclosure.url)?.url?.trim() ??
-    firstLink(item);
+    firstLink(item)
+  );
   const title = item.title ? stripHTML(item.title) : "";
   if (!enclosureURL || !title) return null;
   const guid = item.id ?? enclosureURL;

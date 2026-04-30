@@ -1,103 +1,188 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
-import { Linking, ScrollView, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { AccessibilityActionEvent, Linking, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Chip, Divider, Text } from "react-native-paper";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
 import type { NewsStackParamList, SavedStackParamList } from "../navigation/types";
-import { buildFeedItemAccessibility } from "../utils/accessibility";
-import { clockString, relativePublishedText } from "../utils/formatting";
+import { clockString, contentTypeDisplayName, relativePublishedText } from "../utils/formatting";
 
 type Props =
   | NativeStackScreenProps<NewsStackParamList, "FeedDetail">
   | NativeStackScreenProps<SavedStackParamList, "SavedDetail">;
 
-export function FeedDetailScreen({ route }: Props) {
+interface DetailAction {
+  key: string;
+  label: string;
+  icon: string;
+  mode: "text" | "outlined" | "contained" | "contained-tonal" | "elevated";
+  onPress: () => void | Promise<void>;
+  accessibilityLabel: string;
+  hint: string;
+  disabled?: boolean;
+  loading?: boolean;
+}
+
+export function FeedDetailScreen({ route, navigation }: Props) {
   const { item } = route.params;
   const app = useAppContext();
   const playback = usePlayback();
   const current = app.items.find((candidate) => candidate.id === item.id) ?? item;
-  const payload = buildFeedItemAccessibility(current);
+  const sourceName = app.sources.find((source) => source.id === current.sourceID)?.name ?? "Unknown website";
+  const authorText = current.authorOrChannel && current.authorOrChannel !== sourceName ? current.authorOrChannel : null;
+  const contentType = contentTypeDisplayName(current.contentType);
+  const publishedText = relativePublishedText(current.publishedAt);
+  const durationText = current.durationSeconds ? `Duration ${clockString(current.durationSeconds)}.` : null;
+  const headerAccessibilityLabel = [current.title, `Source: ${sourceName}.`, authorText ? `By ${authorText}.` : null, publishedText, durationText]
+    .filter(Boolean)
+    .join(" ");
   const isPodcastLoading = playback.loadingItemID === current.id;
   const isCurrentPodcast = playback.currentItem?.id === current.id;
   const playLabel = isPodcastLoading ? "Loading" : isCurrentPodcast && playback.isPlaying ? "Playing" : "Play";
+  const [areActionsVisible, setAreActionsVisible] = useState(false);
+  const isPlayActionDisabled = playback.isLoading || (isCurrentPodcast && playback.isPlaying);
+  const saveLabel = current.isSaved ? `Unsave ${contentType.toLowerCase()}` : `Save ${contentType.toLowerCase()}`;
+  const saveHint = current.isSaved ? `Double tap to remove this ${contentType.toLowerCase()} from saved items.` : "Double tap to save this item for later.";
+  const primaryAction: DetailAction =
+    current.contentType === "podcast"
+      ? {
+          key: "play",
+          label: playLabel,
+          icon: "play",
+          mode: "contained-tonal" as const,
+          onPress: () => playback.playItem(current),
+          accessibilityLabel: `Play podcast episode ${current.title}`,
+          hint: isPodcastLoading ? "Podcast playback is loading." : "Double tap to play this podcast episode.",
+          disabled: isPlayActionDisabled,
+          loading: isPodcastLoading
+        }
+      : {
+          key: "open",
+          label: "Open",
+          icon: "open-in-new",
+          mode: "contained-tonal" as const,
+          onPress: () => Linking.openURL(current.externalURL ?? current.canonicalURL),
+          accessibilityLabel: `Open ${current.contentType}`,
+          hint: "Double tap to open the original item."
+        };
+  const detailActions: DetailAction[] = [
+    {
+      key: "save",
+      label: current.isSaved ? "Saved" : "Save",
+      icon: current.isSaved ? "bookmark" : "bookmark-outline",
+      mode: "contained" as const,
+      onPress: () => app.toggleSaved(current.id),
+      accessibilityLabel: saveLabel,
+      hint: saveHint
+    },
+    primaryAction,
+    ...(current.contentType === "podcast"
+      ? [
+          {
+            key: "queue",
+            label: "Queue",
+            icon: "playlist-plus",
+            mode: "outlined" as const,
+            onPress: () => playback.addToQueue(current),
+            accessibilityLabel: "Add episode to queue",
+            hint: "Double tap to add this podcast episode to the playback queue."
+          }
+        ]
+      : []),
+    {
+      key: "checkpoint",
+      label: "Checkpoint",
+      icon: "flag-outline",
+      mode: "outlined" as const,
+      onPress: () => app.setCheckpointAtItem(current),
+      accessibilityLabel: "Set checkpoint here",
+      hint: "Double tap to mark newer feed items as new."
+    }
+  ];
+  const iosAccessibilityActions =
+    Platform.OS === "ios"
+      ? detailActions
+          .filter((action) => !action.disabled)
+          .map((action) => ({ name: `action-${action.key}`, label: action.accessibilityLabel }))
+      : undefined;
+
+  const handleActionsAccessibilityAction = (event: AccessibilityActionEvent) => {
+    const actionKey = event.nativeEvent.actionName.replace("action-", "");
+    const selectedAction = detailActions.find((action) => action.key === actionKey && !action.disabled);
+    selectedAction?.onPress();
+  };
 
   return (
     <Screen>
       <ScrollView contentContainerStyle={styles.content}>
-        <View accessible accessibilityRole="summary" accessibilityLabel={payload.label} accessibilityHint={payload.hint} style={styles.titleBlock}>
-          <Chip accessibilityLabel={`${current.contentType} type`} accessibilityRole="text">
-            {current.contentType}
+        <Button
+          mode="text"
+          icon="arrow-left"
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          accessibilityLabel="Back"
+          accessibilityRole="button"
+          accessibilityHint="Double tap to return to the previous screen."
+        >
+          Back
+        </Button>
+        <View accessible accessibilityRole="header" accessibilityLabel={headerAccessibilityLabel} style={styles.titleBlock}>
+          <Chip accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            {contentType}
           </Chip>
-          <Text variant="headlineSmall" accessibilityRole="header">
+          <Text variant="headlineSmall">
             {current.title}
           </Text>
-          <Text variant="bodyLarge">{current.authorOrChannel ?? "Unknown Source"}</Text>
-          <Text variant="bodyMedium">{relativePublishedText(current.publishedAt)}</Text>
-          {current.durationSeconds ? <Text variant="bodyMedium">Duration {clockString(current.durationSeconds)}</Text> : null}
+          <Text variant="bodyLarge">{sourceName}</Text>
+          {authorText ? <Text variant="bodyMedium">By {authorText}</Text> : null}
+          <Text variant="bodyMedium">{publishedText}</Text>
+          {durationText ? <Text variant="bodyMedium">{durationText}</Text> : null}
         </View>
         <Divider />
-        <Text variant="bodyLarge">{current.summary ?? "No summary was provided by this source."}</Text>
+        <Text variant="bodyLarge" accessibilityLabel={current.summary ?? "No summary was provided by this source."}>
+          {current.summary ?? "No summary was provided by this source."}
+        </Text>
         <View style={styles.actions}>
           <Button
-            mode="contained"
-            icon={current.isSaved ? "bookmark" : "bookmark-outline"}
-            onPress={() => app.toggleSaved(current.id)}
-            accessibilityLabel={current.isSaved ? "Unsave article" : "Save article"}
-            accessibilityRole="button"
-            accessibilityHint={current.isSaved ? "Double tap to remove this from saved articles." : "Double tap to save this item for later."}
-          >
-            {current.isSaved ? "Saved" : "Save"}
-          </Button>
-          {current.contentType === "podcast" ? (
-            <>
-              <Button
-                mode="contained-tonal"
-                icon="play"
-                onPress={() => playback.playItem(current)}
-                loading={isPodcastLoading}
-                disabled={playback.isLoading || (isCurrentPodcast && playback.isPlaying)}
-                accessibilityLabel={`Play podcast episode ${current.title}`}
-                accessibilityRole="button"
-                accessibilityState={{ disabled: playback.isLoading || (isCurrentPodcast && playback.isPlaying), busy: isPodcastLoading }}
-                accessibilityHint={isPodcastLoading ? "Podcast playback is loading." : "Double tap to play this podcast episode."}
-              >
-                {playLabel}
-              </Button>
-              <Button
-                mode="outlined"
-                icon="playlist-plus"
-                onPress={() => playback.addToQueue(current)}
-                accessibilityLabel="Add episode to queue"
-                accessibilityRole="button"
-                accessibilityHint="Double tap to add this podcast episode to the playback queue."
-              >
-                Queue
-              </Button>
-            </>
-          ) : (
-            <Button
-              mode="contained-tonal"
-              icon="open-in-new"
-              onPress={() => Linking.openURL(current.externalURL ?? current.canonicalURL)}
-              accessibilityLabel={`Open ${current.contentType}`}
-              accessibilityRole="button"
-              accessibilityHint="Double tap to open the original item."
-            >
-              Open
-            </Button>
-          )}
-          <Button
             mode="outlined"
-            icon="flag-outline"
-            onPress={() => app.setCheckpointAtItem(current)}
-            accessibilityLabel="Set checkpoint here"
+            icon="dots-horizontal"
+            onPress={() => setAreActionsVisible((currentValue) => !currentValue)}
+            accessibilityLabel={`Actions button ${areActionsVisible ? "expanded" : "collapsed"}`}
             accessibilityRole="button"
-            accessibilityHint="Double tap to mark newer feed items as new."
+            accessibilityState={{ expanded: areActionsVisible }}
+            accessibilityHint={
+              Platform.OS === "ios"
+                ? areActionsVisible
+                  ? "Swipe up or down to choose an action. Double tap to collapse."
+                  : "Swipe up or down to choose an action. Double tap to expand."
+                : areActionsVisible
+                  ? "Double tap to collapse actions."
+                  : "Double tap to expand actions."
+            }
+            accessibilityActions={iosAccessibilityActions}
+            onAccessibilityAction={Platform.OS === "ios" ? handleActionsAccessibilityAction : undefined}
           >
-            Checkpoint
+            Actions
           </Button>
+          {areActionsVisible
+            ? detailActions.map((action) => (
+                <Button
+                  key={action.key}
+                  mode={action.mode}
+                  icon={action.icon}
+                  onPress={action.onPress}
+                  loading={action.loading}
+                  disabled={action.disabled}
+                  accessibilityLabel={action.accessibilityLabel}
+                  accessibilityRole="button"
+                  accessibilityState={{ disabled: action.disabled, busy: action.loading }}
+                  accessibilityHint={action.hint}
+                >
+                  {action.label}
+                </Button>
+              ))
+            : null}
         </View>
       </ScrollView>
     </Screen>
@@ -111,6 +196,9 @@ const styles = StyleSheet.create({
   },
   titleBlock: {
     gap: 8
+  },
+  backButton: {
+    alignSelf: "flex-start"
   },
   actions: {
     gap: 10

@@ -1,11 +1,97 @@
 import React from "react";
-import { Linking, ScrollView, StyleSheet, View } from "react-native";
-import { Button, Divider, List, SegmentedButtons, Switch, Text } from "react-native-paper";
+import { Linking, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Divider, Switch, Text, useTheme } from "react-native-paper";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 
 const PRIVACY_POLICY_URL = "https://ana-kennedy.github.io/mainstreetgazette/privacy-policy/";
 const SUPPORT_URL = "https://ana-kennedy.github.io/mainstreetgazette/support/";
+
+interface ChoiceOption<T extends string> {
+  value: T;
+  label: string;
+  accessibilityLabel: string;
+}
+
+function ChoiceRow<T extends string>({
+  value,
+  options,
+  onValueChange
+}: {
+  value: T;
+  options: ChoiceOption<T>[];
+  onValueChange: (value: T) => void;
+}) {
+  const theme = useTheme();
+
+  return (
+    <View style={[styles.choiceRow, { borderColor: theme.colors.outline }]} accessible={false}>
+      {options.map((option) => {
+        const isSelected = option.value === value;
+        return (
+          <Pressable
+            key={option.value}
+            style={[
+              styles.choiceButton,
+              {
+                backgroundColor: isSelected ? theme.colors.primary : theme.colors.surface,
+                borderColor: theme.colors.outline
+              }
+            ]}
+            onPress={() => onValueChange(option.value)}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={option.accessibilityLabel}
+            accessibilityState={{ selected: isSelected }}
+            accessibilityHint={isSelected ? "Currently selected." : "Double tap to select."}
+          >
+            <Text style={{ color: isSelected ? theme.colors.onPrimary : theme.colors.primary }}>{option.label}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+function SettingSwitchRow({
+  title,
+  description,
+  value,
+  onValueChange
+}: {
+  title: string;
+  description: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}) {
+  const theme = useTheme();
+
+  return (
+    <Pressable
+      style={[styles.switchRow, { borderColor: theme.colors.outline }]}
+      onPress={() => onValueChange(!value)}
+      accessible
+      accessibilityRole="switch"
+      accessibilityState={{ checked: value }}
+      accessibilityValue={{ text: value ? "On" : "Off" }}
+      accessibilityLabel={`${title}. ${value ? "On" : "Off"}.`}
+      accessibilityHint={`Double tap to turn ${value ? "off" : "on"}. ${description}`}
+      onAccessibilityTap={() => onValueChange(!value)}
+    >
+      <View style={styles.switchText}>
+        <Text variant="titleMedium">{title}</Text>
+        <Text variant="bodyMedium">{description}</Text>
+      </View>
+      <Switch
+        value={value}
+        pointerEvents="none"
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      />
+    </Pressable>
+  );
+}
 
 export function SettingsScreen() {
   const app = useAppContext();
@@ -23,57 +109,33 @@ export function SettingsScreen() {
         <Text variant="titleMedium" accessibilityRole="header">
           Appearance
         </Text>
-        <List.Item
+        <SettingSwitchRow
           title="Dark mode"
           description="Use a darker color theme throughout the app."
-          right={() => (
-            <Switch
-              value={settings.darkModeEnabled}
-              onValueChange={(value) => update({ darkModeEnabled: value })}
-              accessibilityLabel="Dark mode"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle dark mode."
-            />
-          )}
-          accessibilityLabel={`Dark mode. ${settings.darkModeEnabled ? "On" : "Off"}. Use a darker color theme throughout the app.`}
+          value={settings.darkModeEnabled}
+          onValueChange={(value) => update({ darkModeEnabled: value })}
         />
         <Divider />
         <Text variant="titleMedium" accessibilityRole="header">
           Feed
         </Text>
-        <List.Item
+        <SettingSwitchRow
           title="Auto refresh on launch"
           description="Fetch enabled feeds when the app starts."
-          right={() => (
-            <Switch
-              value={settings.autoRefreshOnLaunch}
-              onValueChange={(value) => update({ autoRefreshOnLaunch: value })}
-              accessibilityLabel="Auto refresh on launch"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle automatic feed refresh."
-            />
-          )}
-          accessibilityLabel={`Auto refresh on launch. ${settings.autoRefreshOnLaunch ? "On" : "Off"}. Fetch enabled feeds when the app starts.`}
+          value={settings.autoRefreshOnLaunch}
+          onValueChange={(value) => update({ autoRefreshOnLaunch: value })}
         />
-        <List.Item
+        <SettingSwitchRow
           title="Show only new items"
           description="Limit the news feed to checkpoint-new items."
-          right={() => (
-            <Switch
-              value={settings.showOnlyNew}
-              onValueChange={(value) => update({ showOnlyNew: value })}
-              accessibilityLabel="Show only new items"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle filtering to new items."
-            />
-          )}
-          accessibilityLabel={`Show only new items. ${settings.showOnlyNew ? "On" : "Off"}.`}
+          value={settings.showOnlyNew}
+          onValueChange={(value) => update({ showOnlyNew: value })}
         />
         <Text variant="bodyLarge">Sort order</Text>
-        <SegmentedButtons
+        <ChoiceRow
           value={settings.sortOrder}
           onValueChange={(value) => update({ sortOrder: value as typeof settings.sortOrder })}
-          buttons={[
+          options={[
             { value: "newestFirst", label: "Newest", accessibilityLabel: "Sort newest first" },
             { value: "oldestFirst", label: "Oldest", accessibilityLabel: "Sort oldest first" }
           ]}
@@ -82,57 +144,33 @@ export function SettingsScreen() {
         <Text variant="titleMedium" accessibilityRole="header">
           Accessibility
         </Text>
-        <List.Item
+        <SettingSwitchRow
           title="Enhanced spacing"
           description="Adds more breathing room for low-vision layouts."
-          right={() => (
-            <Switch
-              value={settings.lowVisionEnhancedSpacing}
-              onValueChange={(value) => update({ lowVisionEnhancedSpacing: value })}
-              accessibilityLabel="Enhanced spacing"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle enhanced spacing."
-            />
-          )}
-          accessibilityLabel={`Enhanced spacing. ${settings.lowVisionEnhancedSpacing ? "On" : "Off"}.`}
+          value={settings.lowVisionEnhancedSpacing}
+          onValueChange={(value) => update({ lowVisionEnhancedSpacing: value })}
         />
-        <List.Item
+        <SettingSwitchRow
           title="Bold metadata"
           description="Makes source and time metadata easier to scan."
-          right={() => (
-            <Switch
-              value={settings.lowVisionBoldMetadata}
-              onValueChange={(value) => update({ lowVisionBoldMetadata: value })}
-              accessibilityLabel="Bold metadata"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle bold metadata."
-            />
-          )}
-          accessibilityLabel={`Bold metadata. ${settings.lowVisionBoldMetadata ? "On" : "Off"}.`}
+          value={settings.lowVisionBoldMetadata}
+          onValueChange={(value) => update({ lowVisionBoldMetadata: value })}
         />
-        <List.Item
+        <SettingSwitchRow
           title="Hide thumbnails"
           description="Reduces visual clutter in feed rows."
-          right={() => (
-            <Switch
-              value={settings.hideThumbnailsForLowVision}
-              onValueChange={(value) => update({ hideThumbnailsForLowVision: value })}
-              accessibilityLabel="Hide thumbnails"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to hide or show feed thumbnails."
-            />
-          )}
-          accessibilityLabel={`Hide thumbnails. ${settings.hideThumbnailsForLowVision ? "On" : "Off"}.`}
+          value={settings.hideThumbnailsForLowVision}
+          onValueChange={(value) => update({ hideThumbnailsForLowVision: value })}
         />
         <Divider />
         <Text variant="titleMedium" accessibilityRole="header">
           Playback
         </Text>
         <Text variant="bodyLarge">Default speed</Text>
-        <SegmentedButtons
+        <ChoiceRow
           value={String(settings.playbackDefaultSpeed)}
           onValueChange={(value) => update({ playbackDefaultSpeed: Number(value) })}
-          buttons={[
+          options={[
             { value: "0.75", label: "0.75x", accessibilityLabel: "Default speed 0.75 times" },
             { value: "1", label: "1x", accessibilityLabel: "Default speed 1 times" },
             { value: "1.25", label: "1.25x", accessibilityLabel: "Default speed 1.25 times" },
@@ -140,19 +178,11 @@ export function SettingsScreen() {
             { value: "2", label: "2x", accessibilityLabel: "Default speed 2 times" }
           ]}
         />
-        <List.Item
+        <SettingSwitchRow
           title="Auto play next episode"
           description="Continue through the podcast queue."
-          right={() => (
-            <Switch
-              value={settings.autoPlayNextEpisode}
-              onValueChange={(value) => update({ autoPlayNextEpisode: value })}
-              accessibilityLabel="Auto play next episode"
-              accessibilityRole="switch"
-              accessibilityHint="Double tap to toggle automatic queue playback."
-            />
-          )}
-          accessibilityLabel={`Auto play next episode. ${settings.autoPlayNextEpisode ? "On" : "Off"}.`}
+          value={settings.autoPlayNextEpisode}
+          onValueChange={(value) => update({ autoPlayNextEpisode: value })}
         />
         <View style={styles.footer}>
           <Text variant="titleMedium" accessibilityRole="header">
@@ -200,5 +230,34 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 16
+  },
+  switchRow: {
+    minHeight: 64,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 8,
+    padding: 12
+  },
+  switchText: {
+    flex: 1,
+    gap: 4
+  },
+  choiceRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 8,
+    overflow: "hidden"
+  },
+  choiceButton: {
+    minHeight: 48,
+    minWidth: 96,
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12
   }
 });

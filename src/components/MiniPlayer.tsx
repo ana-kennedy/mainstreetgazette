@@ -25,8 +25,7 @@ export function MiniPlayer() {
           bottom: insets.bottom + 56
         }
       ]}
-      accessibilityRole="summary"
-      accessibilityLabel={`Podcast player. ${playback.currentItem.title}. ${statusText}. ${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}.`}
+      accessible={false}
     >
       <ProgressBar
         progress={safeProgress}
@@ -35,7 +34,12 @@ export function MiniPlayer() {
         accessibilityValue={{ min: 0, max: 100, now: Math.round(safeProgress * 100), text: `${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}` }}
       />
       <View style={styles.titleRow}>
-        <View style={styles.titleText}>
+        <View
+          style={styles.titleText}
+          accessible
+          accessibilityRole="summary"
+          accessibilityLabel={`Podcast player. ${playback.currentItem.title}. ${statusText}. ${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}.`}
+        >
           <Text variant="labelLarge" numberOfLines={1}>
             {playback.currentItem.title}
           </Text>

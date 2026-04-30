@@ -8,11 +8,13 @@ export interface FeedItemAccessibilityPayload {
   actions: string[];
 }
 
-export function buildFeedItemAccessibility(item: FeedItem): FeedItemAccessibilityPayload {
+export function buildFeedItemAccessibility(item: FeedItem, sourceName?: string): FeedItemAccessibilityPayload {
+  const authorText = item.authorOrChannel && item.authorOrChannel !== sourceName ? `Author: ${item.authorOrChannel}.` : undefined;
   const parts = [
     `${contentTypeDisplayName(item.contentType)}.`,
     item.title,
-    `Source: ${item.authorOrChannel ?? "Unknown Source"}.`,
+    `Source: ${sourceName ?? item.authorOrChannel ?? "Unknown Source"}.`,
+    authorText,
     relativePublishedText(item.publishedAt),
     item.durationSeconds && item.durationSeconds > 0 ? `Duration ${clockString(item.durationSeconds)}.` : undefined,
     item.isNewRelativeToCheckpoint ? "New." : undefined,
@@ -20,7 +22,7 @@ export function buildFeedItemAccessibility(item: FeedItem): FeedItemAccessibilit
     item.contentType === "podcast" && item.isDownloaded ? "Downloaded." : undefined
   ].filter(Boolean);
 
-  const actions = ["Open", "Set checkpoint here", item.isSaved ? "Unsave" : "Save"];
+  const actions = [item.isSaved ? "Unsave" : "Save", "Open", "Set checkpoint here"];
   if (item.groupID) actions.push("Expand group");
   if (item.contentType === "video") actions.push("Open in YouTube");
   if (item.contentType === "podcast") {

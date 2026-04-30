@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Card, Searchbar, Switch, Text } from "react-native-paper";
+import React, { useMemo } from "react";
+import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { Switch, Text, useTheme } from "react-native-paper";
+import { PlainSearchField } from "../components/PlainSearchField";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import type { Source } from "../domain/models";
@@ -9,44 +10,44 @@ import { sourceCategoryDisplayName, sourceTypeDisplayName, trustLabelDisplayName
 import { searchSources } from "../utils/search";
 
 function SourceRow({ source, onToggle }: { source: Source; onToggle: (sourceID: string) => void }) {
+  const theme = useTheme();
+
   return (
-    <Card
-      mode="outlined"
-      style={styles.card}
+    <Pressable
+      style={[styles.card, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
       accessible
       accessibilityRole="switch"
       accessibilityState={{ checked: source.isEnabled }}
+      accessibilityValue={{ text: source.isEnabled ? "On" : "Off" }}
       accessibilityLabel={sourceAccessibilityLabel(source)}
       accessibilityHint={sourceAccessibilityHint(source)}
       onPress={() => onToggle(source.id)}
+      onAccessibilityTap={() => onToggle(source.id)}
     >
-      <Card.Content style={styles.cardContent}>
-        <View style={styles.row}>
-          <View style={styles.sourceText}>
-            <Text variant="titleMedium">{source.name}</Text>
-            <Text variant="bodyMedium">
-              {sourceTypeDisplayName(source.sourceType)} · {trustLabelDisplayName(source.trustLabel)}
-            </Text>
-            <Text variant="bodySmall">{source.categoryTags.map(sourceCategoryDisplayName).join(", ")}</Text>
-            {source.description ? <Text variant="bodyMedium">{source.description}</Text> : null}
-          </View>
-          <Switch
-            value={source.isEnabled}
-            onValueChange={() => onToggle(source.id)}
-            accessible={false}
-            accessibilityElementsHidden
-            importantForAccessibility="no-hide-descendants"
-          />
+      <View style={styles.row}>
+        <View style={styles.sourceText}>
+          <Text variant="titleMedium">{source.name}</Text>
+          <Text variant="bodyMedium">
+            {sourceTypeDisplayName(source.sourceType)} · {trustLabelDisplayName(source.trustLabel)}
+          </Text>
+          <Text variant="bodySmall">{source.categoryTags.map(sourceCategoryDisplayName).join(", ")}</Text>
+          {source.description ? <Text variant="bodyMedium">{source.description}</Text> : null}
         </View>
-      </Card.Content>
-    </Card>
+        <Switch
+          value={source.isEnabled}
+          pointerEvents="none"
+          accessible={false}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        />
+      </View>
+    </Pressable>
   );
 }
 
 export function SourcesScreen() {
   const app = useAppContext();
-  const [query, setQuery] = useState("");
-  const sources = useMemo(() => searchSources(app.sources, query), [app.sources, query]);
+  const sources = useMemo(() => searchSources(app.sources, app.searchQuery), [app.sources, app.searchQuery]);
   const enabledCount = app.sources.filter((source) => source.isEnabled).length;
 
   return (
@@ -61,13 +62,12 @@ export function SourcesScreen() {
         <Text variant="bodyMedium">
           Sources are third-party feeds. Enable only feeds you want Main Street Gazette to fetch.
         </Text>
-        <Searchbar
-          value={query}
-          onChangeText={setQuery}
+        <PlainSearchField
+          value={app.searchQuery}
+          onChangeText={app.setSearchQuery}
           placeholder="Search sources"
           accessibilityLabel="Search sources"
-          accessibilityRole="search"
-          accessibilityHint="Enter words to search source names, descriptions, and categories."
+          accessibilityHint="Enter words to search source names, descriptions, categories, and stories throughout the app."
         />
       </View>
       <FlatList
@@ -75,7 +75,6 @@ export function SourcesScreen() {
         keyExtractor={(source) => source.id}
         renderItem={({ item }) => <SourceRow source={item} onToggle={app.toggleSource} />}
         contentContainerStyle={styles.list}
-        accessibilityLabel="Source manager list"
       />
     </Screen>
   );
@@ -92,10 +91,9 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 12,
     marginVertical: 6,
-    borderRadius: 8
-  },
-  cardContent: {
-    gap: 8
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: 16
   },
   row: {
     flexDirection: "row",

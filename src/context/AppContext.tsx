@@ -14,6 +14,8 @@ import {
   saveSettings,
   saveSources
 } from "../services/storage";
+import { groupFeedItems } from "../utils/grouping";
+import { stripHTML } from "../utils/formatting";
 
 interface AppContextValue {
   items: FeedItem[];
@@ -26,6 +28,8 @@ interface AppContextValue {
   isRefreshing: boolean;
   errorMessage: string | null;
   lastRefreshSummary: string | null;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
   refresh: () => Promise<void>;
   toggleSaved: (itemID: string) => Promise<void>;
   toggleSource: (sourceID: string) => Promise<void>;
@@ -36,7 +40,14 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 function mergeSaved(items: FeedItem[], savedIDs: string[]): FeedItem[] {
-  return items.map((item) => ({ ...item, isSaved: savedIDs.includes(item.id) }));
+  return items.map((item) => ({
+    ...item,
+    title: stripHTML(item.title),
+    subtitle: item.subtitle ? stripHTML(item.subtitle) : item.subtitle,
+    summary: item.summary ? stripHTML(item.summary) : item.summary,
+    authorOrChannel: item.authorOrChannel ? stripHTML(item.authorOrChannel) : item.authorOrChannel,
+    isSaved: savedIDs.includes(item.id)
+  }));
 }
 
 function refreshFailureMessage(failureCount: number): string {
@@ -54,6 +65,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastRefreshSummary, setLastRefreshSummary] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const isRefreshingRef = useRef(false);
   const autoRefreshAttemptedRef = useRef(false);
 
@@ -104,7 +116,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (!mounted) return;
       setSources(loadedSources);
       setSavedIDs(loadedSavedIDs);
-      setItems(mergeSaved(cachedFeed, loadedSavedIDs));
+      const cachedItems = mergeSaved(cachedFeed, loadedSavedIDs);
+      setItems(cachedItems);
+      setGroups(groupFeedItems(cachedItems).groups);
       setSettings(loadedSettings);
       setIsLoading(false);
     }
@@ -118,11 +132,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && settings?.autoRefreshOnLaunch && sources.length > 0 && items.length === 0 && !autoRefreshAttemptedRef.current) {
+    if (!isLoading && settings?.autoRefreshOnLaunch && sources.length > 0 && !autoRefreshAttemptedRef.current) {
       autoRefreshAttemptedRef.current = true;
       refresh();
     }
-  }, [isLoading, items.length, refresh, settings?.autoRefreshOnLaunch, sources.length]);
+  }, [isLoading, refresh, settings?.autoRefreshOnLaunch, sources.length]);
 
   const toggleSaved = useCallback(
     async (itemID: string) => {
@@ -183,13 +197,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       isRefreshing,
       errorMessage,
       lastRefreshSummary,
+      searchQuery,
+      setSearchQuery,
       refresh,
       toggleSaved,
       toggleSource,
       updateSettings,
       setCheckpointAtItem
     }),
-    [errorMessage, groups, isLoading, isRefreshing, items, lastRefreshSummary, refresh, savedIDs, savedItems, setCheckpointAtItem, settings, sources, toggleSaved, toggleSource, updateSettings]
+    [errorMessage, groups, isLoading, isRefreshing, items, lastRefreshSummary, refresh, savedIDs, savedItems, searchQuery, setCheckpointAtItem, settings, sources, toggleSaved, toggleSource, updateSettings]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

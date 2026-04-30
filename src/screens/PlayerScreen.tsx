@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Button, IconButton, ProgressBar, SegmentedButtons, Text } from "react-native-paper";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Button, IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { Screen } from "../components/Screen";
 import { usePlayback } from "../context/PlaybackContext";
@@ -8,6 +8,7 @@ import { clockString } from "../utils/formatting";
 
 export function PlayerScreen() {
   const playback = usePlayback();
+  const theme = useTheme();
   if (!playback.currentItem) {
     return (
       <Screen>
@@ -69,17 +70,37 @@ export function PlayerScreen() {
           />
         </View>
         <Text variant="bodyLarge">Speed</Text>
-        <SegmentedButtons
-          value={String(playback.currentSpeed)}
-          onValueChange={(value) => playback.setSpeed(Number(value))}
-          buttons={[
+        <View style={[styles.speedRow, { borderColor: theme.colors.outline }]} accessible={false}>
+          {[
             { value: "0.75", label: "0.75x", accessibilityLabel: "Playback speed 0.75 times" },
             { value: "1", label: "1x", accessibilityLabel: "Playback speed 1 times" },
             { value: "1.25", label: "1.25x", accessibilityLabel: "Playback speed 1.25 times" },
             { value: "1.5", label: "1.5x", accessibilityLabel: "Playback speed 1.5 times" },
             { value: "2", label: "2x", accessibilityLabel: "Playback speed 2 times" }
-          ]}
-        />
+          ].map((option) => {
+            const isSelected = String(playback.currentSpeed) === option.value;
+            return (
+              <Pressable
+                key={option.value}
+                style={[
+                  styles.speedButton,
+                  {
+                    backgroundColor: isSelected ? theme.colors.primary : theme.colors.surface,
+                    borderColor: theme.colors.outline
+                  }
+                ]}
+                onPress={() => playback.setSpeed(Number(option.value))}
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={option.accessibilityLabel}
+                accessibilityState={{ selected: isSelected }}
+                accessibilityHint={isSelected ? "Currently selected." : "Double tap to select."}
+              >
+                <Text style={{ color: isSelected ? theme.colors.onPrimary : theme.colors.primary }}>{option.label}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
         <Button
           mode="outlined"
           icon="playlist-plus"
@@ -107,5 +128,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 16
+  },
+  speedRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 8,
+    overflow: "hidden"
+  },
+  speedButton: {
+    minHeight: 48,
+    minWidth: 88,
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12
   }
 });

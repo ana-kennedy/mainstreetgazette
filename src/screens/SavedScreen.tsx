@@ -1,9 +1,10 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { Searchbar, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { FeedItemCard } from "../components/FeedItemCard";
+import { PlainSearchField } from "../components/PlainSearchField";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import type { SavedStackParamList } from "../navigation/types";
@@ -13,8 +14,7 @@ type Props = NativeStackScreenProps<SavedStackParamList, "SavedHome">;
 
 export function SavedScreen({ navigation }: Props) {
   const app = useAppContext();
-  const [query, setQuery] = useState("");
-  const visibleItems = useMemo(() => searchFeedItems(app.savedItems, query), [app.savedItems, query]);
+  const visibleItems = useMemo(() => searchFeedItems(app.savedItems, app.searchQuery), [app.savedItems, app.searchQuery]);
 
   return (
     <Screen>
@@ -22,13 +22,12 @@ export function SavedScreen({ navigation }: Props) {
         <Text variant="headlineMedium" accessibilityRole="header">
           Saved
         </Text>
-        <Searchbar
-          value={query}
-          onChangeText={setQuery}
+        <PlainSearchField
+          value={app.searchQuery}
+          onChangeText={app.setSearchQuery}
           placeholder="Search saved"
           accessibilityLabel="Search saved articles"
-          accessibilityRole="search"
-          accessibilityHint="Enter words to search saved items."
+          accessibilityHint="Enter words to search saved items and the news feed throughout the app."
         />
       </View>
       <FlatList
@@ -38,6 +37,7 @@ export function SavedScreen({ navigation }: Props) {
           <FeedItemCard
             item={item}
             settings={app.settings}
+            sourceName={app.sources.find((source) => source.id === item.sourceID)?.name ?? "Unknown website"}
             onOpen={(selected) => navigation.navigate("SavedDetail", { item: selected })}
             onToggleSaved={app.toggleSaved}
             onCheckpoint={app.setCheckpointAtItem}
@@ -45,7 +45,6 @@ export function SavedScreen({ navigation }: Props) {
         )}
         ListEmptyComponent={<EmptyState title="No saved articles" body="Saved articles and episodes will appear here." />}
         contentContainerStyle={visibleItems.length === 0 ? styles.emptyList : styles.list}
-        accessibilityLabel="Saved articles list"
       />
     </Screen>
   );

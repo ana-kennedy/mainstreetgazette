@@ -1,4 +1,4 @@
-import { Audio, AVPlaybackStatus } from "expo-av";
+import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
@@ -118,7 +118,15 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       setIsPlaying(false);
       let nextSound: Audio.Sound | null = null;
       try {
-        await Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: true });
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: true,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          shouldDuckAndroid: false,
+          playThroughEarpieceAndroid: false
+        });
         await unloadCurrent();
         nextSound = new Audio.Sound();
         soundRef.current = nextSound;
@@ -126,7 +134,11 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         setDurationSeconds(item.durationSeconds ?? 0);
         setCurrentTimeSeconds(0);
         nextSound.setOnPlaybackStatusUpdate(onStatusUpdate);
-        await nextSound.loadAsync({ uri: item.canonicalURL }, { shouldPlay: true, rate: currentSpeed, shouldCorrectPitch: true });
+        await nextSound.loadAsync(
+          { uri: item.canonicalURL },
+          { shouldPlay: true, rate: currentSpeed, shouldCorrectPitch: true, progressUpdateIntervalMillis: 1000 },
+          false
+        );
         setIsPlaying(true);
         AccessibilityInfo.announceForAccessibility(`Playing ${item.title}.`);
       } catch (error) {

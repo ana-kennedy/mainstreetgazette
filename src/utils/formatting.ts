@@ -1,12 +1,35 @@
 import type { ContentType, FeedItem, SourceCategory, SourceType, TrustLabel } from "../domain/models";
 
-export function stripHTML(text: string): string {
+const namedHTMLEntities: Record<string, string> = {
+  amp: "&",
+  apos: "'",
+  hellip: "...",
+  ldquo: "\"",
+  lsquo: "'",
+  mdash: "-",
+  ndash: "-",
+  nbsp: " ",
+  quot: "\"",
+  rdquo: "\"",
+  rsquo: "'"
+};
+
+export function decodeHTMLEntities(text: string): string {
   return text
+    .replace(/&#(\d+);?/g, (_match, value: string) => {
+      const codePoint = Number(value);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : _match;
+    })
+    .replace(/&#x([0-9a-f]+);?/gi, (_match, value: string) => {
+      const codePoint = Number.parseInt(value, 16);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : _match;
+    })
+    .replace(/&([a-z]+);/gi, (match, name: string) => namedHTMLEntities[name.toLowerCase()] ?? match);
+}
+
+export function stripHTML(text: string): string {
+  return decodeHTMLEntities(text)
     .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, "\"")
-    .replace(/&#39;/g, "'")
     .replace(/\s+/g, " ")
     .trim();
 }

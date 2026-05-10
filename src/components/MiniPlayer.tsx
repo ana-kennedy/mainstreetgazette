@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
+import { ActivityIndicator, IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePlayback } from "../context/PlaybackContext";
 import { clockString } from "../utils/formatting";
@@ -12,7 +12,8 @@ export function MiniPlayer() {
   if (!playback.currentItem) return null;
   const progress = playback.durationSeconds > 0 ? playback.currentTimeSeconds / playback.durationSeconds : 0;
   const safeProgress = Number.isFinite(progress) ? progress : 0;
-  const statusText = playback.isLoading ? "Loading" : playback.isPlaying ? "Playing" : "Paused";
+  const isBusy = playback.isLoading || playback.isBuffering;
+  const statusText = playback.isLoading ? "Loading" : playback.isBuffering ? "Buffering" : playback.isPlaying ? "Playing" : "Paused";
 
   return (
     <View
@@ -29,9 +30,9 @@ export function MiniPlayer() {
     >
       <ProgressBar
         progress={safeProgress}
-        accessibilityLabel="Playback progress"
-        accessibilityRole="progressbar"
-        accessibilityValue={{ min: 0, max: 100, now: Math.round(safeProgress * 100), text: `${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}` }}
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
       />
       <View style={styles.titleRow}>
         <View
@@ -47,15 +48,22 @@ export function MiniPlayer() {
             {playback.isLoading ? "Loading audio" : `${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}`}
           </Text>
         </View>
-        <IconButton
-          icon={playback.isPlaying ? "pause" : "play"}
-          disabled={playback.isLoading}
-          onPress={playback.togglePlayPause}
-          accessibilityLabel={playback.isPlaying ? "Pause podcast" : "Play podcast"}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: playback.isLoading, busy: playback.isLoading }}
-          accessibilityHint="Double tap to toggle podcast playback."
-        />
+        {isBusy ? (
+          <ActivityIndicator
+            size={24}
+            style={styles.busyIndicator}
+            accessibilityLabel={statusText}
+            accessibilityRole="progressbar"
+          />
+        ) : (
+          <IconButton
+            icon={playback.isPlaying ? "pause" : "play"}
+            onPress={playback.togglePlayPause}
+            accessibilityLabel={playback.isPlaying ? "Pause podcast" : "Play podcast"}
+            accessibilityRole="button"
+            accessibilityHint="Double tap to toggle podcast playback."
+          />
+        )}
         <IconButton
           icon="close"
           onPress={playback.stop}
@@ -93,5 +101,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     flex: 1
+  },
+  busyIndicator: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

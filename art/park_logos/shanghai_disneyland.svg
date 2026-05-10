@@ -1,0 +1,68 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="shBg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#8B0000"/>
+      <stop offset="100%" stop-color="#3A0000"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#shBg)"/>
+  <!-- Decorative border ring -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.3"/>
+  <!-- Enchanted Storybook Castle - Shanghai's modern, fantasy castle -->
+  <!-- Wide ornate base -->
+  <rect x="28" y="145" width="144" height="17" rx="3" fill="#F0E6FF"/>
+  <!-- Elaborate gate -->
+  <path d="M84,162 L84,143 Q100,133 116,143 L116,162 Z" fill="#8B0000"/>
+  <!-- Decorative gate arch gold trim -->
+  <path d="M84,143 Q100,130 116,143" fill="none" stroke="#FFD700" stroke-width="2"/>
+  <!-- Many towers - Shanghai has the most towers -->
+  <!-- Outer left -->
+  <rect x="30" y="118" width="14" height="28" rx="1" fill="#D4B8E8"/>
+  <polygon points="30,118 37,100 44,118" fill="#C0A0D8"/>
+  <line x1="37" y1="100" x2="37" y2="88" stroke="#C0A0D8" stroke-width="2"/>
+  <polygon points="37,88 43,93 37,98" fill="#FFD700"/>
+  <!-- Mid left 1 -->
+  <rect x="50" y="108" width="16" height="38" rx="1" fill="#E0C8F8"/>
+  <polygon points="50,108 58,88 66,108" fill="#CCA8E8"/>
+  <line x1="58" y1="88" x2="58" y2="74" stroke="#CCA8E8" stroke-width="2"/>
+  <polygon points="58,74 65,79 58,84" fill="#FFD700"/>
+  <!-- Mid left 2 -->
+  <rect x="70" y="98" width="18" height="48" rx="1" fill="#EDD8FF"/>
+  <polygon points="70,98 79,76 88,98" fill="#D8B8F0"/>
+  <line x1="79" y1="76" x2="79" y2="60" stroke="#D8B8F0" stroke-width="2"/>
+  <polygon points="79,60 87,66 79,72" fill="#FFD700"/>
+  <!-- Outer right -->
+  <rect x="156" y="118" width="14" height="28" rx="1" fill="#D4B8E8"/>
+  <polygon points="156,118 163,100 170,118" fill="#C0A0D8"/>
+  <line x1="163" y1="100" x2="163" y2="88" stroke="#C0A0D8" stroke-width="2"/>
+  <polygon points="163,88 169,93 163,98" fill="#FFD700"/>
+  <!-- Mid right 1 -->
+  <rect x="134" y="108" width="16" height="38" rx="1" fill="#E0C8F8"/>
+  <polygon points="134,108 142,88 150,108" fill="#CCA8E8"/>
+  <line x1="142" y1="88" x2="142" y2="74" stroke="#CCA8E8" stroke-width="2"/>
+  <polygon points="142,74 149,79 142,84" fill="#FFD700"/>
+  <!-- Mid right 2 -->
+  <rect x="112" y="98" width="18" height="48" rx="1" fill="#EDD8FF"/>
+  <polygon points="112,98 121,76 130,98" fill="#D8B8F0"/>
+  <line x1="121" y1="76" x2="121" y2="60" stroke="#D8B8F0" stroke-width="2"/>
+  <polygon points="121,60 129,66 121,72" fill="#FFD700"/>
+  <!-- Grand center tower -->
+  <rect x="82" y="82" width="36" height="80" rx="1" fill="#F8F0FF"/>
+  <!-- Multi-level roof (pagoda-fantasy hybrid) -->
+  <path d="M78,84 Q100,68 122,84" fill="#CC0066"/>
+  <path d="M82,72 Q100,58 118,72" fill="#990044"/>
+  <path d="M86,62 Q100,50 114,62" fill="#770033"/>
+  <!-- Spire -->
+  <line x1="100" y1="50" x2="100" y2="28" stroke="#990044" stroke-width="3"/>
+  <polygon points="100,28 109,36 100,44 91,36" fill="#FFD700"/>
+  <!-- Star at top -->
+  <circle cx="100" cy="26" r="4" fill="#FFD700"/>
+  <!-- Windows in center tower -->
+  <rect x="91" y="92" width="8" height="10" rx="4" fill="#CC0066" opacity="0.7"/>
+  <rect x="101" y="92" width="8" height="10" rx="4" fill="#CC0066" opacity="0.7"/>
+  <!-- Decorative gold trim lines -->
+  <line x1="82" y1="110" x2="118" y2="110" stroke="#FFD700" stroke-width="0.8" opacity="0.6"/>
+  <line x1="82" y1="120" x2="118" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.6"/>
+  <!-- Label -->
+  <text x="100" y="176" text-anchor="middle" font-family="Georgia, serif" font-size="9.5" font-weight="bold" fill="#FFD700" letter-spacing="1">SHANGHAI</text>
+</svg>

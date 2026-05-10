@@ -19,5 +19,10 @@
       },
       "ios": {}
     }
+  },
+  "submit": {
+    "production": {
+      "ios": {}
+    }
   }
 }

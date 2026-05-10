@@ -119,6 +119,7 @@ export function contentTypeDisplayName(type: ContentType): string {
 export function sourceTypeDisplayName(type: SourceType): string {
   if (type === "rssArticle") return "News";
   if (type === "youtubeChannel") return "Video";
+  if (type === "redditFeed") return "Social";
   return "Podcast";
 }
 
@@ -138,13 +139,17 @@ export function sourceCategoryDisplayName(category: SourceCategory): string {
     video: "Video",
     podcast: "Podcast",
     official: "Official",
-    community: "Community"
+    community: "Community",
+    social: "Social"
   };
-  return labels[category];
+  return labels[category] ?? category;
 }
 
 export function summarizeItem(item: FeedItem, previewLength: number): string | null {
   if (!item.summary) return null;
   const sentences = item.summary.replace(/([.!?])\s+/g, "$1|").split("|").filter(Boolean);
-  return sentences.slice(0, Math.max(1, previewLength)).join(" ");
+  if (previewLength === 0 || sentences.length <= previewLength) {
+    return sentences.join(" ");
+  }
+  return sentences.slice(0, Math.max(1, previewLength)).join(" ") + " [...]";
 }

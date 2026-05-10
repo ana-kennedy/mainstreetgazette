@@ -1,0 +1,66 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="tdlBg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#3D0000"/>
+      <stop offset="100%" stop-color="#1A0000"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#tdlBg)"/>
+  <!-- Cherry blossom petals -->
+  <!-- Petal 1 -->
+  <ellipse cx="38" cy="42" rx="5" ry="3" fill="#FFB7C5" opacity="0.7" transform="rotate(-30 38 42)"/>
+  <!-- Petal 2 -->
+  <ellipse cx="162" cy="38" rx="5" ry="3" fill="#FFB7C5" opacity="0.6" transform="rotate(20 162 38)"/>
+  <!-- Petal 3 -->
+  <ellipse cx="170" cy="55" rx="4" ry="2.5" fill="#FFB7C5" opacity="0.5" transform="rotate(45 170 55)"/>
+  <!-- Petal 4 -->
+  <ellipse cx="35" cy="65" rx="4" ry="2.5" fill="#FFB7C5" opacity="0.5" transform="rotate(-10 35 65)"/>
+  <!-- Castle - Cinderella's Castle with Japanese influence -->
+  <!-- Wide base platform with curved roofline suggestion -->
+  <rect x="30" y="148" width="140" height="14" rx="3" fill="#E8E8E8"/>
+  <!-- Base roof curve (pagoda influence) -->
+  <path d="M28,148 Q100,140 172,148" fill="#CC0000" stroke="none"/>
+  <!-- Gate -->
+  <path d="M86,162 L86,144 Q100,135 114,144 L114,162 Z" fill="#8B0000"/>
+  <!-- Left wing building -->
+  <rect x="34" y="125" width="32" height="25" fill="#F5F5F5"/>
+  <path d="M30,127 Q50,118 70,127" fill="#CC0000" stroke="none"/>
+  <!-- Right wing building -->
+  <rect x="134" y="125" width="32" height="25" fill="#F5F5F5"/>
+  <path d="M130,127 Q150,118 170,127" fill="#CC0000" stroke="none"/>
+  <!-- Left tower -->
+  <rect x="50" y="98" width="18" height="40" rx="1" fill="#F5F5F5"/>
+  <path d="M46,100 Q59,86 72,100" fill="#CC0000"/>
+  <path d="M48,87 Q59,78 70,87" fill="#990000"/>
+  <line x1="59" y1="78" x2="59" y2="64" stroke="#CC0000" stroke-width="2"/>
+  <polygon points="59,64 67,70 59,76" fill="#FFD700"/>
+  <!-- Right tower -->
+  <rect x="132" y="98" width="18" height="40" rx="1" fill="#F5F5F5"/>
+  <path d="M128,100 Q141,86 154,100" fill="#CC0000"/>
+  <path d="M130,87 Q141,78 152,87" fill="#990000"/>
+  <line x1="141" y1="78" x2="141" y2="64" stroke="#CC0000" stroke-width="2"/>
+  <polygon points="141,64 149,70 141,76" fill="#FFD700"/>
+  <!-- Main center keep -->
+  <rect x="76" y="82" width="48" height="68" rx="1" fill="#F8F8F8"/>
+  <!-- Center pagoda roof layers -->
+  <path d="M70,84 Q100,70 130,84" fill="#CC0000"/>
+  <path d="M74,72 Q100,60 126,72" fill="#AA0000"/>
+  <path d="M80,62 Q100,52 120,62" fill="#880000"/>
+  <!-- Flag -->
+  <line x1="100" y1="52" x2="100" y2="36" stroke="#CC0000" stroke-width="2"/>
+  <circle cx="100" cy="36" r="5" fill="#CC0000"/>
+  <!-- Windows - shoji screen style -->
+  <rect x="83" y="92" width="10" height="12" rx="1" fill="#FFCDD2"/>
+  <line x1="88" y1="92" x2="88" y2="104" stroke="#CC0000" stroke-width="0.5"/>
+  <line x1="83" y1="98" x2="93" y2="98" stroke="#CC0000" stroke-width="0.5"/>
+  <rect x="107" y="92" width="10" height="12" rx="1" fill="#FFCDD2"/>
+  <line x1="112" y1="92" x2="112" y2="104" stroke="#CC0000" stroke-width="0.5"/>
+  <line x1="107" y1="98" x2="117" y2="98" stroke="#CC0000" stroke-width="0.5"/>
+  <!-- Red lanterns hanging -->
+  <line x1="80" y1="138" x2="80" y2="144" stroke="#CC0000" stroke-width="1"/>
+  <ellipse cx="80" cy="146" rx="4" ry="5" fill="#CC0000"/>
+  <line x1="120" y1="138" x2="120" y2="144" stroke="#CC0000" stroke-width="1"/>
+  <ellipse cx="120" cy="146" rx="4" ry="5" fill="#CC0000"/>
+  <!-- Label -->
+  <text x="100" y="180" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#FFD700" letter-spacing="1">TOKYO DISNEYLAND</text>
+</svg>

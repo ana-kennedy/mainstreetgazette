@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import type { FeedItem, Source } from "../domain/models";
 import { clockString, contentTypeDisplayName, relativePublishedText, sourceTypeDisplayName, trustLabelDisplayName } from "./formatting";
 
@@ -22,7 +23,7 @@ export function buildFeedItemAccessibility(item: FeedItem, sourceName?: string):
     item.contentType === "podcast" && item.isDownloaded ? "Downloaded." : undefined
   ].filter(Boolean);
 
-  const actions = [item.isSaved ? "Unsave" : "Save", "Open", "Set checkpoint here"];
+  const actions = [item.isSaved ? "Unsave" : "Save", "Open"];
   if (item.groupID) actions.push("Expand group");
   if (item.contentType === "video") actions.push("Open in YouTube");
   if (item.contentType === "podcast") {
@@ -40,13 +41,16 @@ export function buildFeedItemAccessibility(item: FeedItem, sourceName?: string):
 }
 
 export function hintForItem(item: FeedItem): string {
-  if (item.contentType === "article") {
-    return "Double tap to open article. Use the Save button to keep it for later.";
+  if (Platform.OS === "ios") {
+    if (item.contentType === "podcast") {
+      return "Double tap to open episode. Swipe up or down to access Save, Copy Link, Share, and Set Marker actions.";
+    }
+    return "Double tap to open. Swipe up or down to access Save, Copy Link, Share, and Set Marker actions.";
   }
-  if (item.contentType === "video") {
-    return "Double tap to open video. Use the Save button to keep it for later.";
+  if (item.contentType === "podcast") {
+    return "Double tap to open episode. Double tap and hold for more options including Save, Copy Link, Share, and Set Marker.";
   }
-  return "Double tap to play or open episode. Playback controls are available in the mini player.";
+  return "Double tap to open. Double tap and hold for more options including Save, Copy Link, Share, and Set Marker.";
 }
 
 export function sourceAccessibilityLabel(source: Source): string {

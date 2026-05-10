@@ -1,0 +1,40 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="100" fill="#1A3A1A"/>
+  <!-- Sky gradient effect -->
+  <circle cx="100" cy="100" r="100" fill="url(#akSky)"/>
+  <defs>
+    <radialGradient id="akSky" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#2D6B2D" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1A3A1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Trunk - thick baobab style -->
+  <path d="M88,155 L86,130 Q82,118 78,110 Q72,98 74,90 Q76,82 82,80 Q88,78 92,82 L96,88 L100,78 L104,88 L108,82 Q112,78 118,80 Q124,82 126,90 Q128,98 122,110 Q118,118 114,130 L112,155 Z" fill="#5C3A1A"/>
+  <!-- Root flares -->
+  <path d="M88,155 Q80,148 72,150 Q76,142 84,140 L88,145 Z" fill="#4A2E12"/>
+  <path d="M112,155 Q120,148 128,150 Q124,142 116,140 L112,145 Z" fill="#4A2E12"/>
+  <path d="M96,156 Q90,162 85,165 Q88,157 92,154 Z" fill="#4A2E12"/>
+  <path d="M104,156 Q110,162 115,165 Q112,157 108,154 Z" fill="#4A2E12"/>
+  <!-- Canopy - large organic blob -->
+  <ellipse cx="100" cy="75" rx="52" ry="42" fill="#2A6B2A"/>
+  <ellipse cx="72" cy="80" rx="28" ry="24" fill="#2A6B2A"/>
+  <ellipse cx="128" cy="80" rx="28" ry="24" fill="#2A6B2A"/>
+  <ellipse cx="100" cy="60" rx="38" ry="30" fill="#348A34"/>
+  <ellipse cx="78" cy="68" rx="22" ry="18" fill="#348A34"/>
+  <ellipse cx="122" cy="68" rx="22" ry="18" fill="#348A34"/>
+  <ellipse cx="100" cy="50" rx="28" ry="22" fill="#3FA83F"/>
+  <!-- Leaf clusters highlights -->
+  <ellipse cx="85" cy="55" rx="12" ry="9" fill="#4ABF4A" opacity="0.6"/>
+  <ellipse cx="115" cy="58" rx="10" ry="8" fill="#4ABF4A" opacity="0.5"/>
+  <ellipse cx="100" cy="45" rx="14" ry="10" fill="#4ABF4A" opacity="0.7"/>
+  <!-- Animal silhouettes carved in trunk -->
+  <!-- Elephant -->
+  <ellipse cx="90" cy="102" rx="7" ry="5" fill="#4A2E12"/>
+  <ellipse cx="85" cy="100" rx="4" ry="3" fill="#4A2E12"/>
+  <path d="M83,103 Q81,108 82,110 Q83,110 84,106" fill="#4A2E12" stroke="#4A2E12" stroke-width="1"/>
+  <!-- Bird -->
+  <path d="M108,96 Q113,92 118,94 Q113,96 108,96 Z" fill="#4A2E12"/>
+  <line x1="108" y1="96" x2="107" y2="99" stroke="#4A2E12" stroke-width="1.5"/>
+  <!-- Label -->
+  <text x="100" y="178" text-anchor="middle" font-family="Georgia, serif" font-size="9.5" font-weight="bold" fill="#8BC34A" letter-spacing="1">ANIMAL KINGDOM</text>
+</svg>

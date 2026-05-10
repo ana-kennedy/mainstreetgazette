@@ -1,0 +1,37 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="100" fill="#1C1C2E"/>
+  <!-- Spotlight beams -->
+  <polygon points="75,155 55,40 95,40" fill="#FFD700" opacity="0.08"/>
+  <polygon points="125,155 105,40 145,40" fill="#FFD700" opacity="0.06"/>
+  <!-- Film slate - top clapper -->
+  <rect x="48" y="60" width="104" height="22" rx="3" fill="#F0F0F0"/>
+  <rect x="48" y="60" width="104" height="10" rx="3" fill="#222"/>
+  <!-- Clapper diagonal stripes -->
+  <clipPath id="clapperClip">
+    <rect x="48" y="60" width="104" height="10" rx="3"/>
+  </clipPath>
+  <g clip-path="url(#clapperClip)">
+    <rect x="48" y="60" width="14" height="12" fill="#FFD700"/>
+    <rect x="62" y="60" width="14" height="12" fill="#222"/>
+    <rect x="76" y="60" width="14" height="12" fill="#FFD700"/>
+    <rect x="90" y="60" width="14" height="12" fill="#222"/>
+    <rect x="104" y="60" width="14" height="12" fill="#FFD700"/>
+    <rect x="118" y="60" width="14" height="12" fill="#222"/>
+    <rect x="132" y="60" width="14" height="12" fill="#FFD700"/>
+    <rect x="146" y="60" width="14" height="12" fill="#222"/>
+  </g>
+  <!-- Slate body -->
+  <rect x="48" y="80" width="104" height="72" rx="3" fill="#2A2A3E"/>
+  <rect x="48" y="80" width="104" height="72" rx="3" fill="none" stroke="#FFD700" stroke-width="1.5"/>
+  <!-- "TAKE" text on slate -->
+  <text x="100" y="104" text-anchor="middle" font-family="Courier New, monospace" font-size="9" fill="#888" letter-spacing="2">SCENE  TAKE</text>
+  <text x="78" y="120" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#FFD700">01</text>
+  <text x="122" y="120" text-anchor="middle" font-family="Courier New, monospace" font-size="16" font-weight="bold" fill="#FFD700">01</text>
+  <line x1="100" y1="95" x2="100" y2="148" stroke="#555" stroke-width="1"/>
+  <line x1="48" y1="108" x2="152" y2="108" stroke="#555" stroke-width="1"/>
+  <!-- Film strip holes -->
+  <circle cx="62" cy="95" r="4" fill="#1C1C2E"/>
+  <circle cx="138" cy="95" r="4" fill="#1C1C2E"/>
+  <!-- Label -->
+  <text x="100" y="170" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-size="8.5" font-weight="bold" fill="#FFD700" letter-spacing="1.5">HOLLYWOOD STUDIOS</text>
+</svg>

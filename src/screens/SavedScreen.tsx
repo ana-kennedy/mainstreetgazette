@@ -40,7 +40,7 @@ export function SavedScreen({ navigation }: Props) {
             sourceName={app.sources.find((source) => source.id === item.sourceID)?.name ?? "Unknown website"}
             onOpen={(selected) => navigation.navigate("SavedDetail", { item: selected })}
             onToggleSaved={app.toggleSaved}
-            onCheckpoint={app.setCheckpointAtItem}
+            onSetMarker={app.setCheckpointAtItem}
           />
         )}
         ListEmptyComponent={<EmptyState title="No saved articles" body="Saved articles and episodes will appear here." />}

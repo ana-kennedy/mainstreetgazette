@@ -2,186 +2,286 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   AccessibilityActionEvent,
   AccessibilityInfo,
-  ActivityIndicator,
   Image,
   Linking,
-  findNodeHandle,
+  Modal,
   Platform,
+  Pressable,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  findNodeHandle
 } from "react-native";
 import { useTheme } from "react-native-paper";
+import * as Clipboard from "expo-clipboard";
+import { openBrowserAsync } from "expo-web-browser";
 import type { FeedItem, UserSettings } from "../domain/models";
-import { usePlayback } from "../context/PlaybackContext";
+import { useSounds } from "../context/SoundContext";
 import { buildFeedItemAccessibility } from "../utils/accessibility";
 import { clockString, relativePublishedText, summarizeItem } from "../utils/formatting";
 
 interface FeedItemCardProps {
   item: FeedItem;
   settings: UserSettings | null;
+  displayMode?: "full" | "minimal";
   sourceName: string;
   onOpen: (item: FeedItem) => void;
+  onPlay?: (item: FeedItem) => void;
+  onQueue?: (item: FeedItem) => void;
   onToggleSaved: (itemID: string) => void;
-  onCheckpoint: (item: FeedItem) => void;
+  onSetMarker: (item: FeedItem) => void;
   focusRef?: React.Ref<View>;
 }
 
-function Pill({ label }: { label: string }) {
-  const theme = useTheme();
+function TypePill({ label, color, textColor }: { label: string; color: string; textColor: string }) {
   return (
-    <View style={[styles.pill, { backgroundColor: theme.colors.surfaceVariant }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      <Text style={[styles.pillText, { color: theme.colors.onSurfaceVariant }]}>{label}</Text>
+    <View
+      style={[styles.pill, { backgroundColor: color }]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+    >
+      <Text style={[styles.pillText, { color: textColor }]}>{label}</Text>
     </View>
   );
 }
 
-interface ActionButtonProps {
-  label: string;
-  hint: string;
-  onPress: () => void;
-  primary?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-}
-
-const ActionButton = React.forwardRef<View, ActionButtonProps>(function ActionButton(
-  { label, hint, onPress, primary = false, disabled = false, loading = false },
-  ref
-) {
+function FeedItemCardInner({
+  item,
+  settings,
+  displayMode = "full",
+  sourceName,
+  onOpen,
+  onPlay,
+  onQueue,
+  onToggleSaved,
+  onSetMarker,
+  focusRef
+}: FeedItemCardProps) {
   const theme = useTheme();
-  const primaryColor = theme.colors.primary;
-  const primaryTextColor = theme.dark ? "#101317" : "#ffffff";
-  const secondaryBackground = theme.colors.surface;
-  const disabledTextColor = theme.colors.onSurfaceVariant;
-
-  return (
-    <TouchableOpacity
-      ref={ref}
-      style={[
-        styles.actionButton,
-        {
-          backgroundColor: primary ? primaryColor : secondaryBackground,
-          borderColor: primary ? primaryColor : theme.colors.outline
-        },
-        disabled ? styles.disabledAction : null
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-      accessibilityLabel={label}
-      accessibilityRole="button"
-      accessibilityHint={hint}
-      accessibilityState={{ disabled, busy: loading }}
-    >
-      {loading ? <ActivityIndicator color={primary ? primaryTextColor : primaryColor} size="small" /> : null}
-      <Text style={[styles.actionText, { color: primary ? primaryTextColor : primaryColor }, disabled && !primary ? { color: disabledTextColor } : null]}>{label}</Text>
-    </TouchableOpacity>
-  );
-});
-
-export function FeedItemCard({ item, settings, sourceName, onOpen, onToggleSaved, onCheckpoint, focusRef }: FeedItemCardProps) {
-  const theme = useTheme();
-  const playback = usePlayback();
-  const [areActionsVisible, setAreActionsVisible] = useState(false);
-  const firstActionRef = useRef<View>(null);
+  const { playSelect } = useSounds();
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const firstContextItemRef = useRef<View>(null);
   const payload = buildFeedItemAccessibility(item, sourceName);
-  const showThumbnail = settings?.showThumbnails && !settings.hideThumbnailsForLowVision && item.thumbnailURL;
+  const isMinimal = displayMode === "minimal";
+  const showThumbnail = !isMinimal && settings?.showThumbnails && !settings.hideThumbnailsForLowVision && item.thumbnailURL;
   const summary = summarizeItem(item, settings?.previewLength ?? 3);
   const publishedText = relativePublishedText(item.publishedAt).replace(/\.$/, "");
-  const isPodcastLoading = playback.loadingItemID === item.id;
-  const isAnyPodcastLoading = playback.isLoading;
-  const isCurrentPodcast = playback.currentItem?.id === item.id;
-  const playLabel = isPodcastLoading ? "Loading" : isCurrentPodcast && playback.isPlaying ? "Playing" : "Play";
   const authorText = item.authorOrChannel && item.authorOrChannel !== sourceName ? item.authorOrChannel : null;
-  const isPlayActionDisabled = isAnyPodcastLoading || (isCurrentPodcast && playback.isPlaying);
-  const primaryActionLabel = item.contentType === "podcast" ? playLabel : "Open";
-  const primaryActionHint =
-    item.contentType === "podcast"
-      ? isPodcastLoading
-        ? "Podcast playback is loading."
-        : "Double tap to start playback in the mini player."
-      : "Double tap to open this item in the system browser or app.";
+  const contentLabel = item.contentType === "podcast" ? "Podcast" : item.contentType === "video" ? "Video" : "Article";
 
-  const runPrimaryAction = () => {
-    if (item.contentType === "podcast") {
-      if (!isPlayActionDisabled) {
-        playback.playItem(item);
+  const closeContextMenu = () => setIsContextMenuVisible(false);
+
+  const handleOpen = async () => {
+    playSelect();
+    const url = item.externalURL ?? item.canonicalURL;
+    if (item.contentType === "article") {
+      await openBrowserAsync(url, Platform.OS === "ios" && (settings?.preferReaderMode ?? true) ? { readerMode: true } : {});
+    } else if (item.contentType === "podcast") {
+      if (onPlay) {
+        onPlay(item);
+      } else {
+        onOpen(item);
       }
-      return;
+    } else {
+      await openBrowserAsync(url);
     }
-    Linking.openURL(item.externalURL ?? item.canonicalURL);
   };
 
-  const actionItems = [
+  const openHint =
+    item.contentType === "article"
+      ? "Double tap to open this article in reader view."
+      : item.contentType === "podcast"
+        ? "Double tap to play this episode."
+        : "Double tap to open this video.";
+
+  const contextMenuItems = [
+    {
+      key: "activate",
+      label: item.contentType === "podcast" ? "Play" : "Open",
+      hint: openHint,
+      onPress: () => { closeContextMenu(); handleOpen(); }
+    },
+    ...(item.contentType === "podcast" ? [{
+      key: "queue",
+      label: "Add to Queue",
+      hint: "Double tap to add this episode to the playback queue.",
+      onPress: () => { closeContextMenu(); onQueue?.(item); }
+    }] : []),
     {
       key: "save",
-      label: item.isSaved ? "Unsave" : "Save",
-      hint: item.isSaved ? "Double tap to remove this item from saved articles." : "Double tap to save this item for later.",
-      onPress: () => onToggleSaved(item.id)
+      label: item.isSaved ? "Remove from Saved" : "Save for Later",
+      hint: item.isSaved
+        ? `Double tap to remove this ${contentLabel.toLowerCase()} from saved.`
+        : `Double tap to save this ${contentLabel.toLowerCase()} for later.`,
+      onPress: () => { closeContextMenu(); onToggleSaved(item.id); }
     },
     {
-      key: "primary",
-      label: primaryActionLabel,
-      hint: primaryActionHint,
-      onPress: runPrimaryAction,
-      primary: true,
-      disabled: item.contentType === "podcast" ? isPlayActionDisabled : false,
-      loading: item.contentType === "podcast" ? isPodcastLoading : false
+      key: "copy-link",
+      label: "Copy Link",
+      hint: `Double tap to copy the link to your clipboard.`,
+      onPress: async () => {
+        closeContextMenu();
+        await Clipboard.setStringAsync(item.canonicalURL);
+        AccessibilityInfo.announceForAccessibility("Link copied to clipboard.");
+      }
     },
     {
-      key: "checkpoint",
-      label: "Checkpoint",
-      hint: "Double tap to mark items newer than this as new.",
-      onPress: () => onCheckpoint(item)
+      key: "view-web",
+      label: "View on Web",
+      hint: `Double tap to open in your web browser.`,
+      onPress: () => { closeContextMenu(); Linking.openURL(item.canonicalURL); }
+    },
+    {
+      key: "share",
+      label: `Share ${contentLabel}`,
+      hint: `Double tap to open the share sheet.`,
+      onPress: async () => {
+        closeContextMenu();
+        await Share.share(
+          Platform.OS === "ios"
+            ? { url: item.canonicalURL, title: item.title }
+            : { message: item.canonicalURL, title: item.title }
+        );
+      }
+    },
+    {
+      key: "set-marker",
+      label: "Set Marker",
+      hint: "Double tap to set a timeline marker at this item.",
+      onPress: () => { closeContextMenu(); onSetMarker(item); }
     }
   ];
 
-  const iosAccessibilityActions =
-    Platform.OS === "ios"
-      ? actionItems
-          .filter((action) => !action.disabled)
-          .map((action) => ({
-            name: `action-${action.key}`,
-            label: action.label
-          }))
-      : undefined;
+  const contextAccessibilityActions = contextMenuItems.map((ci) => ({
+    name: ci.key,
+    label: ci.label
+  }));
 
-  const handleActionsAccessibilityAction = (event: AccessibilityActionEvent) => {
-    const actionKey = event.nativeEvent.actionName.replace("action-", "");
-    const selectedAction = actionItems.find((action) => action.key === actionKey && !action.disabled);
-    selectedAction?.onPress();
+  const handleContextAccessibilityAction = (event: AccessibilityActionEvent) => {
+    const action = contextMenuItems.find((ci) => ci.key === event.nativeEvent.actionName);
+    if (action) action.onPress();
   };
 
   useEffect(() => {
-    if (!areActionsVisible) {
-      return;
-    }
-
-    const focusTimeout = setTimeout(() => {
-      const node = findNodeHandle(firstActionRef.current);
-      if (node) {
-        AccessibilityInfo.setAccessibilityFocus(node);
-      }
+    if (!isContextMenuVisible) return;
+    const timer = setTimeout(() => {
+      const node = findNodeHandle(firstContextItemRef.current);
+      if (node) AccessibilityInfo.setAccessibilityFocus(node);
     }, 150);
+    return () => clearTimeout(timer);
+  }, [isContextMenuVisible]);
 
-    return () => clearTimeout(focusTimeout);
-  }, [areActionsVisible]);
+  const cardHint =
+    Platform.OS === "ios"
+      ? item.contentType === "article"
+        ? "Double tap to open in reader view. Swipe up or down to access Save, Copy Link, Share, and Set Marker."
+        : item.contentType === "podcast"
+          ? "Double tap to play. Swipe up or down to access Add to Queue, Save, Copy Link, Share, and Set Marker."
+          : "Double tap to open video. Swipe up or down to access Save, Copy Link, Share, and Set Marker."
+      : "Double tap to open. Double tap and hold for more options.";
+
+  // Pill styling — subtle, not overwhelming
+  const pillBg = theme.colors.surfaceVariant;
+  const pillFg = theme.colors.onSurfaceVariant;
+  const savedPillBg = theme.colors.primaryContainer ?? theme.colors.surfaceVariant;
+  const savedPillFg = theme.colors.onPrimaryContainer ?? theme.colors.onSurfaceVariant;
 
   return (
-    <View style={[styles.card, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline },
+        item.isNewRelativeToCheckpoint && !isMinimal
+          ? { borderLeftColor: theme.colors.primary, borderLeftWidth: 3 }
+          : null
+      ]}
+    >
       <TouchableOpacity
         ref={focusRef}
         style={styles.content}
-        activeOpacity={0.82}
-        onPress={() => onOpen(item)}
+        activeOpacity={0.8}
+        onPress={handleOpen}
+        onLongPress={() => setIsContextMenuVisible(true)}
+        delayLongPress={500}
         accessible
         accessibilityRole="button"
         accessibilityLabel={payload.label}
-        accessibilityHint={payload.hint}
+        accessibilityHint={cardHint}
         accessibilityValue={payload.value ? { text: payload.value } : undefined}
+        accessibilityActions={contextAccessibilityActions}
+        onAccessibilityAction={handleContextAccessibilityAction}
       >
         <View style={styles.bodyRow}>
+          <View style={styles.textColumn}>
+            {/* Source + date line above title (editorial style) */}
+            <View style={styles.metaTopRow}>
+              <Text
+                style={[
+                  styles.sourceName,
+                  {
+                    color: theme.colors.primary,
+                    fontWeight: settings?.lowVisionBoldMetadata ? "700" : "600"
+                  }
+                ]}
+                numberOfLines={1}
+              >
+                {sourceName}
+              </Text>
+              <Text
+                style={[
+                  styles.metaDot,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
+                ·
+              </Text>
+              <Text
+                style={[
+                  styles.publishedText,
+                  {
+                    color: theme.colors.onSurfaceVariant,
+                    fontWeight: settings?.lowVisionBoldMetadata ? "700" : "400"
+                  }
+                ]}
+              >
+                {publishedText}
+              </Text>
+            </View>
+
+            <Text style={[styles.title, { color: theme.colors.onSurface }]}>{item.title}</Text>
+
+            {!isMinimal && authorText ? (
+              <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
+                By {authorText}
+              </Text>
+            ) : null}
+            {!isMinimal && item.durationSeconds ? (
+              <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
+                {clockString(item.durationSeconds)}
+              </Text>
+            ) : null}
+            {!isMinimal && summary ? (
+              <Text style={[styles.summary, { color: theme.colors.onSurface }]}>{summary}</Text>
+            ) : null}
+
+            {!isMinimal ? (
+              <View
+                style={styles.pillRow}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+              >
+                {item.contentType !== "article" ? (
+                  <TypePill label={contentLabel} color={pillBg} textColor={pillFg} />
+                ) : null}
+                {item.isSaved ? (
+                  <TypePill label="Saved" color={savedPillBg} textColor={savedPillFg} />
+                ) : null}
+              </View>
+            ) : null}
+          </View>
+
           {showThumbnail ? (
             <Image
               source={{ uri: item.thumbnailURL ?? undefined }}
@@ -191,153 +291,208 @@ export function FeedItemCard({ item, settings, sourceName, onOpen, onToggleSaved
               importantForAccessibility="no-hide-descendants"
             />
           ) : null}
-          <View style={styles.textColumn}>
-            <Text style={[styles.title, { color: theme.colors.onSurface }]}>{item.title}</Text>
-            <Text style={[styles.meta, { color: theme.colors.onSurfaceVariant }]}>{sourceName}</Text>
-            {authorText ? <Text style={[styles.meta, { color: theme.colors.onSurfaceVariant }]}>By {authorText}</Text> : null}
-            <Text style={[styles.meta, { color: theme.colors.onSurfaceVariant }]}>
-              {publishedText}
-            </Text>
-            {item.durationSeconds ? <Text style={[styles.meta, { color: theme.colors.onSurfaceVariant }]}>Duration {clockString(item.durationSeconds)}</Text> : null}
-            {summary ? <Text style={[styles.summary, { color: theme.colors.onSurface }]}>{summary}</Text> : null}
-            <View style={styles.headerRow}>
-              <Pill label={item.contentType} />
-              {item.isSaved ? <Pill label="Saved" /> : null}
-              {item.isNewRelativeToCheckpoint ? <Pill label="New" /> : null}
-            </View>
-          </View>
         </View>
       </TouchableOpacity>
-      <View style={styles.actions} accessible={false}>
-        <TouchableOpacity
-          style={[styles.actionsToggle, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
-          onPress={() => setAreActionsVisible((current) => !current)}
-          accessibilityLabel={`Actions button ${areActionsVisible ? "expanded" : "collapsed"}`}
-          accessibilityRole="button"
-          accessibilityState={{ expanded: areActionsVisible }}
-          accessibilityHint={
-            Platform.OS === "ios"
-              ? areActionsVisible
-                ? "Swipe up or down to choose an action. Double tap to collapse."
-                : "Swipe up or down to choose an action. Double tap to expand."
-              : areActionsVisible
-                ? "Double tap to collapse actions."
-                : "Double tap to expand actions."
-          }
-          accessibilityActions={iosAccessibilityActions}
-          onAccessibilityAction={Platform.OS === "ios" ? handleActionsAccessibilityAction : undefined}
+
+      {isContextMenuVisible ? (
+        <Modal
+          visible={isContextMenuVisible}
+          transparent
+          animationType="slide"
+          onRequestClose={closeContextMenu}
         >
-          <Text style={[styles.actionsTitle, { color: theme.colors.primary }]}>Actions</Text>
-        </TouchableOpacity>
-        {areActionsVisible ? (
-          <View style={styles.actionMenu}>
-            {actionItems.map((action, index) => (
-              <ActionButton
-                key={action.key}
-                ref={index === 0 ? firstActionRef : undefined}
-                label={action.label}
-                primary={action.primary}
-                onPress={action.onPress}
-                disabled={action.disabled}
-                loading={action.loading}
-                hint={action.hint}
+          <View style={styles.contextMenuContainer} accessibilityViewIsModal>
+            <Pressable
+              style={StyleSheet.absoluteFill}
+              onPress={closeContextMenu}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+            />
+            <View
+              style={[
+                styles.contextMenuPanel,
+                { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.outline }
+              ]}
+              accessible={false}
+            >
+              <View
+                style={[styles.contextMenuHandle, { backgroundColor: theme.colors.outline }]}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
               />
-            ))}
-            <ActionButton label="Close actions" onPress={() => setAreActionsVisible(false)} hint="Double tap to collapse actions for this item." />
+              <Text
+                style={[styles.contextMenuItemTitle, { color: theme.colors.onSurfaceVariant }]}
+                numberOfLines={2}
+              >
+                {item.title}
+              </Text>
+              {contextMenuItems.map((ci, idx) => (
+                <Pressable
+                  key={ci.key}
+                  ref={idx === 0 ? firstContextItemRef : undefined}
+                  onPress={ci.onPress}
+                  style={({ pressed }) => [
+                    styles.contextMenuItem,
+                    { backgroundColor: pressed ? theme.colors.surfaceVariant : "transparent" }
+                  ]}
+                  accessibilityRole="menuitem"
+                  accessibilityLabel={ci.label}
+                  accessibilityHint={ci.hint}
+                >
+                  <Text style={[styles.contextMenuText, { color: theme.colors.onSurface }]}>{ci.label}</Text>
+                </Pressable>
+              ))}
+              <Pressable
+                onPress={closeContextMenu}
+                style={({ pressed }) => [
+                  styles.contextMenuCloseItem,
+                  {
+                    backgroundColor: pressed ? theme.colors.outline : theme.colors.surfaceVariant,
+                    borderTopColor: theme.colors.outline
+                  }
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Close menu"
+                accessibilityHint="Double tap to close this action menu."
+              >
+                <Text style={[styles.contextMenuText, { color: theme.colors.primary, fontWeight: "700" }]}>Close</Text>
+              </Pressable>
+            </View>
           </View>
-        ) : null}
-      </View>
+        </Modal>
+      ) : null}
     </View>
   );
 }
 
+// focusRef is intentionally excluded from the equality check — it is always a
+// new inline callback but only mutates a ref and never drives re-renders.
+export const FeedItemCard = React.memo(FeedItemCardInner, (prev, next) =>
+  prev.item === next.item &&
+  prev.settings === next.settings &&
+  prev.displayMode === next.displayMode &&
+  prev.sourceName === next.sourceName &&
+  prev.onOpen === next.onOpen &&
+  prev.onPlay === next.onPlay &&
+  prev.onQueue === next.onQueue &&
+  prev.onToggleSaved === next.onToggleSaved &&
+  prev.onSetMarker === next.onSetMarker
+);
+
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: 12,
-    marginVertical: 6,
-    borderRadius: 8,
+    marginVertical: 4,
+    borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     overflow: "hidden"
   },
   content: {
-    padding: 14,
-    gap: 10
-  },
-  headerRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8
-  },
-  pill: {
-    minHeight: 28,
-    justifyContent: "center",
-    borderRadius: 14,
-    paddingHorizontal: 10
-  },
-  pillText: {
-    fontSize: 13,
-    fontWeight: "700"
+    padding: 10
   },
   bodyRow: {
     flexDirection: "row",
-    gap: 12
-  },
-  thumbnail: {
-    width: 88,
-    height: 88,
-    borderRadius: 6
+    gap: 10,
+    alignItems: "flex-start"
   },
   textColumn: {
     flex: 1,
-    gap: 4
+    gap: 3
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    lineHeight: 24
-  },
-  meta: {
-    fontSize: 14,
-    lineHeight: 20
-  },
-  summary: {
-    fontSize: 15,
-    lineHeight: 21
-  },
-  actions: {
-    gap: 8,
-    paddingHorizontal: 12,
-    paddingBottom: 12
-  },
-  actionsToggle: {
-    minHeight: 44,
-    justifyContent: "center",
-    borderRadius: 8,
-    borderWidth: 1,
-    paddingHorizontal: 14
-  },
-  actionMenu: {
-    gap: 8
-  },
-  actionsTitle: {
-    fontSize: 14,
-    fontWeight: "700"
-  },
-  actionButton: {
-    minHeight: 44,
+  metaTopRow: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 5,
+    flexWrap: "nowrap"
+  },
+  sourceName: {
+    fontSize: 12,
+    letterSpacing: 0.1,
+    flexShrink: 1
+  },
+  metaDot: {
+    fontSize: 12
+  },
+  publishedText: {
+    fontSize: 12,
+    flexShrink: 1
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: "700",
+    lineHeight: 22,
+    letterSpacing: -0.2
+  },
+  metaLine: {
+    fontSize: 13,
+    lineHeight: 18
+  },
+  summary: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 2
+  },
+  pillRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+    marginTop: 2
+  },
+  pill: {
+    borderRadius: 12,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    minHeight: 24,
+    justifyContent: "center"
+  },
+  pillText: {
+    fontSize: 12,
+    fontWeight: "600"
+  },
+  thumbnail: {
+    width: 62,
+    height: 62,
+    borderRadius: 7,
+    flexShrink: 0
+  },
+  contextMenuContainer: {
+    flex: 1,
+    justifyContent: "flex-end"
+  },
+  contextMenuPanel: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    paddingBottom: 36,
+    paddingTop: 12
+  },
+  contextMenuHandle: {
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    alignSelf: "center",
+    marginBottom: 12
+  },
+  contextMenuItemTitle: {
+    fontSize: 13,
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+    lineHeight: 18
+  },
+  contextMenuItem: {
+    minHeight: 52,
     justifyContent: "center",
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    borderWidth: 1,
-    gap: 8
+    paddingHorizontal: 20
   },
-  disabledAction: {
-    opacity: 0.62
+  contextMenuCloseItem: {
+    minHeight: 52,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    marginTop: 8,
+    borderTopWidth: StyleSheet.hairlineWidth
   },
-  actionText: {
-    fontSize: 15,
-    fontWeight: "700"
+  contextMenuText: {
+    fontSize: 17,
+    lineHeight: 22
   }
 });

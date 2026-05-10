@@ -1,4 +1,5 @@
 export type ArticleOpenMode = "inAppBrowser" | "safari";
+export type ColorTheme = "light" | "dark" | "gazette" | "midnight" | "fantasy" | "system";
 export type ContentType = "article" | "video" | "podcast";
 export type DownloadState = "notDownloaded" | "queued" | "downloading" | "downloaded" | "failed";
 export type SmartView =
@@ -24,8 +25,9 @@ export type SourceCategory =
   | "video"
   | "podcast"
   | "official"
-  | "community";
-export type SourceType = "rssArticle" | "youtubeChannel" | "podcastRSS";
+  | "community"
+  | "social";
+export type SourceType = "rssArticle" | "youtubeChannel" | "podcastRSS" | "redditFeed";
 export type TrustLabel = "official" | "verifiedNews" | "communitySource";
 export type VideoOpenMode = "inAppBrowser" | "safari" | "youtubeApp";
 
@@ -133,15 +135,20 @@ export interface UserSettings {
   skipIntervalSeconds: number;
   autoPlayNextEpisode: boolean;
   preferStreamingOverDownload: boolean;
+  offlineSavingEnabled: boolean;
+  cacheWindowDays: number;
+  maxCachedItems: number;
   quietHoursEnabled: boolean;
   breakingNewsEnabled: boolean;
   dailyDigestEnabled: boolean;
-  darkModeEnabled: boolean;
+  colorTheme: ColorTheme;
   lowVisionEnhancedSpacing: boolean;
   lowVisionBoldMetadata: boolean;
   highVisualContrastMode: boolean;
   hideThumbnailsForLowVision: boolean;
   simplifiedLayoutEnabled: boolean;
+  timelineDisplayMode: "full" | "minimal";
+  timelineContentFilter: "all" | ContentType | "social";
 }
 
 export interface RefreshResult {
@@ -169,13 +176,18 @@ export const defaultUserSettings: UserSettings = {
   skipIntervalSeconds: 30,
   autoPlayNextEpisode: true,
   preferStreamingOverDownload: true,
+  offlineSavingEnabled: true,
+  cacheWindowDays: 30,
+  maxCachedItems: 500,
   quietHoursEnabled: false,
   breakingNewsEnabled: true,
   dailyDigestEnabled: true,
-  darkModeEnabled: false,
+  colorTheme: "system",
   lowVisionEnhancedSpacing: false,
   lowVisionBoldMetadata: false,
   highVisualContrastMode: false,
   hideThumbnailsForLowVision: false,
-  simplifiedLayoutEnabled: false
+  simplifiedLayoutEnabled: false,
+  timelineDisplayMode: "full",
+  timelineContentFilter: "all"
 };

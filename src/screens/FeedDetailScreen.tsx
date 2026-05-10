@@ -1,15 +1,18 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { openBrowserAsync } from "expo-web-browser";
 import React, { useState } from "react";
 import { AccessibilityActionEvent, Linking, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Chip, Divider, Text } from "react-native-paper";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
-import type { NewsStackParamList, SavedStackParamList } from "../navigation/types";
+import type { AllUnreadStackParamList, SavedStackParamList, SourcesStackParamList, TodayStackParamList } from "../navigation/types";
 import { clockString, contentTypeDisplayName, relativePublishedText } from "../utils/formatting";
 
 type Props =
-  | NativeStackScreenProps<NewsStackParamList, "FeedDetail">
+  | NativeStackScreenProps<TodayStackParamList, "FeedDetail">
+  | NativeStackScreenProps<AllUnreadStackParamList, "FeedDetail">
+  | NativeStackScreenProps<SourcesStackParamList, "FeedDetail">
   | NativeStackScreenProps<SavedStackParamList, "SavedDetail">;
 
 interface DetailAction {
@@ -62,8 +65,15 @@ export function FeedDetailScreen({ route, navigation }: Props) {
           label: "Open",
           icon: "open-in-new",
           mode: "contained-tonal" as const,
-          onPress: () => Linking.openURL(current.externalURL ?? current.canonicalURL),
-          accessibilityLabel: `Open ${current.contentType}`,
+          onPress: () => {
+            const url = current.externalURL ?? current.canonicalURL;
+            if (current.contentType === "article" && Platform.OS === "ios" && app.settings?.preferReaderMode) {
+              openBrowserAsync(url, { readerMode: true });
+            } else {
+              Linking.openURL(url);
+            }
+          },
+          accessibilityLabel: `Open ${contentType}`,
           hint: "Double tap to open the original item."
         };
   const detailActions: DetailAction[] = [
@@ -90,15 +100,6 @@ export function FeedDetailScreen({ route, navigation }: Props) {
           }
         ]
       : []),
-    {
-      key: "checkpoint",
-      label: "Checkpoint",
-      icon: "flag-outline",
-      mode: "outlined" as const,
-      onPress: () => app.setCheckpointAtItem(current),
-      accessibilityLabel: "Set checkpoint here",
-      hint: "Double tap to mark newer feed items as new."
-    }
   ];
   const iosAccessibilityActions =
     Platform.OS === "ios"

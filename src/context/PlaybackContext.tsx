@@ -1,4 +1,5 @@
-import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { createAudioPlayer, setAudioModeAsync } from "expo-audio";
+import type { AudioPlayer } from "expo-audio";
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
@@ -12,12 +13,22 @@ function isHTTPSURL(value: string): boolean {
   }
 }
 
+// Defensive shape for the expo-audio status update event — times are in seconds.
+interface AudioStatus {
+  currentTime?: number;
+  duration?: number;
+  playing?: boolean;
+  isBuffering?: boolean;
+  didJustFinish?: boolean;
+}
+
 interface PlaybackContextValue {
   currentItem: FeedItem | null;
   queue: PlaybackQueueItem[];
   currentTimeSeconds: number;
   durationSeconds: number;
   isPlaying: boolean;
+  isBuffering: boolean;
   isLoading: boolean;
   loadingItemID: string | null;
   currentSpeed: number;
@@ -37,14 +48,19 @@ interface PlaybackContextValue {
 const PlaybackContext = createContext<PlaybackContextValue | undefined>(undefined);
 
 export function PlaybackProvider({ children }: { children: React.ReactNode }) {
-  const soundRef = useRef<Audio.Sound | null>(null);
+  // expo-audio: one AudioPlayer at a time; we remove() it before creating the next.
+  const playerRef = useRef<AudioPlayer | null>(null);
+  // The status-update subscription so we can detach before removing the player.
+  const subscriptionRef = useRef<{ remove: () => void } | null>(null);
   const currentItemRef = useRef<FeedItem | null>(null);
   const isLoadingRef = useRef(false);
+
   const [currentItem, setCurrentItem] = useState<FeedItem | null>(null);
   const [queue, setQueue] = useState<PlaybackQueueItem[]>([]);
   const [currentTimeSeconds, setCurrentTimeSeconds] = useState(0);
   const [durationSeconds, setDurationSeconds] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingItemID, setLoadingItemID] = useState<string | null>(null);
   const [currentSpeed, setCurrentSpeed] = useState(1);
@@ -66,15 +82,21 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  // expo-audio fires status updates in seconds — no /1000 needed.
   const onStatusUpdate = useCallback(
-    (status: AVPlaybackStatus) => {
-      if (!status.isLoaded) return;
-      const position = Math.round((status.positionMillis ?? 0) / 1000);
-      const duration = Math.round((status.durationMillis ?? 0) / 1000);
+    (status: AudioStatus) => {
+      const position = Math.round(status.currentTime ?? 0);
+      const duration = Math.round(status.duration ?? 0);
       setCurrentTimeSeconds(position);
       if (duration > 0) setDurationSeconds(duration);
-      setIsPlaying(status.isPlaying);
+      setIsBuffering(status.isBuffering ?? false);
+      // While buffering after play(), the player reports playing:false even though
+      // we want to play — don't let that override the intent and show "Paused".
+      if (!status.isBuffering) {
+        setIsPlaying(status.playing ?? false);
+      }
       if (status.didJustFinish) {
+        setIsBuffering(false);
         persistProgress(duration, duration);
         AccessibilityInfo.announceForAccessibility("Episode finished.");
       }
@@ -82,20 +104,23 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     [persistProgress]
   );
 
+  // Save progress, detach the listener, then destroy the player.
   const unloadCurrent = useCallback(async () => {
-    if (soundRef.current) {
-      const status = await soundRef.current.getStatusAsync();
-      if (status.isLoaded) {
-        await persistProgress(Math.round(status.positionMillis / 1000), Math.round((status.durationMillis ?? 0) / 1000));
-      }
-      await soundRef.current.unloadAsync();
-      soundRef.current = null;
+    subscriptionRef.current?.remove();
+    subscriptionRef.current = null;
+    if (playerRef.current) {
+      const pos = Math.round(playerRef.current.currentTime ?? 0);
+      const dur = Math.round(playerRef.current.duration ?? 0);
+      await persistProgress(pos, dur);
+      playerRef.current.pause();
+      playerRef.current.remove();
+      playerRef.current = null;
     }
   }, [persistProgress]);
 
   const play = useCallback(async () => {
     if (isLoadingRef.current) return;
-    await soundRef.current?.playAsync();
+    playerRef.current?.play();
     setIsPlaying(true);
   }, []);
 
@@ -107,7 +132,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       if (isLoadingRef.current) return;
-      if (currentItemRef.current?.id === item.id && soundRef.current) {
+      // Same item already loaded — just resume.
+      if (currentItemRef.current?.id === item.id && playerRef.current) {
         await play();
         return;
       }
@@ -116,36 +142,36 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       setLoadingItemID(item.id);
       setIsPlaying(false);
-      let nextSound: Audio.Sound | null = null;
+
       try {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-          playsInSilentModeIOS: true,
-          staysActiveInBackground: true,
-          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
-          shouldDuckAndroid: false,
-          playThroughEarpieceAndroid: false
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionMode: "doNotMix"
         });
+
+        // Tear down the previous player before creating a new one.
         await unloadCurrent();
-        nextSound = new Audio.Sound();
-        soundRef.current = nextSound;
+
+        // expo-audio: create player, wire up status listener, then play.
+        const player = createAudioPlayer({ uri: item.canonicalURL });
+        player.setPlaybackRate(currentSpeed);
+        subscriptionRef.current = player.addListener("playbackStatusUpdate", onStatusUpdate);
+        playerRef.current = player;
+
         setActiveItem(item);
         setDurationSeconds(item.durationSeconds ?? 0);
         setCurrentTimeSeconds(0);
-        nextSound.setOnPlaybackStatusUpdate(onStatusUpdate);
-        await nextSound.loadAsync(
-          { uri: item.canonicalURL },
-          { shouldPlay: true, rate: currentSpeed, shouldCorrectPitch: true, progressUpdateIntervalMillis: 1000 },
-          false
-        );
+
+        player.play();
         setIsPlaying(true);
         AccessibilityInfo.announceForAccessibility(`Playing ${item.title}.`);
       } catch (error) {
-        if (nextSound) {
-          await nextSound.unloadAsync().catch(() => undefined);
-        }
-        soundRef.current = null;
+        // Clean up any partially-created player on failure.
+        subscriptionRef.current?.remove();
+        subscriptionRef.current = null;
+        playerRef.current?.remove();
+        playerRef.current = null;
         setActiveItem(null);
         setDurationSeconds(0);
         setCurrentTimeSeconds(0);
@@ -162,12 +188,13 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   );
 
   const pause = useCallback(async () => {
-    if (!soundRef.current) return;
-    const status = await soundRef.current.getStatusAsync();
-    if (status.isLoaded) {
-      await persistProgress(Math.round(status.positionMillis / 1000), Math.round((status.durationMillis ?? 0) / 1000));
-    }
-    await soundRef.current.pauseAsync();
+    if (!playerRef.current) return;
+    // Save progress at the exact paused position (player.currentTime is in seconds).
+    await persistProgress(
+      Math.round(playerRef.current.currentTime ?? 0),
+      Math.round(playerRef.current.duration ?? 0)
+    );
+    playerRef.current.pause();
     setIsPlaying(false);
   }, [persistProgress]);
 
@@ -177,6 +204,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     setCurrentTimeSeconds(0);
     setDurationSeconds(0);
     setIsPlaying(false);
+    setIsBuffering(false);
     AccessibilityInfo.announceForAccessibility("Podcast stopped.");
   }, [setActiveItem, unloadCurrent]);
 
@@ -188,9 +216,11 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isPlaying, pause, play]);
 
+  // expo-audio seekTo takes seconds directly (no ms conversion needed).
   const seek = useCallback(async (seconds: number) => {
-    await soundRef.current?.setPositionAsync(Math.max(0, seconds) * 1000);
-    setCurrentTimeSeconds(Math.max(0, seconds));
+    const clamped = Math.max(0, seconds);
+    playerRef.current?.seekTo(clamped);
+    setCurrentTimeSeconds(clamped);
   }, []);
 
   const skipForward = useCallback(async (seconds = 30) => {
@@ -203,7 +233,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
 
   const setSpeed = useCallback(async (speed: number) => {
     setCurrentSpeed(speed);
-    await soundRef.current?.setRateAsync(speed, true);
+    if (playerRef.current) {
+      playerRef.current.playbackRate = speed;
+    }
     AccessibilityInfo.announceForAccessibility(`Playback speed ${speed} times.`);
   }, []);
 
@@ -244,6 +276,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       currentTimeSeconds,
       durationSeconds,
       isPlaying,
+      isBuffering,
       isLoading,
       loadingItemID,
       currentSpeed,
@@ -259,7 +292,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       addToQueue,
       removeFromQueue
     }),
-    [addToQueue, currentItem, currentSpeed, currentTimeSeconds, durationSeconds, isLoading, isPlaying, loadingItemID, pause, play, playItem, queue, removeFromQueue, seek, setSpeed, skipBackward, skipForward, stop, togglePlayPause]
+    [addToQueue, currentItem, currentSpeed, currentTimeSeconds, durationSeconds, isBuffering, isLoading, isPlaying, loadingItemID, pause, play, playItem, queue, removeFromQueue, seek, setSpeed, skipBackward, skipForward, stop, togglePlayPause]
   );
 
   return <PlaybackContext.Provider value={value}>{children}</PlaybackContext.Provider>;

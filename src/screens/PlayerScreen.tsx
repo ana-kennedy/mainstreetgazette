@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { Button, IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
+import { IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { Screen } from "../components/Screen";
 import { usePlayback } from "../context/PlaybackContext";
@@ -28,7 +28,7 @@ export function PlayerScreen() {
           </Text>
           <Text variant="bodyLarge">{playback.currentItem.authorOrChannel ?? "Podcast"}</Text>
         </View>
-        <Text variant="bodyLarge" accessibilityLabel={`Playback position ${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}.`}>
+        <Text variant="bodyLarge" accessibilityLabel={playback.isLoading ? "Loading audio." : `Playback position ${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}.`}>
           {playback.isLoading ? "Loading audio" : `${clockString(playback.currentTimeSeconds)} of ${clockString(playback.durationSeconds)}`}
         </Text>
         <ProgressBar
@@ -73,7 +73,7 @@ export function PlayerScreen() {
         <View style={[styles.speedRow, { borderColor: theme.colors.outline }]} accessible={false}>
           {[
             { value: "0.75", label: "0.75x", accessibilityLabel: "Playback speed 0.75 times" },
-            { value: "1", label: "1x", accessibilityLabel: "Playback speed 1 times" },
+            { value: "1", label: "1x", accessibilityLabel: "Normal speed" },
             { value: "1.25", label: "1.25x", accessibilityLabel: "Playback speed 1.25 times" },
             { value: "1.5", label: "1.5x", accessibilityLabel: "Playback speed 1.5 times" },
             { value: "2", label: "2x", accessibilityLabel: "Playback speed 2 times" }
@@ -101,16 +101,6 @@ export function PlayerScreen() {
             );
           })}
         </View>
-        <Button
-          mode="outlined"
-          icon="playlist-plus"
-          onPress={() => playback.addToQueue(playback.currentItem!)}
-          accessibilityLabel="Add current episode to queue"
-          accessibilityRole="button"
-          accessibilityHint="Double tap to add the current podcast episode to the queue."
-        >
-          Add to Queue
-        </Button>
       </View>
     </Screen>
   );

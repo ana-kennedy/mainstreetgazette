@@ -1,5 +1,4 @@
 import { XMLParser } from "fast-xml-parser";
-import { Platform } from "react-native";
 import type { FeedItem, RefreshResult, Source } from "../domain/models";
 import { groupFeedItems } from "../utils/grouping";
 import { parseDuration, stableHash, stripHTML } from "../utils/formatting";
@@ -61,7 +60,8 @@ const SOURCE_REFRESH_TIMEOUT_MS = 16000;
 const MAX_ITEMS_PER_SOURCE: Record<Source["sourceType"], number> = {
   rssArticle: 50,
   youtubeChannel: 50,
-  podcastRSS: 75
+  podcastRSS: 75,
+  redditFeed: 10
 };
 const xmlParser = new XMLParser({
   attributeNamePrefix: "",
@@ -141,9 +141,14 @@ function itemTags(item: RSSItem): string[] {
 }
 
 function recentItemsForSource(source: Source, items: RSSItem[]): RSSItem[] {
+  const limit = MAX_ITEMS_PER_SOURCE[source.sourceType];
+  if (source.sourceType === "redditFeed") {
+    // Reddit's top.rss feed is already sorted by popularity — preserve that order
+    return items.slice(0, limit);
+  }
   return [...items]
     .sort((lhs, rhs) => new Date(publishedDate(rhs)).getTime() - new Date(publishedDate(lhs)).getTime())
-    .slice(0, MAX_ITEMS_PER_SOURCE[source.sourceType]);
+    .slice(0, limit);
 }
 
 function asRecord(value: unknown): XMLRecord | null {
@@ -256,11 +261,13 @@ function parseFeed(text: string): RSSFeed {
   return { items: [] };
 }
 
-async function fetchText(url: string): Promise<string> {
+async function fetchText(url: string, headers?: Record<string, string>): Promise<string> {
   const httpsURL = requireHTTPSURL(url);
   const controller = new AbortController();
   const request = (async () => {
-    const response = await fetch(httpsURL, { signal: controller.signal });
+    const init: RequestInit = { signal: controller.signal };
+    if (headers !== undefined) init.headers = headers;
+    const response = await fetch(httpsURL, init);
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
@@ -278,15 +285,20 @@ async function fetchText(url: string): Promise<string> {
 }
 
 async function fetchFeedText(source: Source): Promise<string> {
+  const proxiedURL = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(source.feedURL)}`;
+  // Reddit requires a descriptive User-Agent or it returns 429/403
+  const headers: Record<string, string> | undefined =
+    source.sourceType === "redditFeed"
+      ? { "User-Agent": "PixieWireExpo/1.0 (Disney news reader; RSS client)" }
+      : undefined;
   try {
-    return await fetchText(source.feedURL);
+    return await fetchText(source.feedURL, headers);
   } catch (error) {
-    if (Platform.OS !== "web") {
+    try {
+      return await fetchText(proxiedURL);
+    } catch {
       throw error;
     }
-
-    const proxiedURL = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(source.feedURL)}`;
-    return fetchText(proxiedURL);
   }
 }
 
@@ -512,7 +524,7 @@ async function fetchSource(source: Source): Promise<FeedItem[]> {
         .map((item) => {
           if (source.sourceType === "youtubeChannel") return normalizeYouTube(source, item);
           if (source.sourceType === "podcastRSS") return normalizePodcast(source, feed, item);
-          return normalizeArticle(source, feed, item);
+          return normalizeArticle(source, feed, item); // rssArticle and redditFeed both parse as articles
         })
         .filter((item): item is FeedItem => Boolean(item));
     })(),

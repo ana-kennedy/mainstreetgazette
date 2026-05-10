@@ -16,6 +16,14 @@ android/
 !.env.example
 *.local
 
+# EAS / Apple credentials (managed by EAS servers, not stored in repo)
+credentials.json
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.keystore
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

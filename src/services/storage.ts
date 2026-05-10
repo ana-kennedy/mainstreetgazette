@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultUserSettings, type FeedItem, type PlaybackProgress, type PlaybackQueueItem, type Source, type UserSettings } from "../domain/models";
 import { loadBundledSources } from "./sourceCatalog";
 
-type StorageKey = "sources" | "feed" | "savedIDs" | "settings" | "queue" | "progress" | "checkpoint";
+type StorageKey = "sources" | "feed" | "savedIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread";
 
 const keys: Record<StorageKey, string> = {
   sources: "mainstreetgazette.sources",
@@ -11,7 +11,10 @@ const keys: Record<StorageKey, string> = {
   settings: "mainstreetgazette.settings",
   queue: "mainstreetgazette.queue",
   progress: "mainstreetgazette.playbackProgress",
-  checkpoint: "mainstreetgazette.checkpointDate"
+  checkpoint: "mainstreetgazette.checkpointDate",
+  firstLaunch: "mainstreetgazette.firstLaunch",
+  scrollToday: "mainstreetgazette.scrollToday",
+  scrollAllUnread: "mainstreetgazette.scrollAllUnread",
 };
 
 const legacyKeys: Partial<Record<StorageKey, string>> = {
@@ -116,4 +119,20 @@ export async function loadCheckpointDate(): Promise<string | null> {
 
 export async function saveCheckpointDate(isoDate: string): Promise<void> {
   await writeJSON(keys.checkpoint, isoDate);
+}
+
+export async function loadHasLaunchedBefore(): Promise<boolean> {
+  return readJSON<boolean>(keys.firstLaunch, false);
+}
+
+export async function saveHasLaunchedBefore(): Promise<void> {
+  await writeJSON(keys.firstLaunch, true);
+}
+
+export async function loadScrollPosition(mode: "today" | "allUnread"): Promise<string | null> {
+  return AsyncStorage.getItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread);
+}
+
+export async function saveScrollPosition(mode: "today" | "allUnread", itemID: string): Promise<void> {
+  await AsyncStorage.setItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread, itemID);
 }

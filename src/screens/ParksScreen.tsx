@@ -234,12 +234,7 @@ function ParkDetailSheet({
         ]}
       >
         {/* Header */}
-        <View
-          style={[styles.sheetHeader, { borderBottomColor: theme.colors.outline }]}
-          accessible
-          accessibilityRole="header"
-          accessibilityLabel={`${park.fullName}, ${resort.resortLabel}`}
-        >
+        <View style={[styles.sheetHeader, { borderBottomColor: theme.colors.outline }]}>
           <View
             style={styles.headerLogoCircle}
             accessible={false}
@@ -247,7 +242,12 @@ function ParkDetailSheet({
           >
             <Logo width={48} height={48} />
           </View>
-          <View style={styles.sheetHeaderText} accessible={false} importantForAccessibility="no-hide-descendants">
+          <View
+            style={styles.sheetHeaderText}
+            accessible
+            accessibilityRole="header"
+            accessibilityLabel={`${park.fullName}, ${resort.resortLabel}`}
+          >
             <Text
               style={[styles.sheetTitle, { color: theme.colors.onSurface }]}
               accessibilityElementsHidden

@@ -7,8 +7,7 @@ import React, { useRef } from "react";
 import { useTheme } from "react-native-paper";
 import { useSounds } from "../context/SoundContext";
 import { FeedDetailScreen } from "../screens/FeedDetailScreen";
-import { TodayScreen } from "../screens/TodayScreen";
-import { AllUnreadScreen } from "../screens/AllUnreadScreen";
+import { NewsTabScreen } from "../screens/NewsTabScreen";
 import { SavedScreen } from "../screens/SavedScreen";
 import { SourcesScreen } from "../screens/SourcesScreen";
 import { SourceFeedScreen } from "../screens/SourceFeedScreen";
@@ -17,38 +16,26 @@ import { ParksScreen } from "../screens/ParksScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { PlayerScreen } from "../screens/PlayerScreen";
 import type {
-  AllUnreadStackParamList,
+  NewsStackParamList,
   RootTabParamList,
   SavedStackParamList,
   SettingsStackParamList,
-  SourcesStackParamList,
-  TodayStackParamList
+  SourcesStackParamList
 } from "./types";
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
-const TodayStack = createNativeStackNavigator<TodayStackParamList>();
-const AllUnreadStack = createNativeStackNavigator<AllUnreadStackParamList>();
+const NewsStack = createNativeStackNavigator<NewsStackParamList>();
 const SavedStack = createNativeStackNavigator<SavedStackParamList>();
 const SourcesStack = createNativeStackNavigator<SourcesStackParamList>();
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
-function TodayStackNavigator() {
+function NewsStackNavigator() {
   return (
-    <TodayStack.Navigator screenOptions={{ headerShown: false }}>
-      <TodayStack.Screen name="TodayHome" component={TodayScreen} />
-      <TodayStack.Screen name="FeedDetail" component={FeedDetailScreen} options={{ title: "Story" }} />
-      <TodayStack.Screen name="Player" component={PlayerScreen} options={{ title: "Player" }} />
-    </TodayStack.Navigator>
-  );
-}
-
-function AllUnreadStackNavigator() {
-  return (
-    <AllUnreadStack.Navigator screenOptions={{ headerShown: false }}>
-      <AllUnreadStack.Screen name="AllUnreadHome" component={AllUnreadScreen} />
-      <AllUnreadStack.Screen name="FeedDetail" component={FeedDetailScreen} options={{ title: "Story" }} />
-      <AllUnreadStack.Screen name="Player" component={PlayerScreen} options={{ title: "Player" }} />
-    </AllUnreadStack.Navigator>
+    <NewsStack.Navigator screenOptions={{ headerShown: false }}>
+      <NewsStack.Screen name="NewsHome" component={NewsTabScreen} />
+      <NewsStack.Screen name="FeedDetail" component={FeedDetailScreen} options={{ title: "Story" }} />
+      <NewsStack.Screen name="Player" component={PlayerScreen} options={{ title: "Player" }} />
+    </NewsStack.Navigator>
   );
 }
 
@@ -135,14 +122,11 @@ export function RootNavigator() {
           tabBarIcon: ({ color, size }) => {
             let iconName: string;
             switch (route.name) {
-              case "Today":
-                iconName = "calendar-today";
+              case "News":
+                iconName = "newspaper-variant-outline";
                 break;
               case "Parks":
                 iconName = "castle";
-                break;
-              case "AllUnread":
-                iconName = "circle-double";
                 break;
               case "Saved":
                 iconName = "bookmark-outline";
@@ -167,12 +151,7 @@ export function RootNavigator() {
           }
         })}
       >
-        <Tab.Screen name="Today" component={TodayStackNavigator} options={{ tabBarLabel: "Today" }} />
-        <Tab.Screen
-          name="AllUnread"
-          component={AllUnreadStackNavigator}
-          options={{ tabBarLabel: "All Unread" }}
-        />
+        <Tab.Screen name="News" component={NewsStackNavigator} options={{ tabBarLabel: "News" }} />
         <Tab.Screen name="Parks" component={ParksScreen} options={{ tabBarLabel: "Parks" }} />
         <Tab.Screen name="Saved" component={SavedStackNavigator} options={{ tabBarLabel: "Saved" }} />
         <Tab.Screen name="Sources" component={SourcesStackNavigator} options={{ tabBarLabel: "Sources" }} />

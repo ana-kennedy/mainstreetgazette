@@ -6,12 +6,11 @@ import { Button, Chip, Divider, Text } from "react-native-paper";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
-import type { AllUnreadStackParamList, SavedStackParamList, SourcesStackParamList, TodayStackParamList } from "../navigation/types";
+import type { NewsStackParamList, SavedStackParamList, SourcesStackParamList } from "../navigation/types";
 import { clockString, contentTypeDisplayName, relativePublishedText } from "../utils/formatting";
 
 type Props =
-  | NativeStackScreenProps<TodayStackParamList, "FeedDetail">
-  | NativeStackScreenProps<AllUnreadStackParamList, "FeedDetail">
+  | NativeStackScreenProps<NewsStackParamList, "FeedDetail">
   | NativeStackScreenProps<SourcesStackParamList, "FeedDetail">
   | NativeStackScreenProps<SavedStackParamList, "SavedDetail">;
 

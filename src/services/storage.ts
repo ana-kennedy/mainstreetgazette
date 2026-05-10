@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultUserSettings, type FeedItem, type PlaybackProgress, type PlaybackQueueItem, type Source, type UserSettings } from "../domain/models";
 import { loadBundledSources } from "./sourceCatalog";
 
-type StorageKey = "sources" | "feed" | "savedIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread";
+type StorageKey = "sources" | "feed" | "savedIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread" | "lastSelectedNews";
 
 const keys: Record<StorageKey, string> = {
   sources: "mainstreetgazette.sources",
@@ -15,6 +15,7 @@ const keys: Record<StorageKey, string> = {
   firstLaunch: "mainstreetgazette.firstLaunch",
   scrollToday: "mainstreetgazette.scrollToday",
   scrollAllUnread: "mainstreetgazette.scrollAllUnread",
+  lastSelectedNews: "mainstreetgazette.lastSelectedNews",
 };
 
 const legacyKeys: Partial<Record<StorageKey, string>> = {
@@ -135,4 +136,12 @@ export async function loadScrollPosition(mode: "today" | "allUnread"): Promise<s
 
 export async function saveScrollPosition(mode: "today" | "allUnread", itemID: string): Promise<void> {
   await AsyncStorage.setItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread, itemID);
+}
+
+export async function loadLastSelectedID(): Promise<string | null> {
+  return AsyncStorage.getItem(keys.lastSelectedNews);
+}
+
+export async function saveLastSelectedID(itemID: string): Promise<void> {
+  await AsyncStorage.setItem(keys.lastSelectedNews, itemID);
 }

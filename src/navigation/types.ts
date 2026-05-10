@@ -1,13 +1,7 @@
 import type { FeedItem, Source } from "../domain/models";
 
-export type TodayStackParamList = {
-  TodayHome: undefined;
-  FeedDetail: { item: FeedItem };
-  Player: undefined;
-};
-
-export type AllUnreadStackParamList = {
-  AllUnreadHome: undefined;
+export type NewsStackParamList = {
+  NewsHome: undefined;
   FeedDetail: { item: FeedItem };
   Player: undefined;
 };
@@ -30,9 +24,8 @@ export type SettingsStackParamList = {
 };
 
 export type RootTabParamList = {
-  Today: undefined;
+  News: undefined;
   Parks: undefined;
-  AllUnread: undefined;
   Saved: undefined;
   Sources: undefined;
   Settings: undefined;

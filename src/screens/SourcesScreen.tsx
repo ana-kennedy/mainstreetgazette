@@ -205,9 +205,8 @@ export function SourcesScreen({ navigation }: Props) {
             {title}
           </Text>
         )}
-        ListHeaderComponent={null}
-        ListFooterComponent={
-          <View style={styles.footer}>
+        ListHeaderComponent={
+          <View style={styles.manageHeader}>
             <ManageRow onPress={() => { playConfirm(); navigation.navigate("SourceManage"); }} />
             {enabledSources.length === 0 ? (
               <Text style={[styles.emptyHint, { color: theme.colors.onSurfaceVariant }]}>
@@ -216,6 +215,7 @@ export function SourcesScreen({ navigation }: Props) {
             ) : null}
           </View>
         }
+        ListFooterComponent={null}
         ListEmptyComponent={
           filteredSources.length === 0 && app.searchQuery.length > 0 ? (
             <Text style={[styles.emptyHint, { color: theme.colors.onSurfaceVariant }]}>
@@ -312,9 +312,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700"
   },
-  footer: {
+  manageHeader: {
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 12,
+    paddingBottom: 4,
     gap: 12
   },
   manageRow: {

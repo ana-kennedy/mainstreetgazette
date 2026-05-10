@@ -21,7 +21,7 @@ import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
 import type { ContentType, FeedItem } from "../domain/models";
 import { searchFeedItems } from "../utils/search";
-import { loadScrollPosition, saveScrollPosition } from "../services/storage";
+import { loadLastSelectedID, saveLastSelectedID } from "../services/storage";
 
 type Filter = "all" | ContentType | "social";
 type DisplayMode = "full" | "minimal";
@@ -58,12 +58,16 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const [dismissedError, setDismissedError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [pendingFocusItemID, setPendingFocusItemID] = useState<string | null>(null);
+  const [pendingScrollItemID, setPendingScrollItemID] = useState<string | null>(null);
 
   const listRef = useRef<FlatList<FeedItem>>(null);
   const itemRefs = useRef<Record<string, View | null>>({});
   const firstTimelineMenuItemRef = useRef<View>(null);
   const firstDisplayStyleItemRef = useRef<View>(null);
   const firstSettingsItemRef = useRef<View>(null);
+
+  // Tracks the last article the user opened — used to anchor scroll after refresh and on reopen
+  const lastSelectedIDRef = useRef<string | null>(null);
 
   // Infinite scroll + position tracking refs
   const firstVisibleIDRef = useRef<string | null>(null);
@@ -195,7 +199,11 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   );
 
   const handleOpenItem = useCallback(
-    (selected: FeedItem) => onNavigateToDetail(selected),
+    (selected: FeedItem) => {
+      lastSelectedIDRef.current = selected.id;
+      saveLastSelectedID(selected.id).catch(() => {});
+      onNavigateToDetail(selected);
+    },
     [onNavigateToDetail]
   );
 
@@ -226,6 +234,17 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   };
 
   useEffect(() => {
+    const anchorID = lastSelectedIDRef.current;
+    if (anchorID) {
+      const idx = visibleItemsRef.current.findIndex((item) => item.id === anchorID);
+      if (idx !== -1) {
+        const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
+        setVisibleCount(neededCount);
+        setPendingScrollItemID(anchorID);
+        setPendingFocusItemID(null);
+        return;
+      }
+    }
     setVisibleCount(PAGE_SIZE);
     setPendingFocusItemID(null);
   }, [app.items.length, app.searchQuery, app.settings?.showOnlyNew, app.settings?.sortOrder, app.settings?.timelineContentFilter]);
@@ -244,6 +263,15 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }, 300);
     return () => clearTimeout(focusTimeout);
   }, [displayedItems, pendingFocusItemID]);
+
+  // Scroll to anchor item after refresh (no accessibility focus change)
+  useEffect(() => {
+    if (!pendingScrollItemID) return;
+    const idx = displayedItems.findIndex((item) => item.id === pendingScrollItemID);
+    if (idx === -1) return;
+    listRef.current?.scrollToIndex({ index: idx, animated: false, viewPosition: 0.15 });
+    setPendingScrollItemID(null);
+  }, [displayedItems, pendingScrollItemID]);
 
   // Silently expand the displayed list — no focus jump (used by infinite scroll)
   const expandItems = useCallback(() => {
@@ -272,17 +300,17 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
   }, []);
 
-  // Save scroll position when app backgrounds
+  // Persist last selected article when app backgrounds (belt-and-suspenders alongside the immediate save)
   useEffect(() => {
     const sub = AppState.addEventListener("change", (nextState) => {
-      if (nextState === "background" && firstVisibleIDRef.current) {
-        saveScrollPosition(mode, firstVisibleIDRef.current).catch(() => {});
+      if (nextState === "background" && lastSelectedIDRef.current) {
+        saveLastSelectedID(lastSelectedIDRef.current).catch(() => {});
       }
     });
     return () => sub.remove();
-  }, [mode]);
+  }, []);
 
-  // Restore last scroll position once items are available
+  // Restore last selected article once items are available after app reopen
   useEffect(() => {
     if (hasRestoredRef.current || !pendingRestoreIDRef.current || visibleItemsRef.current.length === 0) return;
     const savedID = pendingRestoreIDRef.current;
@@ -293,19 +321,21 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
     hasRestoredRef.current = true;
     pendingRestoreIDRef.current = null;
-    // Expand display count to include the saved item, then use the existing
-    // pendingFocusItemID mechanism to scroll + set accessibility focus
     const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
     setVisibleCount((c) => Math.max(c, neededCount));
     setPendingFocusItemID(savedID);
   }, [app.items.length]);
 
-  // Load saved position on mount (once per mode)
+  // Load last selected article on mount — used as anchor for first render and reopen
   useEffect(() => {
-    loadScrollPosition(mode).then((savedID) => {
-      if (savedID) pendingRestoreIDRef.current = savedID;
+    loadLastSelectedID().then((savedID) => {
+      if (savedID) {
+        lastSelectedIDRef.current = savedID;
+        pendingRestoreIDRef.current = savedID;
+      }
     }).catch(() => {});
-  }, [mode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sortLabel = app.settings?.sortOrder === "oldestFirst" ? "Oldest first" : "Newest first";
   const showOnlyNewLabel = app.settings?.showOnlyNew ? "On" : "Off";

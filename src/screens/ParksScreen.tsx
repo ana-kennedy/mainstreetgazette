@@ -14,6 +14,7 @@ import { SvgProps } from "react-native-svg";
 
 import { Screen } from "../components/Screen";
 import { WeatherContent } from "../components/WeatherModal";
+import { useSounds } from "../context/SoundContext";
 import { DISNEY_PARKS, type WeatherData, fetchWeatherForPark } from "../services/weatherService";
 import {
   ParkHours,
@@ -487,6 +488,7 @@ function raceTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
 
 export function ParksScreen() {
   const theme = useTheme();
+  const { playBack } = useSounds();
   const [selectedPark, setSelectedPark] = useState<{ park: ParkDefinition; resort: ResortGroup } | null>(null);
   const [parkDataMap, setParkDataMap] = useState<Record<string, ParkData>>({});
   const loadStateRef = useRef<Record<string, boolean>>({});
@@ -620,6 +622,7 @@ export function ParksScreen() {
           resort={selectedPark.resort}
           data={parkDataMap[selectedPark.park.key]}
           onClose={() => {
+            playBack();
             setSelectedPark(null);
             AccessibilityInfo.announceForAccessibility("Park details closed.");
           }}

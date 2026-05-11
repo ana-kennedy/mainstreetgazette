@@ -54,7 +54,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const [isTimelineMenuVisible, setIsTimelineMenuVisible] = useState(false);
   const [timelineMenuSection, setTimelineMenuSection] = useState<TimelineMenuSection>("main");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [isUserRefreshing, setIsUserRefreshing] = useState(false);
   const [dismissedError, setDismissedError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [pendingFocusItemID, setPendingFocusItemID] = useState<string | null>(null);
@@ -121,13 +120,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
   };
 
-  const handleRefresh = async () => {
-    setIsUserRefreshing(true);
-    try {
-      await app.refresh();
-    } finally {
-      setIsUserRefreshing(false);
-    }
+  const handleRefresh = () => {
+    app.refresh().catch(() => {});
   };
 
   const handleToggleSortOrder = () => {
@@ -234,7 +228,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   };
 
   useEffect(() => {
-    const anchorID = lastSelectedIDRef.current;
+    // firstVisibleIDRef tracks the visible scroll position continuously via onViewableItemsChanged
+    const anchorID = firstVisibleIDRef.current ?? lastSelectedIDRef.current;
     if (anchorID) {
       const idx = visibleItemsRef.current.findIndex((item) => item.id === anchorID);
       if (idx !== -1) {
@@ -254,13 +249,14 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     const nextItemIndex = displayedItems.findIndex((item) => item.id === pendingFocusItemID);
     if (nextItemIndex === -1) return;
     listRef.current?.scrollToIndex({ index: nextItemIndex, animated: false, viewPosition: 0 });
+    // Longer delay so VoiceOver has time to settle after app reopen before we redirect its focus
     const focusTimeout = setTimeout(() => {
       const node = findNodeHandle(itemRefs.current[pendingFocusItemID]);
       if (node) {
         AccessibilityInfo.setAccessibilityFocus(node);
         setPendingFocusItemID(null);
       }
-    }, 300);
+    }, 700);
     return () => clearTimeout(focusTimeout);
   }, [displayedItems, pendingFocusItemID]);
 
@@ -300,11 +296,12 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
   }, []);
 
-  // Persist last selected article when app backgrounds (belt-and-suspenders alongside the immediate save)
+  // Persist current position when app backgrounds — prefer scroll position over last-opened
   useEffect(() => {
     const sub = AppState.addEventListener("change", (nextState) => {
-      if (nextState === "background" && lastSelectedIDRef.current) {
-        saveLastSelectedID(lastSelectedIDRef.current).catch(() => {});
+      const posID = firstVisibleIDRef.current ?? lastSelectedIDRef.current;
+      if (nextState === "background" && posID) {
+        saveLastSelectedID(posID).catch(() => {});
       }
     });
     return () => sub.remove();
@@ -326,11 +323,22 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     setPendingFocusItemID(savedID);
   }, [app.items.length]);
 
-  // Load last selected article on mount — used as anchor for first render and reopen
+  // Load saved position on mount. On iOS, items often load from cache before AsyncStorage resolves,
+  // so we restore immediately if items are already available rather than waiting for app.items.length
+  // to change (which may never happen again in that session).
   useEffect(() => {
     loadLastSelectedID().then((savedID) => {
-      if (savedID) {
-        lastSelectedIDRef.current = savedID;
+      if (!savedID) return;
+      lastSelectedIDRef.current = savedID;
+      if (!hasRestoredRef.current && visibleItemsRef.current.length > 0) {
+        const idx = visibleItemsRef.current.findIndex((item) => item.id === savedID);
+        if (idx !== -1) {
+          hasRestoredRef.current = true;
+          const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
+          setVisibleCount((c) => Math.max(c, neededCount));
+          setPendingFocusItemID(savedID);
+        }
+      } else {
         pendingRestoreIDRef.current = savedID;
       }
     }).catch(() => {});
@@ -713,7 +721,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
         onScrollToIndexFailed={(info) => {
           listRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
         }}
-        refreshControl={<RefreshControl refreshing={isUserRefreshing} onRefresh={handleRefresh} />}
+        refreshControl={<RefreshControl refreshing={app.isRefreshing} onRefresh={handleRefresh} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         onViewableItemsChanged={onViewableItemsChanged}

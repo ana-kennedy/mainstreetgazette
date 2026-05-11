@@ -1,9 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import type { NavigationState } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useRef } from "react";
+import React from "react";
 import { useTheme } from "react-native-paper";
 import { useSounds } from "../context/SoundContext";
 import { FeedDetailScreen } from "../screens/FeedDetailScreen";
@@ -30,8 +29,12 @@ const SourcesStack = createNativeStackNavigator<SourcesStackParamList>();
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 
 function NewsStackNavigator() {
+  const { playBack } = useSounds();
   return (
-    <NewsStack.Navigator screenOptions={{ headerShown: false }}>
+    <NewsStack.Navigator
+      screenOptions={{ headerShown: false }}
+      screenListeners={{ beforeRemove: () => playBack() }}
+    >
       <NewsStack.Screen name="NewsHome" component={NewsTabScreen} />
       <NewsStack.Screen name="FeedDetail" component={FeedDetailScreen} options={{ title: "Story" }} />
       <NewsStack.Screen name="Player" component={PlayerScreen} options={{ title: "Player" }} />
@@ -40,8 +43,12 @@ function NewsStackNavigator() {
 }
 
 function SavedStackNavigator() {
+  const { playBack } = useSounds();
   return (
-    <SavedStack.Navigator screenOptions={{ headerShown: false }}>
+    <SavedStack.Navigator
+      screenOptions={{ headerShown: false }}
+      screenListeners={{ beforeRemove: () => playBack() }}
+    >
       <SavedStack.Screen name="SavedHome" component={SavedScreen} options={{ title: "Saved" }} />
       <SavedStack.Screen name="SavedDetail" component={FeedDetailScreen} options={{ title: "Saved Story" }} />
     </SavedStack.Navigator>
@@ -49,8 +56,12 @@ function SavedStackNavigator() {
 }
 
 function SourcesStackNavigator() {
+  const { playBack } = useSounds();
   return (
-    <SourcesStack.Navigator screenOptions={{ headerShown: false }}>
+    <SourcesStack.Navigator
+      screenOptions={{ headerShown: false }}
+      screenListeners={{ beforeRemove: () => playBack() }}
+    >
       <SourcesStack.Screen name="SourcesHome" component={SourcesScreen} />
       <SourcesStack.Screen name="SourceFeed" component={SourceFeedScreen} options={{ title: "Source Feed" }} />
       <SourcesStack.Screen name="SourceManage" component={SourceManageScreen} options={{ title: "Manage Sources" }} />
@@ -68,17 +79,9 @@ function SettingsStackNavigator() {
   );
 }
 
-function getStackDepth(state: NavigationState | undefined): number {
-  if (!state) return 0;
-  const route = state.routes[state.index ?? 0];
-  if (route?.state) return 1 + getStackDepth(route.state as NavigationState);
-  return 1;
-}
-
 export function RootNavigator() {
   const paperTheme = useTheme();
-  const { playBack, playConfirm } = useSounds();
-  const prevDepthRef = useRef(0);
+  const { playConfirm } = useSounds();
   const navigationTheme = {
     ...(paperTheme.dark ? DarkTheme : DefaultTheme),
     colors: {
@@ -93,16 +96,7 @@ export function RootNavigator() {
   };
 
   return (
-    <NavigationContainer
-      theme={navigationTheme}
-      onStateChange={(state) => {
-        const depth = getStackDepth(state);
-        if (prevDepthRef.current > 0 && depth < prevDepthRef.current) {
-          playBack();
-        }
-        prevDepthRef.current = depth;
-      }}
-    >
+    <NavigationContainer theme={navigationTheme}>
       <Tab.Navigator
         screenListeners={{ tabPress: () => playConfirm() }}
         screenOptions={({ route }) => ({

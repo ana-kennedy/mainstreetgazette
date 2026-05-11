@@ -12,7 +12,7 @@ import {
   View,
   ViewToken,
 } from "react-native";
-import MsgHeaderSvg from "../../assets/msg-header.svg";
+import { MsgHeaderBanner } from "../components/MsgHeaderBanner";
 import { ActivityIndicator, Banner, Button, IconButton, Text, useTheme } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { FeedItemCard } from "../components/FeedItemCard";
@@ -22,11 +22,10 @@ import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
 import type { ContentType, FeedItem } from "../domain/models";
 import { searchFeedItems } from "../utils/search";
-import { loadLastSelectedID, saveLastSelectedID } from "../services/storage";
+import { loadScrollPosition, saveScrollPosition, saveLastSelectedID } from "../services/storage";
 
 type Filter = "all" | ContentType | "social";
 type DisplayMode = "full" | "minimal";
-type TimelineMenuSection = "main" | "display-style" | "settings";
 
 const PAGE_SIZE = 10;
 
@@ -54,7 +53,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const filter: Filter = app.settings?.timelineContentFilter ?? "all";
   const displayMode: DisplayMode = app.settings?.timelineDisplayMode ?? "full";
   const [isTimelineMenuVisible, setIsTimelineMenuVisible] = useState(false);
-  const [timelineMenuSection, setTimelineMenuSection] = useState<TimelineMenuSection>("main");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [dismissedError, setDismissedError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -64,14 +62,14 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const listRef = useRef<FlatList<FeedItem>>(null);
   const itemRefs = useRef<Record<string, View | null>>({});
   const firstTimelineMenuItemRef = useRef<View>(null);
-  const firstDisplayStyleItemRef = useRef<View>(null);
-  const firstSettingsItemRef = useRef<View>(null);
 
   // Tracks the last article the user opened — used to anchor scroll after refresh and on reopen
   const lastSelectedIDRef = useRef<string | null>(null);
 
   // Infinite scroll + position tracking refs
   const firstVisibleIDRef = useRef<string | null>(null);
+  const scrollOffsetRef = useRef(0);
+  const pendingScrollOffsetRef = useRef<number | null>(null);
   const hasMoreItemsRef = useRef(false);
   const visibleItemsRef = useRef<FeedItem[]>([]);
   const lastDisplayedIDRef = useRef<string | null>(null);
@@ -81,7 +79,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
 
   const closeTimelineMenu = () => {
     setIsTimelineMenuVisible(false);
-    setTimelineMenuSection("main");
   };
 
   const handleJumpToTop = () => {
@@ -141,18 +138,12 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
 
   useEffect(() => {
     if (!isTimelineMenuVisible) return;
-    const refToFocus =
-      timelineMenuSection === "main"
-        ? firstTimelineMenuItemRef
-        : timelineMenuSection === "display-style"
-          ? firstDisplayStyleItemRef
-          : firstSettingsItemRef;
     const timer = setTimeout(() => {
-      const node = findNodeHandle(refToFocus.current);
+      const node = findNodeHandle(firstTimelineMenuItemRef.current);
       if (node) AccessibilityInfo.setAccessibilityFocus(node);
     }, 150);
     return () => clearTimeout(timer);
-  }, [isTimelineMenuVisible, timelineMenuSection]);
+  }, [isTimelineMenuVisible]);
 
   // Filter base items by mode before applying user filters
   const baseItems = useMemo(() => {
@@ -237,6 +228,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
       if (idx !== -1) {
         const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
         setVisibleCount(neededCount);
+        pendingScrollOffsetRef.current = null; // re-anchor on filter/sort change, not a restore
         setPendingScrollItemID(anchorID);
         setPendingFocusItemID(null);
         return;
@@ -262,12 +254,18 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     return () => clearTimeout(focusTimeout);
   }, [displayedItems, pendingFocusItemID]);
 
-  // Scroll to anchor item after refresh (no accessibility focus change)
+  // Scroll to anchor item — uses exact pixel offset for restores, index-based for re-anchors
   useEffect(() => {
     if (!pendingScrollItemID) return;
     const idx = displayedItems.findIndex((item) => item.id === pendingScrollItemID);
     if (idx === -1) return;
-    listRef.current?.scrollToIndex({ index: idx, animated: false, viewPosition: 0.15 });
+    const savedOffset = pendingScrollOffsetRef.current;
+    if (savedOffset !== null) {
+      listRef.current?.scrollToOffset({ offset: savedOffset, animated: false });
+      pendingScrollOffsetRef.current = null;
+    } else {
+      listRef.current?.scrollToIndex({ index: idx, animated: false, viewPosition: 0.15 });
+    }
     setPendingScrollItemID(null);
   }, [displayedItems, pendingScrollItemID]);
 
@@ -281,6 +279,10 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const onEndReached = useCallback(() => {
     expandItems();
   }, [expandItems]);
+
+  const onScroll = useCallback(({ nativeEvent }: { nativeEvent: { contentOffset: { y: number } } }) => {
+    scrollOffsetRef.current = nativeEvent.contentOffset.y;
+  }, []);
 
   // Stable onViewableItemsChanged — tracks first visible item for position saving,
   // and pre-loads when the last rendered item scrolls into view (belt + suspenders for VoiceOver)
@@ -298,50 +300,54 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
   }, []);
 
-  // Persist current position when app backgrounds — prefer scroll position over last-opened
+  // Persist current position when app backgrounds — saves exact pixel offset + anchor item ID
   useEffect(() => {
     const sub = AppState.addEventListener("change", (nextState) => {
-      const posID = firstVisibleIDRef.current ?? lastSelectedIDRef.current;
-      if (nextState === "background" && posID) {
-        saveLastSelectedID(posID).catch(() => {});
+      if (nextState === "background") {
+        saveScrollPosition(mode, {
+          itemID: firstVisibleIDRef.current ?? lastSelectedIDRef.current,
+          offset: scrollOffsetRef.current
+        }).catch(() => {});
       }
     });
     return () => sub.remove();
-  }, []);
+  }, [mode]);
 
-  // Restore last selected article once items are available after app reopen
+  // Restore scroll position once items are available after app reopen (offset already set on mount)
   useEffect(() => {
     if (hasRestoredRef.current || !pendingRestoreIDRef.current || visibleItemsRef.current.length === 0) return;
     const savedID = pendingRestoreIDRef.current;
     const idx = visibleItemsRef.current.findIndex((item) => item.id === savedID);
     if (idx === -1) {
       pendingRestoreIDRef.current = null;
+      pendingScrollOffsetRef.current = null;
       return;
     }
     hasRestoredRef.current = true;
     pendingRestoreIDRef.current = null;
     const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
     setVisibleCount((c) => Math.max(c, neededCount));
-    setPendingFocusItemID(savedID);
+    setPendingScrollItemID(savedID);
   }, [app.items.length]);
 
   // Load saved position on mount. On iOS, items often load from cache before AsyncStorage resolves,
   // so we restore immediately if items are already available rather than waiting for app.items.length
   // to change (which may never happen again in that session).
   useEffect(() => {
-    loadLastSelectedID().then((savedID) => {
-      if (!savedID) return;
-      lastSelectedIDRef.current = savedID;
+    loadScrollPosition(mode).then((saved) => {
+      if (!saved?.itemID) return;
+      lastSelectedIDRef.current = saved.itemID;
+      pendingScrollOffsetRef.current = saved.offset;
       if (!hasRestoredRef.current && visibleItemsRef.current.length > 0) {
-        const idx = visibleItemsRef.current.findIndex((item) => item.id === savedID);
+        const idx = visibleItemsRef.current.findIndex((item) => item.id === saved.itemID);
         if (idx !== -1) {
           hasRestoredRef.current = true;
           const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
           setVisibleCount((c) => Math.max(c, neededCount));
-          setPendingFocusItemID(savedID);
+          setPendingScrollItemID(saved.itemID);
         }
       } else {
-        pendingRestoreIDRef.current = savedID;
+        pendingRestoreIDRef.current = saved.itemID;
       }
     }).catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -367,7 +373,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
           accessibilityLabel={screenTitle}
         >
           {mode === "allUnread" ? (
-            <MsgHeaderSvg
+            <MsgHeaderBanner
               width={screenWidth - 24}
               height={(screenWidth - 24) * (148 / 680)}
               accessible={false}
@@ -469,237 +475,154 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
             accessible={false}
             accessibilityRole="menu"
           >
-            {timelineMenuSection === "main" ? (
-              <>
-                <Pressable
-                  ref={firstTimelineMenuItemRef}
-                  onPress={() => setTimelineMenuSection("display-style")}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel={`Display style: ${displayMode === "full" ? "Full" : "Minimal"}`}
-                  accessibilityHint="Double tap to choose how much of each article to display."
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>Display style: {displayMode === "full" ? "Full" : "Minimal"}</Text>
-                </Pressable>
+            {/* Display style — adjustable: VoiceOver swipes up/down, sighted users tap to cycle */}
+            <Pressable
+              ref={firstTimelineMenuItemRef}
+              accessible
+              accessibilityRole="adjustable"
+              accessibilityLabel={`Display style: ${displayMode === "full" ? "Full" : "Minimal"}`}
+              accessibilityValue={{ text: displayMode === "full" ? "Full" : "Minimal" }}
+              accessibilityHint="Swipe up or down with VoiceOver, or double tap to cycle."
+              accessibilityActions={[
+                { name: "increment", label: "next display style" },
+                { name: "decrement", label: "previous display style" }
+              ]}
+              onAccessibilityAction={({ nativeEvent: { actionName } }) => {
+                if (!app.settings) return;
+                const modes: DisplayMode[] = ["full", "minimal"];
+                const idx = modes.indexOf(displayMode);
+                const next = actionName === "increment"
+                  ? modes[(idx + 1) % modes.length]
+                  : modes[(idx - 1 + modes.length) % modes.length];
+                app.updateSettings({ ...app.settings, timelineDisplayMode: next });
+              }}
+              onPress={() => {
+                if (!app.settings) return;
+                const next: DisplayMode = displayMode === "full" ? "minimal" : "full";
+                app.updateSettings({ ...app.settings, timelineDisplayMode: next });
+              }}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+            >
+              <View style={styles.menuItemRow} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>Display style</Text>
+                <Text style={{ color: theme.colors.primary }}>{displayMode === "full" ? "Full" : "Minimal"} ▾</Text>
+              </View>
+            </Pressable>
 
-                <Pressable
-                  onPress={handleJumpToMarker}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Jump to marker"
-                  accessibilityHint="Double tap to scroll to the timeline marker position."
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>Jump to marker</Text>
-                </Pressable>
+            {/* Filter — adjustable: VoiceOver swipes up/down, sighted users tap to cycle */}
+            <Pressable
+              accessible
+              accessibilityRole="adjustable"
+              accessibilityLabel={`Filter: ${filterLabels[filter]}`}
+              accessibilityValue={{ text: filterLabels[filter] }}
+              accessibilityHint="Swipe up or down with VoiceOver, or double tap to cycle."
+              accessibilityActions={[
+                { name: "increment", label: "next filter" },
+                { name: "decrement", label: "previous filter" }
+              ]}
+              onAccessibilityAction={({ nativeEvent: { actionName } }) => {
+                if (!app.settings) return;
+                const idx = filterOrder.indexOf(filter);
+                const next = actionName === "increment"
+                  ? filterOrder[(idx + 1) % filterOrder.length]
+                  : filterOrder[(idx - 1 + filterOrder.length) % filterOrder.length];
+                app.updateSettings({ ...app.settings, timelineContentFilter: next });
+              }}
+              onPress={() => {
+                if (!app.settings) return;
+                const idx = filterOrder.indexOf(filter);
+                app.updateSettings({ ...app.settings, timelineContentFilter: filterOrder[(idx + 1) % filterOrder.length] });
+              }}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+            >
+              <View style={styles.menuItemRow} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>Filter</Text>
+                <Text style={{ color: theme.colors.primary }}>{filterLabels[filter]} ▾</Text>
+              </View>
+            </Pressable>
 
-                <Pressable
-                  onPress={handleJumpToTop}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Jump to top"
-                  accessibilityHint="Double tap to scroll to the top of the timeline."
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>Jump to top</Text>
-                </Pressable>
+            {/* Show only new — simple toggle */}
+            <Pressable
+              onPress={handleToggleShowOnlyNew}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+              accessibilityRole="menuitem"
+              accessibilityLabel={`Show only new: ${showOnlyNewLabel}`}
+              accessibilityState={{ checked: app.settings?.showOnlyNew ?? false }}
+              accessibilityHint={`Double tap to turn ${app.settings?.showOnlyNew ? "off" : "on"} the new items filter.`}
+            >
+              <View style={styles.menuItemRow} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>Show only new</Text>
+                <Text style={{ color: theme.colors.primary }}>{showOnlyNewLabel}</Text>
+              </View>
+            </Pressable>
 
-                <Pressable
-                  onPress={() => setTimelineMenuSection("settings")}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Timeline filter"
-                  accessibilityHint="Double tap to open timeline filter including content types, sort order, and more."
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>Timeline filter</Text>
-                </Pressable>
+            <View style={[styles.menuDivider, { borderTopColor: theme.colors.outline }]} />
 
-                <Pressable
-                  onPress={handleFindInTimeline}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel={isSearchVisible ? "Hide find in timeline" : "Find in timeline"}
-                  accessibilityHint={
-                    isSearchVisible
-                      ? "Double tap to hide the search field and clear the search query."
-                      : "Double tap to show the search field for finding items in the timeline."
-                  }
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>{isSearchVisible ? "Hide find in timeline" : "Find in timeline"}</Text>
-                </Pressable>
+            <Pressable
+              onPress={handleJumpToMarker}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+              accessibilityRole="menuitem"
+              accessibilityLabel="Jump to marker"
+              accessibilityHint="Double tap to scroll to the timeline marker position."
+            >
+              <Text style={{ color: theme.colors.onSurface }}>Jump to marker</Text>
+            </Pressable>
 
-                <Pressable
-                  onPress={closeTimelineMenu}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    styles.menuItemClose,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface, borderTopColor: theme.colors.outline }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Close menu"
-                  accessibilityHint="Double tap to close the timeline menu."
-                >
-                  <Text style={{ color: theme.colors.primary }}>Close menu</Text>
-                </Pressable>
-              </>
-            ) : null}
+            <Pressable
+              onPress={handleJumpToTop}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+              accessibilityRole="menuitem"
+              accessibilityLabel="Jump to top"
+              accessibilityHint="Double tap to scroll to the top of the timeline."
+            >
+              <Text style={{ color: theme.colors.onSurface }}>Jump to top</Text>
+            </Pressable>
 
-            {timelineMenuSection === "display-style" ? (
-              <>
-                <Pressable
-                  ref={firstDisplayStyleItemRef}
-                  onPress={() => setTimelineMenuSection("main")}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Back to timeline menu"
-                  accessibilityHint="Double tap to go back to the main timeline menu."
-                >
-                  <Text style={{ color: theme.colors.primary }}>← Back</Text>
-                </Pressable>
+            <Pressable
+              onPress={handleFindInTimeline}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
+              ]}
+              accessibilityRole="menuitem"
+              accessibilityLabel={isSearchVisible ? "Hide find in timeline" : "Find in timeline"}
+              accessibilityHint={
+                isSearchVisible
+                  ? "Double tap to hide the search field and clear the search query."
+                  : "Double tap to show the search field for finding items in the timeline."
+              }
+            >
+              <Text style={{ color: theme.colors.onSurface }}>{isSearchVisible ? "Hide find in timeline" : "Find in timeline"}</Text>
+            </Pressable>
 
-                <Text
-                  style={[styles.menuSectionHeader, { color: theme.colors.onSurfaceVariant }]}
-                  accessibilityRole="header"
-                >
-                  Display style
-                </Text>
-
-                {(["full", "minimal"] as DisplayMode[]).map((value) => {
-                  const isSelected = displayMode === value;
-                  const label = value === "full" ? "Full Mode" : "Minimal Mode";
-                  const hint = value === "full"
-                    ? "Displays everything in the article."
-                    : "Displays just the title, source, and date.";
-                  return (
-                    <Pressable
-                      key={value}
-                      onPress={() => {
-                        if (app.settings) app.updateSettings({ ...app.settings, timelineDisplayMode: value });
-                        closeTimelineMenu();
-                      }}
-                      style={({ pressed }) => [
-                        styles.menuItem,
-                        {
-                          backgroundColor: isSelected
-                            ? theme.colors.primaryContainer
-                            : pressed
-                              ? theme.colors.surfaceVariant
-                              : theme.colors.surface
-                        }
-                      ]}
-                      accessibilityRole="menuitem"
-                      accessibilityLabel={`${label}${isSelected ? ", selected" : ""}`}
-                      accessibilityState={{ selected: isSelected }}
-                      accessibilityHint={`Double tap to apply. ${hint}`}
-                    >
-                      <Text style={{ color: isSelected ? theme.colors.onPrimaryContainer : theme.colors.onSurface }}>
-                        {label}{isSelected ? " ✓" : ""}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </>
-            ) : null}
-
-            {timelineMenuSection === "settings" ? (
-              <>
-                <Pressable
-                  ref={firstSettingsItemRef}
-                  onPress={() => setTimelineMenuSection("main")}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Back to timeline menu"
-                  accessibilityHint="Double tap to go back to the main timeline menu."
-                >
-                  <Text style={{ color: theme.colors.primary }}>← Back</Text>
-                </Pressable>
-
-                <Text
-                  style={[styles.menuSectionHeader, { color: theme.colors.onSurfaceVariant }]}
-                  accessibilityRole="header"
-                >
-                  Timeline filter
-                </Text>
-
-                {filterOrder.map((value) => {
-                  const isSelected = filter === value;
-                  return (
-                    <Pressable
-                      key={value}
-                      onPress={() => {
-                        if (app.settings) app.updateSettings({ ...app.settings, timelineContentFilter: value });
-                        closeTimelineMenu();
-                      }}
-                      style={({ pressed }) => [
-                        styles.menuItem,
-                        {
-                          backgroundColor: isSelected
-                            ? theme.colors.primaryContainer
-                            : pressed
-                              ? theme.colors.surfaceVariant
-                              : theme.colors.surface
-                        }
-                      ]}
-                      accessibilityRole="menuitem"
-                      accessibilityLabel={`Show ${filterLabels[value]}${isSelected ? ", currently selected" : ""}`}
-                      accessibilityState={{ selected: isSelected }}
-                      accessibilityHint="Double tap to filter the timeline to this content type."
-                    >
-                      <Text style={{ color: isSelected ? theme.colors.onPrimaryContainer : theme.colors.onSurface }}>
-                        {filterLabels[value]}{isSelected ? " ✓" : ""}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-
-                <Pressable
-                  onPress={handleToggleShowOnlyNew}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel={`Show only new items: ${showOnlyNewLabel}`}
-                  accessibilityState={{ checked: app.settings?.showOnlyNew ?? false }}
-                  accessibilityHint={`Double tap to turn ${app.settings?.showOnlyNew ? "off" : "on"} the new items filter.`}
-                >
-                  <Text style={{ color: theme.colors.onSurface }}>Show only new: {showOnlyNewLabel}</Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={closeTimelineMenu}
-                  style={({ pressed }) => [
-                    styles.menuItem,
-                    styles.menuItemClose,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface, borderTopColor: theme.colors.outline }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel="Done"
-                  accessibilityHint="Double tap to close the timeline menu."
-                >
-                  <Text style={{ color: theme.colors.primary }}>Done</Text>
-                </Pressable>
-              </>
-            ) : null}
+            <Pressable
+              onPress={closeTimelineMenu}
+              style={({ pressed }) => [
+                styles.menuItem,
+                styles.menuItemClose,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface, borderTopColor: theme.colors.outline }
+              ]}
+              accessibilityRole="menuitem"
+              accessibilityLabel="Close menu"
+              accessibilityHint="Double tap to close the timeline menu."
+            >
+              <Text style={{ color: theme.colors.primary }}>Close menu</Text>
+            </Pressable>
           </View>
         ) : null}
 
@@ -724,6 +647,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
           listRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
         }}
         refreshControl={<RefreshControl refreshing={app.isRefreshing} onRefresh={handleRefresh} />}
+        onScroll={onScroll}
+        scrollEventThrottle={100}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         onViewableItemsChanged={onViewableItemsChanged}
@@ -805,14 +730,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8
   },
-  menuSectionHeader: {
-    fontSize: 12,
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 4
+  menuDivider: {
+    borderTopWidth: StyleSheet.hairlineWidth
   },
   list: {
     paddingBottom: 24

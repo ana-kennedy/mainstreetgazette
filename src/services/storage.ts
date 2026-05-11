@@ -130,12 +130,20 @@ export async function saveHasLaunchedBefore(): Promise<void> {
   await writeJSON(keys.firstLaunch, true);
 }
 
-export async function loadScrollPosition(mode: "today" | "allUnread"): Promise<string | null> {
-  return AsyncStorage.getItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread);
+type ScrollPositionData = { itemID: string | null; offset: number };
+
+export async function loadScrollPosition(mode: "today" | "allUnread"): Promise<ScrollPositionData | null> {
+  const raw = await AsyncStorage.getItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as ScrollPositionData;
+  } catch {
+    return null;
+  }
 }
 
-export async function saveScrollPosition(mode: "today" | "allUnread", itemID: string): Promise<void> {
-  await AsyncStorage.setItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread, itemID);
+export async function saveScrollPosition(mode: "today" | "allUnread", data: ScrollPositionData): Promise<void> {
+  await AsyncStorage.setItem(mode === "today" ? keys.scrollToday : keys.scrollAllUnread, JSON.stringify(data));
 }
 
 export async function loadLastSelectedID(): Promise<string | null> {

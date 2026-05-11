@@ -37,23 +37,23 @@ export const darkPaperTheme = {
   }
 };
 
-// ── Gazette (warm sepia — newspaper editorial feel) ───────────────────────────
+// ── Gazette (deep navy & gold — Main Street Gazette masthead palette) ────────
 export const gazettePaperTheme = {
-  ...MD3LightTheme,
+  ...MD3DarkTheme,
   colors: {
-    ...MD3LightTheme.colors,
-    primary: "#7b3f00",
-    primaryContainer: "#f4dcc4",
-    onPrimaryContainer: "#4a2400",
-    secondary: "#a0522d",
-    tertiary: "#5c8346",
-    background: "#f5ede0",
-    surface: "#faf5ec",
-    surfaceVariant: "#ede3d4",
-    onSurface: "#2c1a0e",
-    onSurfaceVariant: "#5c4230",
-    outline: "#c4a882",
-    error: "#b3261e"
+    ...MD3DarkTheme.colors,
+    primary: "#c9a227",
+    primaryContainer: "#1e3060",
+    onPrimaryContainer: "#f0e8d4",
+    secondary: "#e8d5a0",
+    tertiary: "#8ab4d4",
+    background: "#0d1b3e",
+    surface: "#112347",
+    surfaceVariant: "#1a2f55",
+    onSurface: "#f0e8d4",
+    onSurfaceVariant: "#c9a227",
+    outline: "#2a3d6a",
+    error: "#ff7070"
   }
 };
 

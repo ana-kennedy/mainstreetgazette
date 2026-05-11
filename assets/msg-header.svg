@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 148" width="680" height="148">
+  <rect width="680" height="148" fill="#0d1b3e" rx="5"/>
+  <!-- Corner brackets -->
+  <g stroke="#c9a227" stroke-width="1.5" fill="none">
+    <path d="M24,8 L24,20 M24,8 L36,8"/>
+    <path d="M656,8 L644,8 M656,8 L656,20"/>
+    <path d="M24,140 L24,128 M24,140 L36,140"/>
+    <path d="M656,140 L644,140 M656,140 L656,128"/>
+  </g>
+  <!-- Double top rules -->
+  <line x1="40" y1="17" x2="640" y2="17" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="40" y1="21" x2="640" y2="21" stroke="#c9a227" stroke-width="0.5"/>
+  <!-- MAIN STREET -->
+  <text x="340" y="45" text-anchor="middle" fill="#c9a227"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="12" letter-spacing="8">MAIN STREET</text>
+  <!-- Ornament separator: line — small diamond — large diamond — small diamond — line -->
+  <line x1="50" y1="59" x2="300" y2="59" stroke="#c9a227" stroke-width="0.5"/>
+  <polygon points="315,54 319,59 315,64 311,59" fill="#c9a227"/>
+  <polygon points="340,52 347,59 340,66 333,59" fill="#c9a227"/>
+  <polygon points="365,54 369,59 365,64 361,59" fill="#c9a227"/>
+  <line x1="380" y1="59" x2="630" y2="59" stroke="#c9a227" stroke-width="0.5"/>
+  <!-- GAZETTE -->
+  <text x="340" y="109" text-anchor="middle" fill="#f0e8d4"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="54" font-weight="700" letter-spacing="5">GAZETTE</text>
+  <!-- Double bottom rules -->
+  <line x1="40" y1="120" x2="640" y2="120" stroke="#c9a227" stroke-width="0.5"/>
+  <line x1="40" y1="124" x2="640" y2="124" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Tagline -->
+  <text x="340" y="137" text-anchor="middle" fill="#c9a227"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="8" letter-spacing="3">EST. 2025 · THEME PARK NEWS &amp; BEYOND</text>
+</svg>

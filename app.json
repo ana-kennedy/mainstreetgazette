@@ -30,7 +30,7 @@
       "package": "com.mainstreetgazette.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundImage": "./assets/adaptive-background.png"
       },
       "permissions": [
         "android.permission.MODIFY_AUDIO_SETTINGS"

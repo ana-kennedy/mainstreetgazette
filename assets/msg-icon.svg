@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <path id="topArc" d="M 35,100 A 65,65 0 0,0 165,100"/>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="98" fill="#0d1b3e"/>
+  <!-- Double ring border -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#c9a227" stroke-width="2"/>
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#c9a227" stroke-width="0.7"/>
+  <!-- Cardinal diamond ornaments on the ring -->
+  <polygon points="100,5.5 103.5,12 100,18.5 96.5,12" fill="#c9a227"/>
+  <polygon points="194.5,100 188,103.5 181.5,100 188,96.5" fill="#c9a227"/>
+  <polygon points="100,194.5 103.5,188 100,181.5 96.5,188" fill="#c9a227"/>
+  <polygon points="5.5,100 12,103.5 18.5,100 12,96.5" fill="#c9a227"/>
+  <!-- MAIN STREET arc text -->
+  <text fill="#c9a227"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="9.5" letter-spacing="1.5">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">MAIN STREET</textPath>
+  </text>
+  <!-- 4-pointed decorative star above G -->
+  <polygon points="100,49.5 101.77,54.23 106.5,56 101.77,57.77 100,62.5 98.23,57.77 93.5,56 98.23,54.23" fill="#c9a227"/>
+  <!-- Separator lines with diamond -->
+  <line x1="62" y1="67" x2="90" y2="67" stroke="#c9a227" stroke-width="0.5"/>
+  <polygon points="100,63 103,67 100,71 97,67" fill="#c9a227"/>
+  <line x1="110" y1="67" x2="138" y2="67" stroke="#c9a227" stroke-width="0.5"/>
+  <!-- Large G -->
+  <text x="100" y="124" text-anchor="middle" fill="#f0e8d4"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="66" font-weight="700">G</text>
+  <!-- GAZETTE label -->
+  <text x="100" y="149" text-anchor="middle" fill="#c9a227"
+        font-family="'Cormorant Garamond','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif"
+        font-size="10.5" letter-spacing="3">GAZETTE</text>
+</svg>

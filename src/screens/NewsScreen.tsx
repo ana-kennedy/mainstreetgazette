@@ -3,15 +3,16 @@ import {
   AccessibilityInfo,
   AppState,
   FlatList,
-  Image,
-  ViewToken,
   findNodeHandle,
   Platform,
   Pressable,
   RefreshControl,
   StyleSheet,
-  View
+  useWindowDimensions,
+  View,
+  ViewToken,
 } from "react-native";
+import MsgHeaderSvg from "../../assets/msg-header.svg";
 import { ActivityIndicator, Banner, Button, IconButton, Text, useTheme } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { FeedItemCard } from "../components/FeedItemCard";
@@ -49,6 +50,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const app = useAppContext();
   const { playItem, addToQueue, isLoading: isPodcastBuffering } = usePlayback();
   const theme = useTheme();
+  const { width: screenWidth } = useWindowDimensions();
   const filter: Filter = app.settings?.timelineContentFilter ?? "all";
   const displayMode: DisplayMode = app.settings?.timelineDisplayMode ?? "full";
   const [isTimelineMenuVisible, setIsTimelineMenuVisible] = useState(false);
@@ -365,22 +367,22 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
           accessibilityLabel={screenTitle}
         >
           {mode === "allUnread" ? (
-            <Image
-              source={require("../../assets/icon.png")}
-              style={styles.logo}
+            <MsgHeaderSvg
+              width={screenWidth - 24}
+              height={(screenWidth - 24) * (148 / 680)}
+              accessible={false}
+              accessibilityElementsHidden
+            />
+          ) : (
+            <Text
+              style={[styles.appTitle, { color: theme.colors.onSurface }]}
               accessible={false}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
-            />
-          ) : null}
-          <Text
-            style={[styles.appTitle, { color: theme.colors.onSurface }]}
-            accessible={false}
-            accessibilityElementsHidden
-            importantForAccessibility="no-hide-descendants"
-          >
-            {screenTitle}
-          </Text>
+            >
+              {screenTitle}
+            </Text>
+          )}
         </View>
 
         {isSearchVisible ? (
@@ -754,11 +756,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     paddingVertical: 2
-  },
-  logo: {
-    width: 38,
-    height: 38,
-    borderRadius: 9
   },
   appTitle: {
     fontSize: 20,

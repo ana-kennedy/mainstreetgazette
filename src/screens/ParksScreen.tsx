@@ -640,7 +640,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   screenTitle: {
-    textAlign: "center",
+    textAlign: "left",
+    fontWeight: "700",
     marginBottom: 4,
   },
 

@@ -19,7 +19,7 @@ export function SavedScreen({ navigation }: Props) {
   return (
     <Screen>
       <View style={styles.header}>
-        <Text variant="headlineMedium" accessibilityRole="header">
+        <Text variant="headlineMedium" style={{ fontWeight: "700" }} accessibilityRole="header">
           Saved
         </Text>
         <PlainSearchField

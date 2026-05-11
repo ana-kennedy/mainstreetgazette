@@ -32,6 +32,7 @@ interface FeedItemCardProps {
   onQueue?: (item: FeedItem) => void;
   onToggleSaved: (itemID: string) => void;
   onSetMarker: (item: FeedItem) => void;
+  onMarkRead?: (itemID: string) => void;
   focusRef?: React.Ref<View>;
 }
 
@@ -57,6 +58,7 @@ function FeedItemCardInner({
   onQueue,
   onToggleSaved,
   onSetMarker,
+  onMarkRead,
   focusRef
 }: FeedItemCardProps) {
   const theme = useTheme();
@@ -75,6 +77,7 @@ function FeedItemCardInner({
 
   const handleOpen = async () => {
     playSelect();
+    onMarkRead?.(item.id);
     const url = item.externalURL ?? item.canonicalURL;
     if (item.contentType === "article") {
       await openBrowserAsync(url, Platform.OS === "ios" && (settings?.preferReaderMode ?? true) ? { readerMode: true } : {});

@@ -209,9 +209,10 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
         onQueue={addToQueue}
         onToggleSaved={app.toggleSaved}
         onSetMarker={app.setCheckpointAtItem}
+        onMarkRead={app.markAsRead}
       />
     ),
-    [app.settings, app.toggleSaved, app.setCheckpointAtItem, handleOpenItem, playItem, addToQueue, sourceByID]
+    [app.settings, app.toggleSaved, app.setCheckpointAtItem, app.markAsRead, handleOpenItem, playItem, addToQueue, sourceByID]
   );
 
   const showAllItems = () => {

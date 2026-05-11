@@ -6,12 +6,14 @@ import {
   loadCachedFeed,
   loadCheckpointDate,
   loadHasLaunchedBefore,
+  loadReadIDs,
   loadSavedIDs,
   loadSettings,
   loadSources,
   saveCachedFeed,
   saveCheckpointDate,
   saveHasLaunchedBefore,
+  saveReadIDs,
   saveSavedIDs,
   saveSettings,
   saveSources
@@ -23,6 +25,7 @@ interface AppContextValue {
   items: FeedItem[];
   sources: Source[];
   savedIDs: string[];
+  readIDs: string[];
   savedItems: FeedItem[];
   settings: UserSettings | null;
   groups: StoryGroup[];
@@ -39,9 +42,14 @@ interface AppContextValue {
   toggleSource: (sourceID: string) => Promise<void>;
   updateSettings: (settings: UserSettings) => Promise<void>;
   setCheckpointAtItem: (item: FeedItem) => Promise<void>;
+  markAsRead: (itemID: string) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
+
+function mergeRead(items: FeedItem[], readIDs: string[]): FeedItem[] {
+  return items.map((item) => ({ ...item, isRead: readIDs.includes(item.id) }));
+}
 
 function mergeSaved(items: FeedItem[], savedIDs: string[]): FeedItem[] {
   return items.map((item) => ({
@@ -81,6 +89,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<FeedItem[]>([]);
   const [sources, setSources] = useState<Source[]>([]);
   const [savedIDs, setSavedIDs] = useState<string[]>([]);
+  const [readIDs, setReadIDs] = useState<string[]>([]);
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [groups, setGroups] = useState<StoryGroup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -122,10 +131,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const shouldKeepExistingFeed = freshItems.length === 0 && items.length > 0;
 
       if (!shouldKeepExistingFeed) {
-        const { groups: freshGroups } = groupFeedItems(freshItems);
-        setItems(freshItems);
+        const readItems = mergeRead(freshItems, readIDs);
+        const { groups: freshGroups } = groupFeedItems(readItems);
+        setItems(readItems);
         setGroups(freshGroups);
-        await saveCachedFeed(freshItems);
+        await saveCachedFeed(readItems);
       }
 
       if (isFirstLaunchRef.current) {
@@ -147,15 +157,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       isRefreshingRef.current = false;
       setIsRefreshing(false);
     }
-  }, [items.length, savedIDs, settings, sources]);
+  }, [items.length, readIDs, savedIDs, settings, sources]);
 
   useEffect(() => {
     let mounted = true;
     async function hydrate() {
       // Load sources, settings, and ids first (small/fast) so the UI can show immediately.
-      const [loadedSources, loadedSavedIDs, loadedSettings, hasLaunchedBefore] = await Promise.all([
+      const [loadedSources, loadedSavedIDs, loadedReadIDs, loadedSettings, hasLaunchedBefore] = await Promise.all([
         loadSources(),
         loadSavedIDs(),
+        loadReadIDs(),
         loadSettings(),
         loadHasLaunchedBefore()
       ]);
@@ -164,6 +175,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setIsFirstLaunch(!hasLaunchedBefore);
       setSources(loadedSources);
       setSavedIDs(loadedSavedIDs);
+      setReadIDs(loadedReadIDs);
       setSettings(loadedSettings);
       setIsLoading(false);
 
@@ -172,7 +184,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (loadedSettings.offlineSavingEnabled) {
         const cachedFeed = await loadCachedFeed();
         if (!mounted) return;
-        const cachedItems = mergeSaved(cachedFeed, loadedSavedIDs);
+        const cachedItems = mergeRead(mergeSaved(cachedFeed, loadedSavedIDs), loadedReadIDs);
         setItems((prev) => (prev.length > 0 ? prev : cachedItems));
         setGroups((prev) => (prev.length > 0 ? prev : groupFeedItems(cachedItems).groups));
       }
@@ -249,6 +261,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [items]
   );
 
+  const markAsRead = useCallback(
+    async (itemID: string) => {
+      if (readIDs.includes(itemID)) return;
+      const nextReadIDs = [...readIDs, itemID];
+      const nextItems = items.map((item) => (item.id === itemID ? { ...item, isRead: true } : item));
+      setReadIDs(nextReadIDs);
+      setItems(nextItems);
+      await Promise.all([saveReadIDs(nextReadIDs), saveCachedFeed(nextItems)]);
+    },
+    [items, readIDs]
+  );
+
   const savedItems = useMemo(() => items.filter((item) => savedIDs.includes(item.id)), [items, savedIDs]);
 
   const value = useMemo(
@@ -256,6 +280,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       items,
       sources,
       savedIDs,
+      readIDs,
       savedItems,
       settings,
       groups,
@@ -271,9 +296,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       toggleSaved,
       toggleSource,
       updateSettings,
-      setCheckpointAtItem
+      setCheckpointAtItem,
+      markAsRead
     }),
-    [completeOnboarding, errorMessage, groups, isFirstLaunch, isLoading, isRefreshing, items, lastRefreshSummary, refresh, savedIDs, savedItems, searchQuery, setCheckpointAtItem, settings, sources, toggleSaved, toggleSource, updateSettings]
+    [completeOnboarding, errorMessage, groups, isFirstLaunch, isLoading, isRefreshing, items, lastRefreshSummary, markAsRead, readIDs, refresh, savedIDs, savedItems, searchQuery, setCheckpointAtItem, settings, sources, toggleSaved, toggleSource, updateSettings]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

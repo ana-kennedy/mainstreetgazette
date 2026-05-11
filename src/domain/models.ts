@@ -78,6 +78,7 @@ export interface FeedItem {
   artworkURL?: string | null;
   thumbnailURL?: string | null;
   isSaved: boolean;
+  isRead: boolean;
   isNewRelativeToCheckpoint: boolean;
   groupID?: string | null;
   mediaPlaybackState?: PlaybackProgress | null;

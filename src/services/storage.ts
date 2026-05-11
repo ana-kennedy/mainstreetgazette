@@ -2,12 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { defaultUserSettings, type FeedItem, type PlaybackProgress, type PlaybackQueueItem, type Source, type UserSettings } from "../domain/models";
 import { loadBundledSources } from "./sourceCatalog";
 
-type StorageKey = "sources" | "feed" | "savedIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread" | "lastSelectedNews";
+type StorageKey = "sources" | "feed" | "savedIDs" | "readIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread" | "lastSelectedNews";
 
 const keys: Record<StorageKey, string> = {
   sources: "mainstreetgazette.sources",
   feed: "mainstreetgazette.feed",
   savedIDs: "mainstreetgazette.savedIDs",
+  readIDs: "mainstreetgazette.readIDs",
   settings: "mainstreetgazette.settings",
   queue: "mainstreetgazette.queue",
   progress: "mainstreetgazette.playbackProgress",
@@ -85,6 +86,14 @@ export async function loadSavedIDs(): Promise<string[]> {
 
 export async function saveSavedIDs(ids: string[]): Promise<void> {
   await writeJSON(keys.savedIDs, ids);
+}
+
+export async function loadReadIDs(): Promise<string[]> {
+  return readJSON(keys.readIDs, []);
+}
+
+export async function saveReadIDs(ids: string[]): Promise<void> {
+  await writeJSON(keys.readIDs, ids);
 }
 
 export async function loadSettings(): Promise<UserSettings> {

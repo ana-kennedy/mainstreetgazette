@@ -59,7 +59,7 @@ export function MsgHeaderBanner({ width, height, accessible = false, accessibili
 
       {/* Tagline */}
       <SvgText x={340} y={137} textAnchor="middle" fill={gold} fontFamily={SERIF} fontSize={8} letterSpacing={3}>
-        {"EST. 2025 · THEME PARK NEWS & BEYOND"}
+        {"EST. 2026 · THEME PARK NEWS & BEYOND"}
       </SvgText>
     </Svg>
   );

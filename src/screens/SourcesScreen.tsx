@@ -138,7 +138,7 @@ export function SourcesScreen({ navigation }: Props) {
   const unreadBySourceID = useMemo(() => {
     const map = new Map<string, number>();
     for (const item of app.items) {
-      if (item.isNewRelativeToCheckpoint) {
+      if (item.isNewRelativeToCheckpoint && !item.isRead) {
         map.set(item.sourceID, (map.get(item.sourceID) ?? 0) + 1);
       }
     }

@@ -140,7 +140,8 @@ export function sourceCategoryDisplayName(category: SourceCategory): string {
     podcast: "Podcast",
     official: "Official",
     community: "Community",
-    social: "Social"
+    social: "Social",
+    international: "International"
   };
   return labels[category] ?? category;
 }

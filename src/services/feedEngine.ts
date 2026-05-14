@@ -55,8 +55,8 @@ type RSSFeed = {
 
 type XMLRecord = Record<string, unknown>;
 
-const FEED_FETCH_TIMEOUT_MS = 12000;
-const SOURCE_REFRESH_TIMEOUT_MS = 16000;
+const FEED_FETCH_TIMEOUT_MS = 8000;
+const SOURCE_REFRESH_TIMEOUT_MS = 12000;
 const MAX_ITEMS_PER_SOURCE: Record<Source["sourceType"], number> = {
   rssArticle: 50,
   youtubeChannel: 50,
@@ -286,11 +286,12 @@ async function fetchText(url: string, headers?: Record<string, string>): Promise
 
 async function fetchFeedText(source: Source): Promise<string> {
   const proxiedURL = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(source.feedURL)}`;
-  // Reddit requires a descriptive User-Agent or it returns 429/403
-  const headers: Record<string, string> | undefined =
-    source.sourceType === "redditFeed"
-      ? { "User-Agent": "PixieWireExpo/1.0 (Disney news reader; RSS client)" }
-      : undefined;
+  // A descriptive User-Agent prevents some servers from timing out on RSS clients.
+  // Reddit specifically requires one to avoid 429/403; others (e.g. wdwinfo) fail fast
+  // with 403 instead of stalling for the full timeout, giving the proxy fallback more time.
+  const headers: Record<string, string> = {
+    "User-Agent": "MainStreetGazette/1.0 (Disney news reader; RSS client)"
+  };
   try {
     return await fetchText(source.feedURL, headers);
   } catch (error) {
@@ -549,29 +550,40 @@ function dedupe(items: FeedItem[]): FeedItem[] {
   return result;
 }
 
-export async function refreshFeeds(sources: Source[], savedIDs: string[], checkpointDate?: string | null): Promise<RefreshResult> {
-  const enabledSources = sources.filter((source) => source.isEnabled);
-  const documents = await Promise.allSettled(enabledSources.map(fetchSource));
-  const failures: RefreshResult["failures"] = [];
-  const rawItems: FeedItem[] = [];
-
-  documents.forEach((result, index) => {
-    const source = enabledSources[index];
-    if (result.status === "fulfilled") {
-      rawItems.push(...result.value);
-    } else {
-      failures.push({ sourceID: source.id, message: result.reason instanceof Error ? result.reason.message : "Refresh failed" });
-    }
-  });
-
-  const checkpointTime = checkpointDate ? new Date(checkpointDate).getTime() : null;
-  const normalized = dedupe(rawItems)
+function normalizeSnapshot(rawItems: FeedItem[], savedIDs: string[], checkpointTime: number | null): FeedItem[] {
+  return dedupe(rawItems)
     .map((item) => ({
       ...item,
       isSaved: savedIDs.includes(item.id),
       isNewRelativeToCheckpoint: checkpointTime !== null && new Date(item.publishedAt).getTime() > checkpointTime
     }))
     .sort((lhs, rhs) => new Date(rhs.publishedAt).getTime() - new Date(lhs.publishedAt).getTime());
+}
+
+export async function refreshFeeds(
+  sources: Source[],
+  savedIDs: string[],
+  checkpointDate?: string | null,
+  onProgress?: (partialItems: FeedItem[]) => void
+): Promise<RefreshResult> {
+  const enabledSources = sources.filter((source) => source.isEnabled);
+  const failures: RefreshResult["failures"] = [];
+  const rawItems: FeedItem[] = [];
+  const checkpointTime = checkpointDate ? new Date(checkpointDate).getTime() : null;
+
+  await Promise.all(
+    enabledSources.map(async (source) => {
+      try {
+        const items = await fetchSource(source);
+        rawItems.push(...items);
+        onProgress?.(normalizeSnapshot(rawItems, savedIDs, checkpointTime));
+      } catch (e) {
+        failures.push({ sourceID: source.id, message: e instanceof Error ? e.message : "Refresh failed" });
+      }
+    })
+  );
+
+  const normalized = normalizeSnapshot(rawItems, savedIDs, checkpointTime);
   const grouped = groupFeedItems(normalized);
 
   return {

@@ -647,7 +647,11 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
         onScrollToIndexFailed={(info) => {
           listRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: false });
         }}
-        refreshControl={<RefreshControl refreshing={app.isRefreshing} onRefresh={handleRefresh} />}
+        refreshControl={
+          Platform.OS === "android" ? undefined : (
+            <RefreshControl refreshing={app.isRefreshing} onRefresh={handleRefresh} />
+          )
+        }
         onScroll={onScroll}
         scrollEventThrottle={100}
         onEndReached={onEndReached}

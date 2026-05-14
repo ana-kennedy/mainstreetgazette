@@ -460,29 +460,49 @@ export function OnboardingScreen({ sources, settings, onComplete }: OnboardingPr
           {/* Appearance */}
           <Text style={[styles.prefLabel, { color: theme.colors.onSurface }]}>Appearance</Text>
           <View
-            style={styles.themeRow}
-            accessible
             accessibilityRole="radiogroup"
             accessibilityLabel="App appearance"
           >
-            <ThemeOption
-              icon="cellphone"
-              label="System"
-              selected={colorTheme === "system"}
-              onSelect={() => setColorTheme("system")}
-            />
-            <ThemeOption
-              icon="weather-sunny"
-              label="Light"
-              selected={colorTheme === "light"}
-              onSelect={() => setColorTheme("light")}
-            />
-            <ThemeOption
-              icon="moon-waning-crescent"
-              label="Dark"
-              selected={colorTheme === "dark"}
-              onSelect={() => setColorTheme("dark")}
-            />
+            <View style={styles.themeRow}>
+              <ThemeOption
+                icon="cellphone"
+                label="System"
+                selected={colorTheme === "system"}
+                onSelect={() => setColorTheme("system")}
+              />
+              <ThemeOption
+                icon="weather-sunny"
+                label="Light"
+                selected={colorTheme === "light"}
+                onSelect={() => setColorTheme("light")}
+              />
+              <ThemeOption
+                icon="moon-waning-crescent"
+                label="Dark"
+                selected={colorTheme === "dark"}
+                onSelect={() => setColorTheme("dark")}
+              />
+            </View>
+            <View style={[styles.themeRow, { marginTop: 10 }]}>
+              <ThemeOption
+                icon="castle"
+                label="Gazette"
+                selected={colorTheme === "gazette"}
+                onSelect={() => setColorTheme("gazette")}
+              />
+              <ThemeOption
+                icon="weather-night"
+                label="Midnight"
+                selected={colorTheme === "midnight"}
+                onSelect={() => setColorTheme("midnight")}
+              />
+              <ThemeOption
+                icon="magic-staff"
+                label="Fantasy"
+                selected={colorTheme === "fantasy"}
+                onSelect={() => setColorTheme("fantasy")}
+              />
+            </View>
           </View>
         </ScrollView>
 

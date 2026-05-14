@@ -61,12 +61,15 @@ export function SourceManageScreen({ navigation }: Props) {
 
   const sections = useMemo(() => {
     const filtered = searchSources(app.sources, app.searchQuery);
-    const articles = filtered.filter((s) => s.sourceType === "rssArticle");
+    const rssArticles = filtered.filter((s) => s.sourceType === "rssArticle");
+    const articles = rssArticles.filter((s) => !s.categoryTags.includes("international"));
+    const international = rssArticles.filter((s) => s.categoryTags.includes("international"));
     const videos = filtered.filter((s) => s.sourceType === "youtubeChannel");
     const podcasts = filtered.filter((s) => s.sourceType === "podcastRSS");
     const social = filtered.filter((s) => s.sourceType === "redditFeed");
     const result: { title: string; data: Source[] }[] = [];
     if (articles.length > 0) result.push({ title: "Articles", data: articles });
+    if (international.length > 0) result.push({ title: "International", data: international });
     if (videos.length > 0) result.push({ title: "Videos", data: videos });
     if (podcasts.length > 0) result.push({ title: "Podcasts", data: podcasts });
     if (social.length > 0) result.push({ title: "Social", data: social });

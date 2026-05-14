@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { AccessibilityInfo } from "react-native";
+import { AccessibilityInfo, AppState } from "react-native";
 import type { FeedItem, Source, StoryGroup, UserSettings } from "../domain/models";
 import { refreshFeeds } from "../services/feedEngine";
 import {
@@ -62,9 +62,13 @@ function mergeSaved(items: FeedItem[], savedIDs: string[]): FeedItem[] {
   }));
 }
 
-function refreshFailureMessage(failureCount: number): string {
-  if (failureCount === 0) return "";
-  return failureCount === 1 ? " 1 source failed." : ` ${failureCount} sources failed.`;
+function refreshFailureMessage(failures: { sourceID: string; message: string }[], sources: Source[]): string {
+  if (failures.length === 0) return "";
+  if (failures.length === 1) {
+    const name = sources.find((s) => s.id === failures[0].sourceID)?.name ?? "1 source";
+    return ` ${name} failed to refresh.`;
+  }
+  return ` ${failures.length} sources failed.`;
 }
 
 function refreshErrorMessage(failures: { sourceID: string; message: string }[]): string {
@@ -112,8 +116,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setErrorMessage(null);
     try {
       const checkpointDate = await loadCheckpointDate();
-      const result = await refreshFeeds(sources, savedIDs, checkpointDate);
-      const failureText = refreshFailureMessage(result.failures.length);
+
+      // Snapshot whether the list already has content before this refresh starts.
+      // Streaming progress updates are only applied to an empty list — updating a
+      // live list mid-read would shuffle items under VoiceOver users' focus.
+      const hadItemsBefore = items.length > 0;
+
+      const onProgress = (partialItems: FeedItem[]) => {
+        if (hadItemsBefore) return;
+        let displayItems = mergeRead(partialItems, readIDs);
+        if (isFirstLaunchRef.current) {
+          const threeDaysAgo = Date.now() - 3 * 24 * 60 * 60 * 1000;
+          displayItems = displayItems.filter((item) => new Date(item.publishedAt).getTime() >= threeDaysAgo);
+        }
+        const { groups: partialGroups } = groupFeedItems(displayItems);
+        setItems(displayItems);
+        setGroups(partialGroups);
+      };
+
+      const result = await refreshFeeds(sources, savedIDs, checkpointDate, onProgress);
+      const failureText = refreshFailureMessage(result.failures, sources);
 
       // On first-ever launch, restrict feed to the past 3 days so the initial
       // load isn't overwhelming. Subsequent launches get the full source output.
@@ -132,9 +154,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       if (!shouldKeepExistingFeed) {
         const readItems = mergeRead(freshItems, readIDs);
-        const { groups: freshGroups } = groupFeedItems(readItems);
-        setItems(readItems);
-        setGroups(freshGroups);
+        // Only re-render the list if items actually changed. Identical result (no new
+        // stories) should be a silent no-op so VoiceOver focus is never disrupted.
+        const existingIDs = new Set(items.map((item) => item.id));
+        const hasNewItems = readItems.some((item) => !existingIDs.has(item.id));
+        if (hasNewItems || !hadItemsBefore) {
+          const { groups: freshGroups } = groupFeedItems(readItems);
+          setItems(readItems);
+          setGroups(freshGroups);
+        }
         await saveCachedFeed(readItems);
       }
 
@@ -143,9 +171,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isFirstLaunchRef.current = false;
       }
 
-      const summary = shouldKeepExistingFeed
-        ? `Refresh found no new items and kept your current feed.${failureText}`
-        : `Refreshed ${freshItems.length} items from ${result.fetchedSourceCount} sources.${failureText}`;
+      const existingIDs = new Set(items.map((item) => item.id));
+      const newItemCount = freshItems.filter((item) => !existingIDs.has(item.id)).length;
+      const summary = shouldKeepExistingFeed || newItemCount === 0
+        ? `No new stories.${failureText}`
+        : `${newItemCount} new ${newItemCount === 1 ? "story" : "stories"}.${failureText}`;
       setErrorMessage(freshItems.length === 0 ? refreshErrorMessage(result.failures) : null);
       setLastRefreshSummary(summary);
       AccessibilityInfo.announceForAccessibility(summary);
@@ -157,7 +187,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       isRefreshingRef.current = false;
       setIsRefreshing(false);
     }
-  }, [items.length, readIDs, savedIDs, settings, sources]);
+  }, [items, readIDs, savedIDs, settings, sources]);
 
   useEffect(() => {
     let mounted = true;
@@ -204,6 +234,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       refresh();
     }
   }, [isLoading, refresh, settings?.autoRefreshOnLaunch, sources.length]);
+
+  // Keep a stable ref to the latest refresh so the interval never captures a stale closure
+  // and doesn't need to reset the 60s countdown every time items update during streaming.
+  const refreshRef = useRef(refresh);
+  useEffect(() => { refreshRef.current = refresh; }, [refresh]);
+
+  useEffect(() => {
+    if (isLoading || isFirstLaunch || sources.length === 0) return;
+    const interval = setInterval(() => {
+      if (AppState.currentState === "active") {
+        refreshRef.current();
+      }
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, [isLoading, isFirstLaunch, sources.length]);
 
   const toggleSaved = useCallback(
     async (itemID: string) => {

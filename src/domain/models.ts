@@ -26,7 +26,8 @@ export type SourceCategory =
   | "podcast"
   | "official"
   | "community"
-  | "social";
+  | "social"
+  | "international";
 export type SourceType = "rssArticle" | "youtubeChannel" | "podcastRSS" | "redditFeed";
 export type TrustLabel = "official" | "verifiedNews" | "communitySource";
 export type VideoOpenMode = "inAppBrowser" | "safari" | "youtubeApp";

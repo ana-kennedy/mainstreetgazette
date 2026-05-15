@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Modal,
@@ -12,9 +12,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SvgProps } from "react-native-svg";
 
+import { FeedItemCard } from "../components/FeedItemCard";
 import { Screen } from "../components/Screen";
 import { WeatherContent } from "../components/WeatherModal";
+import { useAppContext } from "../context/AppContext";
 import { useSounds } from "../context/SoundContext";
+import type { ParkTagKey } from "../utils/parkTagger";
 import { DISNEY_PARKS, type WeatherData, fetchWeatherForPark } from "../services/weatherService";
 import {
   ParkHours,
@@ -48,6 +51,7 @@ interface ParkDefinition {
   fullName: string;
   Logo: SvgComponent;
   nameKeywords: string[];
+  parkTagKey: ParkTagKey;
 }
 
 interface ResortGroup {
@@ -61,55 +65,55 @@ const RESORT_GROUPS: ResortGroup[] = [
     resortId: "wdw",
     resortLabel: "Walt Disney World",
     parks: [
-      { key: "mk",  shortName: "Magic Kingdom",     fullName: "Magic Kingdom",                Logo: MagicKingdomSvg,         nameKeywords: ["magic kingdom"] },
-      { key: "ep",  shortName: "EPCOT",             fullName: "EPCOT",                        Logo: EpcotSvg,                nameKeywords: ["epcot"] },
-      { key: "hs",  shortName: "Hollywood Studios", fullName: "Hollywood Studios",            Logo: HollywoodStudiosSvg,     nameKeywords: ["hollywood studios"] },
-      { key: "ak",  shortName: "Animal Kingdom",    fullName: "Animal Kingdom",               Logo: AnimalKingdomSvg,        nameKeywords: ["animal kingdom"] },
+      { key: "mk",  shortName: "Magic Kingdom",     fullName: "Magic Kingdom",                Logo: MagicKingdomSvg,         nameKeywords: ["magic kingdom"],    parkTagKey: "magic_kingdom" },
+      { key: "ep",  shortName: "EPCOT",             fullName: "EPCOT",                        Logo: EpcotSvg,                nameKeywords: ["epcot"],            parkTagKey: "epcot" },
+      { key: "hs",  shortName: "Hollywood Studios", fullName: "Hollywood Studios",            Logo: HollywoodStudiosSvg,     nameKeywords: ["hollywood studios"], parkTagKey: "hollywood_studios" },
+      { key: "ak",  shortName: "Animal Kingdom",    fullName: "Animal Kingdom",               Logo: AnimalKingdomSvg,        nameKeywords: ["animal kingdom"],   parkTagKey: "animal_kingdom" },
     ],
   },
   {
     resortId: "dla",
     resortLabel: "Disneyland Resort",
     parks: [
-      { key: "dl",  shortName: "Disneyland",        fullName: "Disneyland Park",              Logo: DisneylandAnaheimSvg,    nameKeywords: ["disneyland"] },
-      { key: "ca",  shortName: "Calif. Adventure",  fullName: "Disney California Adventure",  Logo: CaliforniaAdventureSvg,  nameKeywords: ["california adventure"] },
+      { key: "dl",  shortName: "Disneyland",        fullName: "Disneyland Park",              Logo: DisneylandAnaheimSvg,    nameKeywords: ["disneyland"],             parkTagKey: "disneyland" },
+      { key: "ca",  shortName: "Calif. Adventure",  fullName: "Disney California Adventure",  Logo: CaliforniaAdventureSvg,  nameKeywords: ["california adventure"],   parkTagKey: "california_adventure" },
     ],
   },
   {
     resortId: "dlp",
     resortLabel: "Disneyland Paris",
     parks: [
-      { key: "dlp", shortName: "Disneyland Paris",  fullName: "Disneyland Park Paris",        Logo: DisneylandParisSvg,      nameKeywords: ["disneyland"] },
-      { key: "wds", shortName: "Walt Disney Studios", fullName: "Walt Disney Studios Park",   Logo: WaltDisneyStudiosParisSvg, nameKeywords: ["walt disney studios", "studios park", "adventure world"] },
+      { key: "dlp", shortName: "Disneyland Paris",  fullName: "Disneyland Park Paris",        Logo: DisneylandParisSvg,      nameKeywords: ["disneyland"],                                             parkTagKey: "disneyland_paris" },
+      { key: "wds", shortName: "Walt Disney Studios", fullName: "Walt Disney Studios Park",   Logo: WaltDisneyStudiosParisSvg, nameKeywords: ["walt disney studios", "studios park", "adventure world"],  parkTagKey: "walt_disney_studios_paris" },
     ],
   },
   {
     resortId: "tdr",
     resortLabel: "Tokyo Disney Resort",
     parks: [
-      { key: "tdl", shortName: "Tokyo Disneyland",  fullName: "Tokyo Disneyland",             Logo: TokyoDisneylandSvg,      nameKeywords: ["tokyo disneyland"] },
-      { key: "tds", shortName: "Tokyo DisneySea",   fullName: "Tokyo DisneySea",              Logo: TokyoDisneySea,          nameKeywords: ["disneysea", "disney sea"] },
+      { key: "tdl", shortName: "Tokyo Disneyland",  fullName: "Tokyo Disneyland",             Logo: TokyoDisneylandSvg,      nameKeywords: ["tokyo disneyland"],    parkTagKey: "tokyo_disneyland" },
+      { key: "tds", shortName: "Tokyo DisneySea",   fullName: "Tokyo DisneySea",              Logo: TokyoDisneySea,          nameKeywords: ["disneysea", "disney sea"], parkTagKey: "tokyo_disneysea" },
     ],
   },
   {
     resortId: "shdl",
     resortLabel: "Shanghai Disney Resort",
     parks: [
-      { key: "sdl", shortName: "Shanghai Disneyland", fullName: "Shanghai Disneyland",        Logo: ShanghaiDisneylandSvg,   nameKeywords: ["shanghai"] },
+      { key: "sdl", shortName: "Shanghai Disneyland", fullName: "Shanghai Disneyland",        Logo: ShanghaiDisneylandSvg,   nameKeywords: ["shanghai"],   parkTagKey: "shanghai_disneyland" },
     ],
   },
   {
     resortId: "hkdl",
     resortLabel: "Hong Kong Disneyland",
     parks: [
-      { key: "hkdl", shortName: "Hong Kong Disneyland", fullName: "Hong Kong Disneyland",    Logo: HongKongDisneylandSvg,   nameKeywords: ["hong kong"] },
+      { key: "hkdl", shortName: "Hong Kong Disneyland", fullName: "Hong Kong Disneyland",    Logo: HongKongDisneylandSvg,   nameKeywords: ["hong kong"],  parkTagKey: "hong_kong_disneyland" },
     ],
   },
 ];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type CollapsibleSection = "weather" | "hours" | "waittimes";
+type CollapsibleSection = "weather" | "hours" | "refurbishments" | "relatednews" | "waittimes";
 
 interface ParkData {
   isLoading: boolean;
@@ -138,6 +142,13 @@ function waitAccessLabel(entry: { status: string; waitMinutes: number | null }):
   if (entry.status === "REFURBISHMENT") return "Under refurbishment.";
   if (entry.waitMinutes !== null) return `${entry.waitMinutes} minute wait.`;
   return `${entry.status.charAt(0)}${entry.status.slice(1).toLowerCase()}.`;
+}
+
+function formatLastUpdated(isoString?: string): string {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
 // ─── ParkLogoButton ───────────────────────────────────────────────────────────
@@ -207,6 +218,7 @@ function ParkDetailSheet({
   const insets = useSafeAreaInsets();
   const weatherRef = useRef<View>(null);
   const { Logo } = park;
+  const app = useAppContext();
 
   const [expanded, setExpanded] = useState<Set<CollapsibleSection>>(new Set());
   const toggleSection = (section: CollapsibleSection) => {
@@ -219,6 +231,20 @@ function ParkDetailSheet({
   };
 
   const noWaitData = !data?.isLoading && data?.isLoaded && data.waitTimes.length === 0;
+
+  const RELATED_NEWS_LIMIT = 5;
+  const relatedNews = useMemo(() => {
+    const tag = `park:${park.parkTagKey}`;
+    return app.items
+      .filter((item) => item.tags.includes(tag))
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+      .slice(0, RELATED_NEWS_LIMIT);
+  }, [app.items, park.parkTagKey]);
+
+  const sourceByID = useMemo(
+    () => new Map(app.sources.map((s) => [s.id, s.name])),
+    [app.sources]
+  );
 
   return (
     <Modal
@@ -391,6 +417,136 @@ function ParkDetailSheet({
               ) : null}
             </>
           ) : null}
+
+          {/* Refurbishments */}
+          {data?.isLoaded ? (() => {
+            const refurbs = data.waitTimes.filter((a) => a.status === "REFURBISHMENT");
+            const countLabel = refurbs.length > 0 ? ` (${refurbs.length})` : "";
+            return (
+              <>
+                <Pressable
+                  onPress={() => toggleSection("refurbishments")}
+                  onLongPress={() => toggleSection("refurbishments")}
+                  style={({ pressed }) => [styles.collapsibleHeader, pressed && { opacity: 0.65 }]}
+                  accessible
+                  accessibilityRole="button"
+                  accessibilityLabel={`Refurbishments${countLabel}, ${expanded.has("refurbishments") ? "expanded" : "collapsed"}`}
+                  accessibilityHint="Double tap or long press to expand or collapse."
+                >
+                  <Text style={[styles.sectionHeader, { color: theme.colors.onSurface }]}>
+                    Refurbishments{countLabel}
+                  </Text>
+                  <MaterialCommunityIcons
+                    name={expanded.has("refurbishments") ? "chevron-up" : "chevron-down"}
+                    size={20}
+                    color={theme.colors.onSurfaceVariant}
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                  />
+                </Pressable>
+                {expanded.has("refurbishments") ? (
+                  data.waitError ? (
+                    <Text style={[styles.errorText, { color: theme.colors.error }]} accessibilityRole="alert">
+                      {data.waitError}
+                    </Text>
+                  ) : refurbs.length === 0 ? (
+                    <Text
+                      style={[styles.emptyNote, { color: theme.colors.onSurfaceVariant }]}
+                      accessible
+                      accessibilityLabel={`No current refurbishments at ${park.fullName}.`}
+                    >
+                      No current refurbishments.
+                    </Text>
+                  ) : (
+                    refurbs.map((a) => {
+                      const updatedLabel = formatLastUpdated(a.lastUpdated);
+                      return (
+                        <View
+                          key={a.id}
+                          accessible
+                          style={[styles.refurbRow, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
+                          accessibilityLabel={`${a.name}. Under refurbishment.${updatedLabel ? ` As of ${updatedLabel}.` : ""}`}
+                        >
+                          <MaterialCommunityIcons
+                            name="wrench-outline"
+                            size={16}
+                            color={theme.colors.onSurfaceVariant}
+                            style={styles.refurbIcon}
+                            accessibilityElementsHidden
+                            importantForAccessibility="no-hide-descendants"
+                          />
+                          <View style={styles.refurbTextGroup} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                            <Text style={[styles.refurbName, { color: theme.colors.onSurface }]} numberOfLines={3}>
+                              {a.name}
+                            </Text>
+                            {updatedLabel ? (
+                              <Text style={[styles.refurbUpdated, { color: theme.colors.onSurfaceVariant }]}>
+                                As of {updatedLabel}
+                              </Text>
+                            ) : null}
+                          </View>
+                        </View>
+                      );
+                    })
+                  )
+                ) : null}
+              </>
+            );
+          })() : null}
+
+          {/* Related News */}
+          {data?.isLoaded ? (() => {
+            const countLabel = relatedNews.length > 0 ? ` (${relatedNews.length})` : "";
+            return (
+              <>
+                <Pressable
+                  onPress={() => toggleSection("relatednews")}
+                  onLongPress={() => toggleSection("relatednews")}
+                  style={({ pressed }) => [styles.collapsibleHeader, pressed && { opacity: 0.65 }]}
+                  accessible
+                  accessibilityRole="button"
+                  accessibilityLabel={`Related News${countLabel}, ${expanded.has("relatednews") ? "expanded" : "collapsed"}`}
+                  accessibilityHint="Double tap or long press to expand or collapse."
+                >
+                  <Text style={[styles.sectionHeader, { color: theme.colors.onSurface }]}>
+                    Related News{countLabel}
+                  </Text>
+                  <MaterialCommunityIcons
+                    name={expanded.has("relatednews") ? "chevron-up" : "chevron-down"}
+                    size={20}
+                    color={theme.colors.onSurfaceVariant}
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                  />
+                </Pressable>
+                {expanded.has("relatednews") ? (
+                  relatedNews.length === 0 ? (
+                    <Text
+                      style={[styles.emptyNote, { color: theme.colors.onSurfaceVariant }]}
+                      accessible
+                      accessibilityLabel={`No related news found for ${park.fullName} yet. Refresh feeds to load the latest stories.`}
+                    >
+                      No related stories yet. Pull to refresh on the News tab.
+                    </Text>
+                  ) : (
+                    relatedNews.map((item) => (
+                      <FeedItemCard
+                        key={item.id}
+                        item={item}
+                        settings={app.settings}
+                        displayMode="full"
+                        sourceName={sourceByID.get(item.sourceID) ?? "Unknown"}
+                        onOpen={() => {}}
+                        onToggleSaved={app.toggleSaved}
+                        onSetMarker={app.setCheckpointAtItem}
+                        onMarkRead={app.markAsRead}
+                      />
+                    ))
+                  )
+                ) : null}
+              </>
+            );
+          })() : null}
 
           {/* Wait Times */}
           {data?.isLoaded ? (
@@ -778,6 +934,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     minWidth: 76,
     textAlign: "right",
+  },
+
+  // Refurbishments
+  refurbRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 10,
+  },
+  refurbIcon: {
+    marginTop: 2,
+  },
+  refurbTextGroup: {
+    flex: 1,
+    gap: 3,
+  },
+  refurbName: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  refurbUpdated: {
+    fontSize: 12,
+    lineHeight: 16,
   },
 
   // Notes

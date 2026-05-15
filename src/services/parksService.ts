@@ -37,6 +37,7 @@ export interface WaitTimeEntry {
   name: string;
   status: string;
   waitMinutes: number | null;
+  lastUpdated?: string;
 }
 
 export interface ParkLiveData {
@@ -181,6 +182,7 @@ export async function fetchParkLiveData(park: ParkSummary): Promise<ParkLiveData
       name: string;
       entityType: string;
       status: string;
+      lastUpdated?: string;
       queue?: { STANDBY?: { waitTime: number | null } };
     }>;
   };
@@ -192,6 +194,7 @@ export async function fetchParkLiveData(park: ParkSummary): Promise<ParkLiveData
       name: item.name,
       status: item.status,
       waitMinutes: item.queue?.STANDBY?.waitTime ?? null,
+      lastUpdated: item.lastUpdated,
     }))
     .sort((a, b) => {
       const aOp = a.status === "OPERATING";

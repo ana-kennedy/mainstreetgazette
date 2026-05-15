@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultUserSettings, type FeedItem, type PlaybackProgress, type PlaybackQueueItem, type Source, type UserSettings } from "../domain/models";
+import { defaultUserSettings, type FeedItem, type PlaybackProgress, type PlaybackQueueItem, type Source, type SourceMeta, type UserSettings } from "../domain/models";
 import { loadBundledSources } from "./sourceCatalog";
 
-type StorageKey = "sources" | "feed" | "savedIDs" | "readIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread" | "lastSelectedNews";
+type StorageKey = "sources" | "feed" | "savedIDs" | "readIDs" | "settings" | "queue" | "progress" | "checkpoint" | "firstLaunch" | "scrollToday" | "scrollAllUnread" | "lastSelectedNews" | "sourceMeta";
 
 const keys: Record<StorageKey, string> = {
   sources: "mainstreetgazette.sources",
@@ -17,6 +17,7 @@ const keys: Record<StorageKey, string> = {
   scrollToday: "mainstreetgazette.scrollToday",
   scrollAllUnread: "mainstreetgazette.scrollAllUnread",
   lastSelectedNews: "mainstreetgazette.lastSelectedNews",
+  sourceMeta: "mainstreetgazette.sourceMeta",
 };
 
 const legacyKeys: Partial<Record<StorageKey, string>> = {
@@ -161,4 +162,12 @@ export async function loadLastSelectedID(): Promise<string | null> {
 
 export async function saveLastSelectedID(itemID: string): Promise<void> {
   await AsyncStorage.setItem(keys.lastSelectedNews, itemID);
+}
+
+export async function loadSourceMeta(): Promise<Record<string, SourceMeta>> {
+  return readJSON(keys.sourceMeta, {});
+}
+
+export async function saveSourceMeta(meta: Record<string, SourceMeta>): Promise<void> {
+  await writeJSON(keys.sourceMeta, meta);
 }

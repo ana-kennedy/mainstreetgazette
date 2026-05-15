@@ -15,6 +15,21 @@ export type SmartView =
   | "downloadedPodcasts"
   | "continueListening"
   | "upNext";
+export type ParkFilterKey =
+  | "all"
+  | "magic_kingdom"
+  | "epcot"
+  | "hollywood_studios"
+  | "animal_kingdom"
+  | "disneyland"
+  | "california_adventure"
+  | "disneyland_paris"
+  | "walt_disney_studios_paris"
+  | "tokyo_disneyland"
+  | "tokyo_disneysea"
+  | "shanghai_disneyland"
+  | "hong_kong_disneyland";
+
 export type SortOrder = "newestFirst" | "oldestFirst";
 export type SourceCategory =
   | "parksNews"
@@ -151,6 +166,15 @@ export interface UserSettings {
   simplifiedLayoutEnabled: boolean;
   timelineDisplayMode: "full" | "minimal";
   timelineContentFilter: "all" | ContentType | "social";
+  parkFilter: ParkFilterKey;
+}
+
+export interface SourceMeta {
+  etag?: string;
+  lastModified?: string;
+  rawHash?: string;
+  failureCount?: number;
+  nextRetryAt?: string;
 }
 
 export interface RefreshResult {
@@ -159,6 +183,7 @@ export interface RefreshResult {
   fetchedSourceCount: number;
   fetchedItemCount: number;
   failures: { sourceID: string; message: string }[];
+  updatedSourceMeta: Record<string, SourceMeta>;
 }
 
 export const defaultUserSettings: UserSettings = {
@@ -191,5 +216,6 @@ export const defaultUserSettings: UserSettings = {
   hideThumbnailsForLowVision: false,
   simplifiedLayoutEnabled: false,
   timelineDisplayMode: "full",
-  timelineContentFilter: "all"
+  timelineContentFilter: "all",
+  parkFilter: "all",
 };

@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo, AppState } from "react-native";
-import type { FeedItem, Source, StoryGroup, UserSettings } from "../domain/models";
+import type { FeedItem, Source, SourceMeta, StoryGroup, UserSettings } from "../domain/models";
 import { refreshFeeds } from "../services/feedEngine";
 import {
   loadCachedFeed,
@@ -9,6 +9,7 @@ import {
   loadReadIDs,
   loadSavedIDs,
   loadSettings,
+  loadSourceMeta,
   loadSources,
   saveCachedFeed,
   saveCheckpointDate,
@@ -16,10 +17,12 @@ import {
   saveReadIDs,
   saveSavedIDs,
   saveSettings,
+  saveSourceMeta,
   saveSources
 } from "../services/storage";
 import { groupFeedItems } from "../utils/grouping";
 import { stripHTML } from "../utils/formatting";
+import { applyParkTags } from "../utils/parkTagger";
 
 interface AppContextValue {
   items: FeedItem[];
@@ -105,6 +108,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const isRefreshingRef = useRef(false);
   const autoRefreshAttemptedRef = useRef(false);
   const isFirstLaunchRef = useRef(false);
+  const sourceMetaRef = useRef<Record<string, SourceMeta>>({});
 
   const refresh = useCallback(async () => {
     if (isRefreshingRef.current) {
@@ -134,7 +138,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setGroups(partialGroups);
       };
 
-      const result = await refreshFeeds(sources, savedIDs, checkpointDate, onProgress);
+      const result = await refreshFeeds(sources, savedIDs, sourceMetaRef.current, items, checkpointDate, onProgress);
+      sourceMetaRef.current = result.updatedSourceMeta;
       const failureText = refreshFailureMessage(result.failures, sources);
 
       // On first-ever launch, restrict feed to the past 3 days so the initial
@@ -163,7 +168,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           setItems(readItems);
           setGroups(freshGroups);
         }
-        await saveCachedFeed(readItems);
+        await Promise.all([saveCachedFeed(readItems), saveSourceMeta(result.updatedSourceMeta)]);
       }
 
       if (isFirstLaunchRef.current) {
@@ -193,13 +198,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     let mounted = true;
     async function hydrate() {
       // Load sources, settings, and ids first (small/fast) so the UI can show immediately.
-      const [loadedSources, loadedSavedIDs, loadedReadIDs, loadedSettings, hasLaunchedBefore] = await Promise.all([
+      const [loadedSources, loadedSavedIDs, loadedReadIDs, loadedSettings, hasLaunchedBefore, loadedSourceMeta] = await Promise.all([
         loadSources(),
         loadSavedIDs(),
         loadReadIDs(),
         loadSettings(),
-        loadHasLaunchedBefore()
+        loadHasLaunchedBefore(),
+        loadSourceMeta()
       ]);
+      sourceMetaRef.current = loadedSourceMeta;
       if (!mounted) return;
       isFirstLaunchRef.current = !hasLaunchedBefore;
       setIsFirstLaunch(!hasLaunchedBefore);
@@ -214,7 +221,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (loadedSettings.offlineSavingEnabled) {
         const cachedFeed = await loadCachedFeed();
         if (!mounted) return;
-        const cachedItems = mergeRead(mergeSaved(cachedFeed, loadedSavedIDs), loadedReadIDs);
+        const retagged = cachedFeed.map((item) => ({
+          ...item,
+          tags: applyParkTags(`${item.title} ${item.summary ?? ""}`, item.tags),
+        }));
+        const cachedItems = mergeRead(mergeSaved(retagged, loadedSavedIDs), loadedReadIDs);
         setItems((prev) => (prev.length > 0 ? prev : cachedItems));
         setGroups((prev) => (prev.length > 0 ? prev : groupFeedItems(cachedItems).groups));
       }
@@ -246,7 +257,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (AppState.currentState === "active") {
         refreshRef.current();
       }
-    }, 60_000);
+    }, 300_000);
     return () => clearInterval(interval);
   }, [isLoading, isFirstLaunch, sources.length]);
 

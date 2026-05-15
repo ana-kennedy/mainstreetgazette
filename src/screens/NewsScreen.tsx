@@ -20,7 +20,7 @@ import { PlainSearchField } from "../components/PlainSearchField";
 import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import { usePlayback } from "../context/PlaybackContext";
-import type { ContentType, FeedItem } from "../domain/models";
+import type { ContentType, FeedItem, ParkFilterKey } from "../domain/models";
 import { searchFeedItems } from "../utils/search";
 import { loadScrollPosition, saveScrollPosition, saveLastSelectedID } from "../services/storage";
 
@@ -39,6 +39,38 @@ const filterLabels: Record<Filter, string> = {
   social: "Social"
 };
 
+const parkFilterOrder: ParkFilterKey[] = [
+  "all",
+  "magic_kingdom",
+  "epcot",
+  "hollywood_studios",
+  "animal_kingdom",
+  "disneyland",
+  "california_adventure",
+  "disneyland_paris",
+  "walt_disney_studios_paris",
+  "tokyo_disneyland",
+  "tokyo_disneysea",
+  "shanghai_disneyland",
+  "hong_kong_disneyland",
+];
+
+const parkFilterLabels: Record<ParkFilterKey, string> = {
+  all: "All Parks",
+  magic_kingdom: "Magic Kingdom",
+  epcot: "EPCOT",
+  hollywood_studios: "Hollywood Studios",
+  animal_kingdom: "Animal Kingdom",
+  disneyland: "Disneyland",
+  california_adventure: "Calif. Adventure",
+  disneyland_paris: "Disneyland Paris",
+  walt_disney_studios_paris: "WD Studios Paris",
+  tokyo_disneyland: "Tokyo Disneyland",
+  tokyo_disneysea: "Tokyo DisneySea",
+  shanghai_disneyland: "Shanghai",
+  hong_kong_disneyland: "Hong Kong",
+};
+
 export interface NewsScreenCoreProps {
   mode: "today" | "allUnread";
   onNavigateToDetail: (item: FeedItem) => void;
@@ -52,6 +84,9 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
   const { width: screenWidth } = useWindowDimensions();
   const filter: Filter = app.settings?.timelineContentFilter ?? "all";
   const displayMode: DisplayMode = app.settings?.timelineDisplayMode ?? "full";
+  const parkFilter: ParkFilterKey = app.settings?.parkFilter ?? "all";
+  const parkFilterActive = parkFilter !== "all";
+  const effectiveFilter: Filter = parkFilterActive ? "article" : filter;
   const [isTimelineMenuVisible, setIsTimelineMenuVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [dismissedError, setDismissedError] = useState<string | null>(null);
@@ -159,17 +194,21 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
       ? baseItems.filter((item) => item.isNewRelativeToCheckpoint)
       : baseItems;
     const typeFiltered =
-      filter === "all"
+      effectiveFilter === "all"
         ? newFiltered
-        : filter === "social"
+        : effectiveFilter === "social"
           ? newFiltered.filter((item) => item.sourceType === "redditFeed")
-          : newFiltered.filter((item) => item.contentType === filter);
-    const searched = searchFeedItems(typeFiltered, app.searchQuery);
+          : newFiltered.filter((item) => item.contentType === effectiveFilter);
+    const parkFiltered =
+      parkFilter === "all"
+        ? typeFiltered
+        : typeFiltered.filter((item) => item.tags.includes(`park:${parkFilter}`));
+    const searched = searchFeedItems(parkFiltered, app.searchQuery);
     return [...searched].sort((lhs, rhs) => {
       const delta = new Date(rhs.publishedAt).getTime() - new Date(lhs.publishedAt).getTime();
       return app.settings?.sortOrder === "oldestFirst" ? -delta : delta;
     });
-  }, [baseItems, app.searchQuery, app.settings?.showOnlyNew, app.settings?.sortOrder, filter]);
+  }, [baseItems, app.searchQuery, app.settings?.showOnlyNew, app.settings?.sortOrder, effectiveFilter, parkFilter]);
 
   const displayedItems = useMemo(() => visibleItems.slice(0, visibleCount), [visibleCount, visibleItems]);
   const hasMoreItems = displayedItems.length < visibleItems.length;
@@ -237,7 +276,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
     }
     setVisibleCount(PAGE_SIZE);
     setPendingFocusItemID(null);
-  }, [app.items.length, app.searchQuery, app.settings?.showOnlyNew, app.settings?.sortOrder, app.settings?.timelineContentFilter]);
+  }, [app.items.length, app.searchQuery, app.settings?.showOnlyNew, app.settings?.sortOrder, app.settings?.timelineContentFilter, app.settings?.parkFilter]);
 
   useEffect(() => {
     if (!pendingFocusItemID) return;
@@ -424,7 +463,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
             mode="outlined"
             icon="tune-variant"
             onPress={() => setIsTimelineMenuVisible((current) => !current)}
-            accessibilityLabel={`Timeline menu. Display: ${filterLabels[filter]}`}
+            accessibilityLabel={`Timeline menu. Display: ${filterLabels[filter]}${parkFilter !== "all" ? `, Park: ${parkFilterLabels[parkFilter]}` : ""}`}
             accessibilityRole="button"
             accessibilityState={{ expanded: isTimelineMenuVisible }}
             accessibilityHint={
@@ -513,29 +552,84 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
               </View>
             </Pressable>
 
-            {/* Filter — adjustable: VoiceOver swipes up/down, sighted users tap to cycle */}
+            {/* Filter — locked to Articles when By Park is active */}
             <Pressable
               accessible
               accessibilityRole="adjustable"
-              accessibilityLabel={`Filter: ${filterLabels[filter]}`}
-              accessibilityValue={{ text: filterLabels[filter] }}
-              accessibilityHint="Swipe up or down with VoiceOver, or double tap to cycle."
+              accessibilityLabel={
+                parkFilterActive
+                  ? `Filter: Articles, locked. By Park filter is active.`
+                  : `Filter: ${filterLabels[filter]}`
+              }
+              accessibilityValue={{ text: parkFilterActive ? "Articles (locked)" : filterLabels[filter] }}
+              accessibilityHint={
+                parkFilterActive
+                  ? "Filter is locked to Articles while a park is selected. Change By Park to All to unlock."
+                  : "Swipe up or down with VoiceOver, or double tap to cycle."
+              }
               accessibilityActions={[
                 { name: "increment", label: "next filter" },
                 { name: "decrement", label: "previous filter" }
               ]}
-              onAccessibilityAction={({ nativeEvent: { actionName } }) => {
-                if (!app.settings) return;
-                const idx = filterOrder.indexOf(filter);
-                const next = actionName === "increment"
-                  ? filterOrder[(idx + 1) % filterOrder.length]
-                  : filterOrder[(idx - 1 + filterOrder.length) % filterOrder.length];
-                app.updateSettings({ ...app.settings, timelineContentFilter: next });
-              }}
-              onPress={() => {
+              onAccessibilityAction={() => {
+                if (parkFilterActive) {
+                  AccessibilityInfo.announceForAccessibility(
+                    "Filter is locked to Articles while a park is selected. Set By Park to All Parks to change the filter."
+                  );
+                  return;
+                }
                 if (!app.settings) return;
                 const idx = filterOrder.indexOf(filter);
                 app.updateSettings({ ...app.settings, timelineContentFilter: filterOrder[(idx + 1) % filterOrder.length] });
+              }}
+              onPress={() => {
+                if (parkFilterActive) {
+                  AccessibilityInfo.announceForAccessibility(
+                    "Filter is locked to Articles while a park is selected. Set By Park to All Parks to change the filter."
+                  );
+                  return;
+                }
+                if (!app.settings) return;
+                const idx = filterOrder.indexOf(filter);
+                app.updateSettings({ ...app.settings, timelineContentFilter: filterOrder[(idx + 1) % filterOrder.length] });
+              }}
+              style={({ pressed }) => [
+                styles.menuItem,
+                { backgroundColor: pressed ? theme.colors.surfaceVariant : theme.colors.surface },
+                parkFilterActive && { opacity: 0.4 },
+              ]}
+            >
+              <View style={styles.menuItemRow} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>Filter</Text>
+                <Text style={{ color: theme.colors.primary }}>
+                  {parkFilterActive ? "Articles (locked)" : `${filterLabels[filter]} ▾`}
+                </Text>
+              </View>
+            </Pressable>
+
+            {/* By Park — adjustable: VoiceOver swipes up/down, sighted users tap to cycle */}
+            <Pressable
+              accessible
+              accessibilityRole="adjustable"
+              accessibilityLabel={`By Park: ${parkFilterLabels[parkFilter]}`}
+              accessibilityValue={{ text: parkFilterLabels[parkFilter] }}
+              accessibilityHint="Swipe up or down with VoiceOver, or double tap to cycle through parks."
+              accessibilityActions={[
+                { name: "increment", label: "next park" },
+                { name: "decrement", label: "previous park" }
+              ]}
+              onAccessibilityAction={({ nativeEvent: { actionName } }) => {
+                if (!app.settings) return;
+                const idx = parkFilterOrder.indexOf(parkFilter);
+                const next = actionName === "increment"
+                  ? parkFilterOrder[(idx + 1) % parkFilterOrder.length]
+                  : parkFilterOrder[(idx - 1 + parkFilterOrder.length) % parkFilterOrder.length];
+                app.updateSettings({ ...app.settings, parkFilter: next });
+              }}
+              onPress={() => {
+                if (!app.settings) return;
+                const idx = parkFilterOrder.indexOf(parkFilter);
+                app.updateSettings({ ...app.settings, parkFilter: parkFilterOrder[(idx + 1) % parkFilterOrder.length] });
               }}
               style={({ pressed }) => [
                 styles.menuItem,
@@ -543,8 +637,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
               ]}
             >
               <View style={styles.menuItemRow} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>Filter</Text>
-                <Text style={{ color: theme.colors.primary }}>{filterLabels[filter]} ▾</Text>
+                <Text style={{ color: theme.colors.onSurface, flex: 1 }}>By Park</Text>
+                <Text style={{ color: theme.colors.primary }}>{parkFilterLabels[parkFilter]} ▾</Text>
               </View>
             </Pressable>
 

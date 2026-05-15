@@ -634,12 +634,13 @@ function ParkDetailSheet({
 const LOAD_TIMEOUT_MS = 20_000;
 
 function raceTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`${label} timed out. Check your connection.`)), LOAD_TIMEOUT_MS)
-    ),
-  ]);
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label} timed out. Check your connection.`)), LOAD_TIMEOUT_MS);
+  });
+  return Promise.race([promise, timeout]).finally(() => {
+    if (timer !== null) clearTimeout(timer);
+  }) as Promise<T>;
 }
 
 export function ParksScreen() {

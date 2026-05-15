@@ -78,11 +78,6 @@ export async function fetchDisneyDestinations(): Promise<DestinationInfo[]> {
       parks: d.parks.map((p) => ({ id: p.id, name: p.name })),
     }));
 
-  console.log(
-    "[parksService] Disney destinations found:",
-    destinationsCache.map((d) => d.slug)
-  );
-
   return destinationsCache;
 }
 
@@ -95,9 +90,6 @@ export function getDestinationForWeatherPark(
     const combined = (d.slug + " " + d.name).toLowerCase();
     return keywords.some((kw) => combined.includes(kw));
   });
-  if (!match) {
-    console.log(`[parksService] No destination match for weatherParkId="${weatherParkId}". Available slugs:`, destinations.map((d) => d.slug));
-  }
   return match ?? null;
 }
 

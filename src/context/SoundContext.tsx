@@ -16,7 +16,7 @@ const SoundContext = createContext<SoundContextValue>({
 });
 
 const SOUND_SOURCES = {
-  confirm: require("../../sounds/newconfirmsound.mp3"),
+  confirm: require("../../sounds/newconfirm.mp3"),
   select: require("../../sounds/newselectsound.mp3"),
   back: require("../../sounds/newbacksound.mp3"),
   magic: require("../../sounds/magic.wav")

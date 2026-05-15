@@ -3,7 +3,7 @@ import type { AudioPlayer } from "expo-audio";
 import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
-import { loadQueue, savePlaybackProgress, saveQueue } from "../services/storage";
+import { loadPlaybackProgress, loadQueue, savePlaybackProgress, saveQueue } from "../services/storage";
 
 function isHTTPSURL(value: string): boolean {
   try {
@@ -153,6 +153,12 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         // Tear down the previous player before creating a new one.
         await unloadCurrent();
 
+        // Load saved progress before creating the player so the initial position is correct.
+        const allProgress = await loadPlaybackProgress();
+        const savedProgress = allProgress.find(
+          (p) => p.feedItemID === item.id && !p.isCompleted && p.positionSeconds > 5
+        );
+
         // expo-audio: create player, wire up status listener, then play.
         const player = createAudioPlayer({ uri: item.canonicalURL });
         player.setPlaybackRate(currentSpeed);
@@ -161,9 +167,12 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
 
         setActiveItem(item);
         setDurationSeconds(item.durationSeconds ?? 0);
-        setCurrentTimeSeconds(0);
+        setCurrentTimeSeconds(savedProgress?.positionSeconds ?? 0);
 
         player.play();
+        if (savedProgress) {
+          player.seekTo(savedProgress.positionSeconds);
+        }
         setIsPlaying(true);
         AccessibilityInfo.announceForAccessibility(`Playing ${item.title}.`);
       } catch (error) {

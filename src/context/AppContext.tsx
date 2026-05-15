@@ -168,8 +168,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           setItems(readItems);
           setGroups(freshGroups);
         }
-        await Promise.all([saveCachedFeed(readItems), saveSourceMeta(result.updatedSourceMeta)]);
+        await saveCachedFeed(readItems);
       }
+      await saveSourceMeta(result.updatedSourceMeta);
 
       if (isFirstLaunchRef.current) {
         await saveHasLaunchedBefore();

@@ -571,7 +571,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
                 { name: "increment", label: "next filter" },
                 { name: "decrement", label: "previous filter" }
               ]}
-              onAccessibilityAction={() => {
+              onAccessibilityAction={({ nativeEvent: { actionName } }) => {
                 if (parkFilterActive) {
                   AccessibilityInfo.announceForAccessibility(
                     "Filter is locked to Articles while a park is selected. Set By Park to All Parks to change the filter."
@@ -580,7 +580,10 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer }:
                 }
                 if (!app.settings) return;
                 const idx = filterOrder.indexOf(filter);
-                app.updateSettings({ ...app.settings, timelineContentFilter: filterOrder[(idx + 1) % filterOrder.length] });
+                const next = actionName === "decrement"
+                  ? filterOrder[(idx - 1 + filterOrder.length) % filterOrder.length]
+                  : filterOrder[(idx + 1) % filterOrder.length];
+                app.updateSettings({ ...app.settings, timelineContentFilter: next });
               }}
               onPress={() => {
                 if (parkFilterActive) {

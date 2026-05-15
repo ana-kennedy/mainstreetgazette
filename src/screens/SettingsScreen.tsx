@@ -349,13 +349,6 @@ export function SettingsScreen() {
             { value: "2", label: "2×", accessibilityLabel: "2 times speed" }
           ]}
         />
-        <SettingSwitchRow
-          title="Auto play next episode"
-          description="Continue through the podcast queue."
-          value={settings.autoPlayNextEpisode}
-          onValueChange={(v) => update({ autoPlayNextEpisode: v })}
-        />
-
         <View style={styles.footer}>
           <SectionLabel>Privacy &amp; Legal</SectionLabel>
           <Text variant="bodyMedium" style={styles.footerText}>

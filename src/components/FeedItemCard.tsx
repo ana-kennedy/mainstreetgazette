@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   AccessibilityActionEvent,
   AccessibilityInfo,
+  Animated,
   Image,
   Linking,
   Modal,
@@ -14,6 +15,7 @@ import {
   View,
   findNodeHandle
 } from "react-native";
+
 import { useTheme } from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 import { openBrowserAsync } from "expo-web-browser";
@@ -21,6 +23,10 @@ import type { FeedItem, UserSettings } from "../domain/models";
 import { useSounds } from "../context/SoundContext";
 import { buildFeedItemAccessibility } from "../utils/accessibility";
 import { clockString, relativePublishedText, summarizeItem } from "../utils/formatting";
+
+// Tracks item IDs that have already played their entrance animation this session.
+// Prevents the animation from replaying when FlatList virtualisation remounts cards.
+const animatedItemIDs = new Set<string>();
 
 interface FeedItemCardProps {
   item: FeedItem;
@@ -64,6 +70,15 @@ function FeedItemCardInner({
   const theme = useTheme();
   const { playSelect } = useSounds();
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
+  const alreadySeen = animatedItemIDs.has(item.id);
+  const fadeAnim = useRef(new Animated.Value(alreadySeen ? 1 : 0)).current;
+  useEffect(() => {
+    if (animatedItemIDs.has(item.id)) return;
+    animatedItemIDs.add(item.id);
+    Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const firstContextItemRef = useRef<View>(null);
   const payload = buildFeedItemAccessibility(item, sourceName);
   const isMinimal = displayMode === "minimal";
@@ -192,13 +207,14 @@ function FeedItemCardInner({
   const savedPillFg = theme.colors.onPrimaryContainer ?? theme.colors.onSurfaceVariant;
 
   return (
-    <View
+    <Animated.View
       style={[
         styles.card,
         { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline },
         item.isNewRelativeToCheckpoint && !isMinimal
           ? { borderLeftColor: theme.colors.primary, borderLeftWidth: 3 }
-          : null
+          : null,
+        { opacity: fadeAnim }
       ]}
     >
       <TouchableOpacity
@@ -364,7 +380,7 @@ function FeedItemCardInner({
           </View>
         </Modal>
       ) : null}
-    </View>
+    </Animated.View>
   );
 }
 

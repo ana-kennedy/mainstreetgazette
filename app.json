@@ -2,7 +2,7 @@
   "expo": {
     "name": "Main Street Gazette",
     "slug": "main-street-gazette",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -18,10 +18,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.mainstreetgazette.app",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "infoPlist": {
         "UIBackgroundModes": [
-          "audio"
+          "audio",
+          "fetch"
         ],
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -39,7 +40,8 @@
     "plugins": [
       "expo-audio",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-task-manager"
     ],
     "extra": {
       "eas": {

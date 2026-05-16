@@ -583,8 +583,10 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
 
         const fallbackItems = parseYouTubeHTMLFallback(source, html);
         if (fallbackItems.length === 0) throw error;
+        const fallbackIDs = new Set(fallbackItems.map((item) => item.id));
+        const survivingFromYTCache = cachedSourceItems.filter((item) => !fallbackIDs.has(item.id));
         return {
-          items: fallbackItems,
+          items: [...fallbackItems, ...survivingFromYTCache],
           updatedMeta: { ...meta, rawHash: newHash, failureCount: 0, nextRetryAt: undefined }
         };
       }
@@ -606,7 +608,12 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
       }
 
       const feed = parseFeed(text);
-      const items = parseFeedItems(source, feed);
+      const freshItems = parseFeedItems(source, feed);
+      // Preserve cached articles that have since left the feed — the global cache
+      // window/limit in AppContext (enforceCacheLimit) controls how long they stay.
+      const freshIDs = new Set(freshItems.map((item) => item.id));
+      const survivingCached = cachedSourceItems.filter((item) => !freshIDs.has(item.id));
+      const items = [...freshItems, ...survivingCached];
 
       return {
         items,

@@ -11,6 +11,7 @@ import { RootNavigator } from "./src/navigation/RootNavigator";
 import { getThemeForColorTheme } from "./src/theme/theme";
 import { defaultUserSettings } from "./src/domain/models";
 import { StatusBar } from "expo-status-bar";
+import { registerBackgroundFetch } from "./src/services/backgroundTask";
 
 function ThemedApp() {
   const app = useAppContext();
@@ -52,6 +53,10 @@ function ThemedApp() {
 }
 
 export default function App() {
+  useEffect(() => {
+    registerBackgroundFetch().catch(() => {});
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SoundProvider>

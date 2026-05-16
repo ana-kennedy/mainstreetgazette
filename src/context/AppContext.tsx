@@ -82,7 +82,7 @@ function refreshErrorMessage(failures: { sourceID: string; message: string }[]):
     : `Refresh failed for ${failures.length} sources. First error: ${firstFailure.message}`;
 }
 
-function enforceCacheLimit(items: FeedItem[], windowDays: number, maxItems: number): FeedItem[] {
+export function enforceCacheLimit(items: FeedItem[], windowDays: number, maxItems: number): FeedItem[] {
   const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
   const saved = items.filter((item) => item.isSaved);
   const unsaved = items

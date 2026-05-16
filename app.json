@@ -41,7 +41,8 @@
       "expo-audio",
       "expo-font",
       "expo-web-browser",
-      "expo-task-manager"
+      "expo-task-manager",
+      "expo-background-task"
     ],
     "extra": {
       "eas": {

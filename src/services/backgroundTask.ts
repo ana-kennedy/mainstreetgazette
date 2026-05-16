@@ -1,4 +1,4 @@
-import * as BackgroundFetch from "expo-background-fetch";
+import * as BackgroundTask from "expo-background-task";
 import * as TaskManager from "expo-task-manager";
 import { enforceCacheLimit } from "../context/AppContext";
 import { refreshFeeds } from "./feedEngine";
@@ -34,25 +34,20 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
     }
     await Promise.all([saveCachedFeed(freshItems), saveSourceMeta(result.updatedSourceMeta)]);
 
-    return BackgroundFetch.BackgroundFetchResult.NewData;
+    return BackgroundTask.BackgroundTaskResult.Success;
   } catch {
-    return BackgroundFetch.BackgroundFetchResult.Failed;
+    return BackgroundTask.BackgroundTaskResult.Failed;
   }
 });
 
 export async function registerBackgroundFetch(): Promise<void> {
-  const status = await BackgroundFetch.getStatusAsync();
-  if (
-    status === BackgroundFetch.BackgroundFetchStatus.Restricted ||
-    status === BackgroundFetch.BackgroundFetchStatus.Denied
-  ) {
-    return;
-  }
+  const status = await BackgroundTask.getStatusAsync();
+  if (status === BackgroundTask.BackgroundTaskStatus.Restricted) return;
+
   const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK);
   if (isRegistered) return;
-  await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-    minimumInterval: 15 * 60, // 15 min minimum; iOS/Android decide actual timing
-    stopOnTerminate: false,   // keep running after app is closed
-    startOnBoot: true,        // re-register after device reboot (Android)
+
+  await BackgroundTask.registerTaskAsync(BACKGROUND_FETCH_TASK, {
+    minimumInterval: 15, // minutes; iOS/Android decide actual timing
   });
 }

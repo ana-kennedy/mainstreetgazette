@@ -1,0 +1,458 @@
+{
+  "common": {
+    "done": "Klaar",
+    "back": "Terug",
+    "refresh": "Vernieuwen",
+    "loading": "Laden…",
+    "on": "Aan",
+    "off": "Uit",
+    "dismiss": "Sluiten",
+    "search": "Zoeken",
+    "welcomeTitle": "Welkom bij Main Street Gazette",
+    "welcomeLoading": "Je Disney-parknieuws wordt geladen…"
+  },
+  "time": {
+    "justNow": "Zojuist gepubliceerd.",
+    "soon": "Binnenkort gepubliceerd.",
+    "unknownDate": "Publicatiedatum onbekend.",
+    "past": {
+      "minute_one": "{{count}} minuut geleden gepubliceerd.",
+      "minute_other": "{{count}} minuten geleden gepubliceerd.",
+      "hour_one": "{{count}} uur geleden gepubliceerd.",
+      "hour_other": "{{count}} uur geleden gepubliceerd.",
+      "day_one": "{{count}} dag geleden gepubliceerd.",
+      "day_other": "{{count}} dagen geleden gepubliceerd.",
+      "week_one": "{{count}} week geleden gepubliceerd.",
+      "week_other": "{{count}} weken geleden gepubliceerd.",
+      "month_one": "{{count}} maand geleden gepubliceerd.",
+      "month_other": "{{count}} maanden geleden gepubliceerd.",
+      "year_one": "{{count}} jaar geleden gepubliceerd.",
+      "year_other": "{{count}} jaar geleden gepubliceerd."
+    },
+    "future": {
+      "minute_one": "Over {{count}} minuut gepubliceerd.",
+      "minute_other": "Over {{count}} minuten gepubliceerd.",
+      "hour_one": "Over {{count}} uur gepubliceerd.",
+      "hour_other": "Over {{count}} uur gepubliceerd.",
+      "day_one": "Over {{count}} dag gepubliceerd.",
+      "day_other": "Over {{count}} dagen gepubliceerd.",
+      "week_one": "Over {{count}} week gepubliceerd.",
+      "week_other": "Over {{count}} weken gepubliceerd.",
+      "month_one": "Over {{count}} maand gepubliceerd.",
+      "month_other": "Over {{count}} maanden gepubliceerd.",
+      "year_one": "Over {{count}} jaar gepubliceerd.",
+      "year_other": "Over {{count}} jaar gepubliceerd."
+    }
+  },
+  "contentType": {
+    "article": "Artikel",
+    "video": "Video",
+    "podcast": "Podcast",
+    "community": "Community"
+  },
+  "sourceType": {
+    "rssArticle": "Nieuws",
+    "youtubeChannel": "Video",
+    "podcastRSS": "Podcast",
+    "redditFeed": "Sociaal"
+  },
+  "trustLabel": {
+    "official": "Officieel",
+    "verifiedNews": "Geverifieerd nieuws",
+    "communitySource": "Communitybron"
+  },
+  "sourceCategory": {
+    "parksNews": "Parksnieuws",
+    "food": "Eten",
+    "planning": "Planning",
+    "hotels": "Hotels",
+    "attractions": "Attracties",
+    "video": "Video",
+    "podcast": "Podcast",
+    "official": "Officieel",
+    "community": "Community",
+    "social": "Sociaal",
+    "international": "Internationaal"
+  },
+  "a11y": {
+    "author": "Auteur: {{name}}.",
+    "source": "Bron: {{name}}.",
+    "unknownSource": "Onbekende bron",
+    "duration": "Duur {{clock}}.",
+    "new": "Nieuw.",
+    "savedLabel": "Opgeslagen.",
+    "downloaded": "Gedownload.",
+    "enabled": "Ingeschakeld.",
+    "disabled": "Uitgeschakeld.",
+    "sourceLabel": "{{name}}. {{type}}-bron. {{trust}}. {{state}}",
+    "enableHint": "Dubbeltik om in te schakelen.",
+    "disableHint": "Dubbeltik om uit te schakelen.",
+    "itemHintIos": "Dubbeltik om te openen. Veeg omhoog of omlaag voor Opslaan, Link kopiëren, Delen en Markering.",
+    "itemHintIosPodcast": "Dubbeltik om aflevering te openen. Veeg omhoog of omlaag voor Opslaan, Link kopiëren, Delen en Markering.",
+    "itemHintAndroid": "Dubbeltik om te openen. Lang indrukken voor meer opties.",
+    "itemHintAndroidPodcast": "Dubbeltik om aflevering te openen. Lang indrukken voor meer opties.",
+    "unsave": "Verwijder uit opgeslagen",
+    "save": "Opslaan",
+    "expandGroup": "Groep uitvouwen",
+    "openInYouTube": "Openen in YouTube",
+    "resumePodcast": "Podcast hervatten",
+    "playPodcast": "Podcast afspelen",
+    "addToQueue": "Toevoegen aan wachtrij"
+  },
+  "greeting": {
+    "morning": "Goedemorgen",
+    "afternoon": "Goedemiddag",
+    "evening": "Goedenavond",
+    "night": "Goedenacht",
+    "morning_name": "Goedemorgen, {{name}}",
+    "afternoon_name": "Goedemiddag, {{name}}",
+    "evening_name": "Goedenavond, {{name}}",
+    "night_name": "Goedenacht, {{name}}"
+  },
+  "tabs": {
+    "news": "Nieuws",
+    "parks": "Parken",
+    "saved": "Opgeslagen",
+    "sources": "Bronnen",
+    "settings": "Instellingen"
+  },
+  "screens": {
+    "today": "Vandaag",
+    "story": "Artikel",
+    "player": "Speler",
+    "savedStory": "Opgeslagen artikel",
+    "sourceFeed": "Bronfeed",
+    "manageSources": "Bronnen beheren"
+  },
+  "home": {
+    "title": "Main Street Gazette",
+    "timeline": "Tijdlijn",
+    "searchPlaceholder": "Zoeken in tijdlijn",
+    "searchDoneLabel": "Zoeken beëindigen",
+    "searchDoneHint": "Dubbeltik om het zoekveld te sluiten.",
+    "searchHint": "Voer woorden in om titels, samenvattingen, bronnen en tags te doorzoeken.",
+    "sort": {
+      "newestFirst": "Nieuwste eerst",
+      "oldestFirst": "Oudste eerst"
+    },
+    "filter": {
+      "all": "Alles",
+      "article": "Artikelen",
+      "video": "Video's",
+      "podcast": "Podcasts",
+      "social": "Sociaal"
+    },
+    "park": {
+      "all": "Alle parken",
+      "magic_kingdom": "Magic Kingdom",
+      "epcot": "EPCOT",
+      "hollywood_studios": "Hollywood Studios",
+      "animal_kingdom": "Animal Kingdom",
+      "disneyland": "Disneyland",
+      "california_adventure": "Calif. Adventure",
+      "disneyland_paris": "Disneyland Paris",
+      "walt_disney_studios_paris": "WD Studios Paris",
+      "tokyo_disneyland": "Tokyo Disneyland",
+      "tokyo_disneysea": "Tokyo DisneySea",
+      "shanghai_disneyland": "Shanghai",
+      "hong_kong_disneyland": "Hongkong"
+    },
+    "menu": {
+      "displayStyle": "Weergavestijl",
+      "displayFull": "Volledig",
+      "displayMinimal": "Minimaal",
+      "filter": "Filter",
+      "filterLocked": "Artikelen (vergrendeld)",
+      "byPark": "Per park",
+      "showOnlyNew": "Alleen nieuwe tonen",
+      "jumpToMarker": "Naar markering springen",
+      "jumpToTop": "Naar boven springen",
+      "findInTimeline": "Zoeken in tijdlijn",
+      "hideFindInTimeline": "Zoeken verbergen",
+      "closeMenu": "Menu sluiten"
+    },
+    "empty": {
+      "noNewTitle": "Geen nieuwe verhalen",
+      "todayTitle": "Vandaag niets gepubliceerd",
+      "noStoriesTitle": "Nog geen verhalen",
+      "noNewBody": "Je hebt alles tot je markering gelezen. Tik op 'Alles tonen' voor oudere verhalen.",
+      "todayBody": "Kom later terug of trek omlaag om te vernieuwen.",
+      "noStoriesBody": "Vernieuw feeds of schakel meer bronnen in voor Disney-nieuws.",
+      "showAll": "Alles tonen"
+    },
+    "announce": {
+      "jumpedTop": "Naar boven in de tijdlijn gesprongen.",
+      "noMarker": "Er is geen markering ingesteld.",
+      "jumpedMarker": "Naar markering in tijdlijn gesprongen.",
+      "searchShown": "Zoekveld weergegeven. Voer zoektermen in.",
+      "filterLocked": "Filter is vergrendeld op Artikelen terwijl een park is geselecteerd.",
+      "refreshing": "Artikelen worden vernieuwd…",
+      "refreshedNoNew": "Vernieuwd. Geen nieuwe artikelen.",
+      "refreshedNew_one": "Vernieuwd. {{count}} nieuw artikel.",
+      "refreshedNew_other": "Vernieuwd. {{count}} nieuwe artikelen."
+    }
+  },
+  "onboarding": {
+    "stepProgress": "Stap {{current}} van {{total}}",
+    "back": "Terug",
+    "continue": "Doorgaan",
+    "loading": "Laden�€�",
+    "welcome": {
+      "tagline": "Jouw Disney-universum, alles op één plek.",
+      "body": "Parksnieuws, video's, podcasts en community-updates �€” voor Disney-fans.",
+      "getStarted": "Aan de slag",
+      "getStartedHint": "Dubbeltik om je feed in te stellen."
+    },
+    "sources": {
+      "title": "Wat wil je volgen?",
+      "subtitle": "Pas bronnen altijd aan in Instellingen.",
+      "articles": "Artikelen",
+      "articlesDesc": "Parksnieuws, eten, planning en meer van top Disney-sites",
+      "videos": "Video's",
+      "videosDesc": "YouTube-kanalen van top Disney-makers",
+      "podcasts": "Podcasts",
+      "podcastsDesc": "Disney-thematische shows",
+      "reddit": "Reddit",
+      "redditDesc": "Communityberichten van Disney-subreddits"
+    },
+    "prefs": {
+      "title": "Enkele snelle voorkeuren",
+      "subtitle": "Alles kan later worden gewijzigd in Instellingen.",
+      "cacheQuestion": "Hoe lang artikelen bewaren?",
+      "cacheA11y": "Cacheduur artikelen",
+      "days30": "30 dagen",
+      "days90": "3 maanden",
+      "days180": "6 maanden",
+      "days365": "1 jaar",
+      "days90Star": "3 maanden ★",
+      "days90Recommended": "3 maanden, aanbevolen",
+      "refreshA11y": "Nieuws vernieuwen bij openen",
+      "refreshHint": "Haal automatisch de laatste verhalen op elke keer dat je Main Street Gazette opent",
+      "refreshOnLaunch": "Vernieuwen bij starten",
+      "refreshDesc": "Nieuwste verhalen ophalen bij openen",
+      "appearance": "Uiterlijk",
+      "appearanceA11y": "App-uiterlijk",
+      "themeSystem": "Systeem",
+      "themeLight": "Licht",
+      "themeDark": "Donker",
+      "themeGazette": "Gazette",
+      "themeMidnight": "Middernacht",
+      "themeFantasy": "Fantasie"
+    },
+    "done": {
+      "title": "Alles klaar!",
+      "body": "Welkom bij Main Street Gazette. Je eerste nieuwsvernieuwing is onderweg.",
+      "startReading": "Begin met lezen",
+      "startReadingHint": "Dubbeltik om Main Street Gazette te openen."
+    }
+  },
+  "settings": {
+    "title": "Instellingen",
+    "hi": "Hoi, {{name}}",
+    "section": {
+      "profile": "Profiel",
+      "appearance": "Uiterlijk",
+      "feed": "Feed",
+      "reading": "Lezen",
+      "cache": "Cache",
+      "accessibility": "Toegankelijkheid",
+      "playback": "Afspelen",
+      "privacy": "Privacy en juridisch"
+    },
+    "profile": {
+      "label": "Jouw naam (optioneel)",
+      "hint": "Voer je voornaam in om begroetingen te personaliseren. Leeg laten om te verwijderen."
+    },
+    "theme": {
+      "system": "Systeem",
+      "systemSub": "Volgt apparaatinstelling",
+      "light": "Licht",
+      "lightSub": "Helder wit",
+      "dark": "Donker",
+      "darkSub": "Houtskoolzwart",
+      "gazette": "Gazette",
+      "gazetteSub": "Warm sepia redactioneel",
+      "midnight": "Middernacht",
+      "midnightSub": "Diep marineblauw met blauwe accenten",
+      "fantasy": "Fantasie",
+      "fantasySub": "Koninklijk paars en kasteel goud"
+    },
+    "feed": {
+      "autoRefreshTitle": "Automatisch vernieuwen bij start",
+      "autoRefreshDesc": "Haal ingeschakelde feeds op bij het starten.",
+      "showOnlyNewTitle": "Alleen nieuwe items tonen",
+      "showOnlyNewDesc": "Oudere verhalen verbergen.",
+      "sortOrder": "Sortering",
+      "newestFirst": "Nieuwste eerst",
+      "oldestFirst": "Oudste eerst",
+      "articlePreview": "Artikelvoorbeeld",
+      "line1": "1 regel",
+      "line2": "2 regels",
+      "line3": "3 regels",
+      "line4": "4 regels",
+      "line5": "5 regels",
+      "lineFull": "Volledig",
+      "line1A11y": "Voorbeeld 1 zin",
+      "line2A11y": "Voorbeeld 2 zinnen",
+      "line3A11y": "Voorbeeld 3 zinnen",
+      "line4A11y": "Voorbeeld 4 zinnen",
+      "line5A11y": "Voorbeeld 5 zinnen",
+      "lineFullA11y": "Volledige samenvatting"
+    },
+    "reading": {
+      "readerModeTitle": "Leesmodus",
+      "readerModeDesc": "Artikelen automatisch openen in Safari's afleidingsvrije leesweergave."
+    },
+    "cache": {
+      "offlineTitle": "Offline opslaan",
+      "offlineDesc": "Gecachede inhoud tonen zonder netwerk.",
+      "cacheWindow": "Cacheperiode",
+      "week1": "1 week",
+      "month1": "1 maand",
+      "week1A11y": "Cache 1 week",
+      "month1A11y": "Cache 1 maand",
+      "maxCached": "Max. gecachede items",
+      "items100A11y": "Maximum 100 items",
+      "items250A11y": "Maximum 250 items",
+      "items500A11y": "Maximum 500 items",
+      "items1000A11y": "Maximum 1000 items"
+    },
+    "access": {
+      "spacingTitle": "Verbeterde afstand",
+      "spacingDesc": "Meer ruimte voor slechtziende lay-outs.",
+      "boldTitle": "Vet gedrukte metagegevens",
+      "boldDesc": "Maakt bron en tijd gemakkelijker te scannen.",
+      "hideThumbnailsTitle": "Miniaturen verbergen",
+      "hideThumbnailsDesc": "Vermindert visuele rommel in feedrijen."
+    },
+    "playback": {
+      "defaultSpeed": "Standaardsnelheid"
+    },
+    "privacy": {
+      "disclaimer": "Main Street Gazette slaat feeds, opgeslagen items, bronkeuzes, instellingen, wachtrij en afspeelvoortgang lokaal op dit apparaat op. Geen accounts, advertenties, analyses of tracking.",
+      "legal": "Main Street Gazette is een onafhankelijke feedreader en podcastspeler. Niet gelieerd aan, goedgekeurd door of gesponsord door Disney of de vermelde uitgevers.",
+      "privacyPolicy": "Privacybeleid",
+      "support": "Ondersteuning",
+      "privacyPolicyHint": "Dubbeltik om het privacybeleid te openen.",
+      "supportHint": "Dubbeltik om de ondersteuningspagina te openen."
+    }
+  },
+  "saved": {
+    "title": "Opgeslagen",
+    "searchPlaceholder": "Opgeslagen doorzoeken",
+    "searchA11y": "Opgeslagen artikelen doorzoeken",
+    "searchHint": "Voer woorden in om opgeslagen items te doorzoeken.",
+    "emptyTitle": "Geen opgeslagen artikelen",
+    "emptyBody": "Opgeslagen artikelen en afleveringen verschijnen hier."
+  },
+  "sources": {
+    "title": "Bronnen",
+    "searchPlaceholder": "Bronnen zoeken",
+    "searchA11y": "Ingeschakelde bronnen zoeken",
+    "searchHint": "Voer woorden in om de bronnenlijst te filteren.",
+    "manageLabel": "Bronnen beheren",
+    "manageHint": "Dubbeltik om bronnen in of uit te schakelen.",
+    "noEnabled": "Geen bronnen ingeschakeld. Tik op Bronnen beheren.",
+    "noMatch": "Geen bronnen komen overeen met \"{{query}}\".",
+    "section": {
+      "articles": "Artikelen",
+      "international": "Internationaal",
+      "videos": "Video's",
+      "podcasts": "Podcasts",
+      "social": "Sociaal"
+    },
+    "unread_one": "{{count}} ongelezen",
+    "unread_other": "{{count}} ongelezen",
+    "sourceA11y_one": "{{name}}. {{count}} ongelezen verhaal.",
+    "sourceA11y_other": "{{name}}. {{count}} ongelezen verhalen.",
+    "sourceHint": "Dubbeltik om artikelen van deze bron te lezen.",
+    "totalA11y": "Bronnen. {{count}} ongelezen.",
+    "totalBadge": "{{count}} ongelezen"
+  },
+  "feed": {
+    "play": "Afspelen",
+    "open": "Openen",
+    "addToQueue": "Toevoegen aan wachtrij",
+    "saveForLater": "Opslaan voor later",
+    "removeFromSaved": "Verwijderen uit opgeslagen",
+    "copyLink": "Link kopiëren",
+    "viewOnWeb": "Op web bekijken",
+    "setMarker": "Markering instellen",
+    "share": "{{type}} delen",
+    "savedPill": "Opgeslagen",
+    "by": "Door {{name}}",
+    "openArticleHint": "Dubbeltik om in leesmodus te openen.",
+    "openPodcastHint": "Dubbeltik om deze aflevering af te spelen.",
+    "openVideoHint": "Dubbeltik om deze video te openen.",
+    "openAndroid": "Dubbeltik om te openen. Lang indrukken voor meer opties.",
+    "openHintIosArticle": "Dubbeltik om in leesmodus te openen. Veeg voor Opslaan, Link kopiëren, Delen en Markering.",
+    "openHintIosPodcast": "Dubbeltik om af te spelen. Veeg voor Wachtrij, Opslaan, Link kopiëren, Delen en Markering.",
+    "openHintIosVideo": "Dubbeltik om video te openen. Veeg voor Opslaan, Link kopiëren, Delen en Markering.",
+    "addToQueueHint": "Dubbeltik om aan wachtrij toe te voegen.",
+    "saveHint": "Dubbeltik om dit {{type}} op te slaan.",
+    "removeHint": "Dubbeltik om dit {{type}} te verwijderen.",
+    "copyLinkHint": "Dubbeltik om link te kopiëren.",
+    "viewOnWebHint": "Dubbeltik om in browser te openen.",
+    "shareHint": "Dubbeltik om te delen.",
+    "setMarkerHint": "Dubbeltik om een markering in te stellen.",
+    "linkCopied": "Link gekopieerd."
+  },
+  "errors": {
+    "unableToRefresh": "Feeds kunnen niet worden vernieuwd.",
+    "unableToLoad": "Gegevens van Main Street Gazette kunnen niet worden geladen.",
+    "noStories": "Vernieuwen gaf geen verhalen terug.",
+    "sourceFailed_one": " {{name}} kon niet worden vernieuwd.",
+    "sourceFailed_other": " {{count}} bronnen zijn mislukt.",
+    "refreshFailed_one": "Vernieuwen mislukt voor 1 bron: {{message}}",
+    "refreshFailed_other": "Vernieuwen mislukt voor {{count}} bronnen. Eerste fout: {{message}}"
+  },
+  "refresh": {
+    "noNew": "Geen nieuwe verhalen.",
+    "noNewWithError": "Geen nieuwe verhalen.{{error}}",
+    "new_one": "{{count}} nieuw verhaal.",
+    "new_other": "{{count}} nieuwe verhalen.",
+    "newWithError_one": "{{count}} nieuw verhaal.{{error}}",
+    "newWithError_other": "{{count}} nieuwe verhalen.{{error}}",
+    "failedAnnounce": "Vernieuwen mislukt. {{message}}",
+    "articleSaved": "Artikel opgeslagen.",
+    "articleUnsaved": "Artikel verwijderd uit opgeslagen.",
+    "checkpointSet": "Markering ingesteld."
+  },
+  "detail": {
+    "unknownWebsite": "Onbekende website",
+    "play": "Afspelen",
+    "playing": "Wordt afgespeeld",
+    "loading": "Laden",
+    "durationText": "Duur {{clock}}.",
+    "sourceText": "Bron: {{name}}.",
+    "byText": "Door {{name}}.",
+    "saveLabel": "{{type}} opslaan",
+    "unsaveLabel": "{{type}} verwijderen",
+    "saveHint": "Dubbeltik om op te slaan.",
+    "unsaveHint": "Dubbeltik om dit {{type}} te verwijderen.",
+    "playA11y": "Podcastaflevering afspelen: {{title}}",
+    "playLoadingHint": "Podcast laden.",
+    "playHint": "Dubbeltik om deze aflevering af te spelen."
+  },
+  "knowledge": {
+    "location": {
+      "label": "Location",
+      "all": "All Disney",
+      "wdw": "Walt Disney World",
+      "dlr": "Disneyland",
+      "dcl": "Disney Cruise",
+      "international": "International",
+      "a11ySelected": "Showing stories from {{label}}"
+    },
+    "timeline": {
+      "label": "Recency",
+      "all": "Any Time",
+      "now": "Now",
+      "today": "Today",
+      "last_3_days": "Last 3 Days",
+      "week": "This Week",
+      "month": "This Month",
+      "a11ySelected": "Showing stories from {{label}}"
+    }
+  }
+}

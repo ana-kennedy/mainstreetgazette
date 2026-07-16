@@ -1,0 +1,2107 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-06-28",
+  "app": "Main Street Gazette",
+  "notes": "Starter source catalog for Expo React Native handoff. Feed URLs and channel IDs should be validated by the implementation during source import.",
+  "sources": [
+    {
+      "sourceId": "disney_parks_blog",
+      "displayName": "Disney Parks Blog",
+      "publisherType": "Official Disney",
+      "officialStatus": "Official",
+      "websiteUrl": "https://disneyparksblog.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 100,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Disneyland Paris",
+        "Hong Kong Disneyland",
+        "Shanghai Disney Resort",
+        "Tokyo Disney Resort",
+        "Aulani"
+      ],
+      "contentCategories": [
+        "official news",
+        "breaking news",
+        "parks",
+        "cruise",
+        "merchandise",
+        "dining",
+        "events"
+      ],
+      "platforms": {
+        "rss": "https://disneyparksblog.com/feed/",
+        "youtube": "https://www.youtube.com/user/DisneyParks"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Official source should win primary-source ranking when it covers a story.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_eats",
+      "displayName": "Disney Eats",
+      "publisherType": "Official Disney",
+      "officialStatus": "Official",
+      "websiteUrl": "https://disneyparksblog.com/disney-eats/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 95,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "official news",
+        "dining",
+        "food",
+        "merchandise"
+      ],
+      "platforms": {
+        "rss": "https://disneyparksblog.com/disney-eats/feed/",
+        "youtube": null
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Confirmed 2026-07: /disney-eats/feed/ 404s — the standalone Disney Eats page/section appears retired. Its content now flows through the main Disney Parks Blog feed (disneyparksblog.com/feed/), which was confirmed live and already contains disney-eats-tagged items. Disabled here to avoid a permanently-failing source; no content is lost since Disney Parks Blog covers it.",
+      "verificationStatus": "confirmed_broken_content_covered_elsewhere"
+    },
+    {
+      "sourceId": "d23",
+      "displayName": "D23",
+      "publisherType": "Official Disney",
+      "officialStatus": "Official",
+      "websiteUrl": "https://d23.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 85,
+      "coverageAreas": [
+        "Disney General"
+      ],
+      "contentCategories": [
+        "official news",
+        "history",
+        "events",
+        "entertainment"
+      ],
+      "platforms": {
+        "rss": "https://d23.com/feed/",
+        "youtube": "https://www.youtube.com/@DisneyD23"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Good for official company/fan-club style Disney news.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_cruise_line",
+      "displayName": "Disney Cruise Line",
+      "publisherType": "Official Disney",
+      "officialStatus": "Official",
+      "websiteUrl": "https://disneycruise.disney.go.com/",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 90,
+      "coverageAreas": [
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "official news",
+        "cruise",
+        "ships",
+        "destinations"
+      ],
+      "platforms": {
+        "rss": null,
+        "youtube": "https://www.youtube.com/@DisneyCruiseLine"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Official cruise YouTube should be kept as original video, not a social duplicate.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "walt_disney_imagineering",
+      "displayName": "Walt Disney Imagineering",
+      "publisherType": "Official Disney",
+      "officialStatus": "Official",
+      "websiteUrl": "https://sites.disney.com/waltdisneyimagineering/",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 90,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "imagineering",
+        "behind the scenes",
+        "official news"
+      ],
+      "platforms": {
+        "rss": null,
+        "youtube": "https://www.youtube.com/@WaltDisneyImagineering"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Official behind-the-scenes videos are high value and should appear as video content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "wdwnt",
+      "displayName": "WDW News Today",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://wdwnt.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 95,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disneyland Paris",
+        "Disney Cruise Line",
+        "Disney Parks General",
+        "Universal Orlando"
+      ],
+      "contentCategories": [
+        "breaking news",
+        "rumors",
+        "construction",
+        "ride closures",
+        "dining",
+        "merchandise",
+        "entertainment"
+      ],
+      "platforms": {
+        "rss": "https://wdwnt.com/feed/",
+        "youtube": "https://www.youtube.com/@WDWNT",
+        "podcast": "https://wdwnt.com/category/podcasts/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube",
+        "podcast"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Major Disney news source. RSS is canonical for articles. Keep YouTube/podcast only as related media when original.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_food_blog",
+      "displayName": "Disney Food Blog",
+      "publisherType": "Food/Dining Blog",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.disneyfoodblog.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 95,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "dining",
+        "food",
+        "planning",
+        "reviews",
+        "merchandise",
+        "festival"
+      ],
+      "platforms": {
+        "rss": "https://www.disneyfoodblog.com/feed/",
+        "youtube": "https://www.youtube.com/@DFBGuide"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "DFB articles and DFBGuide videos are distinct content types. Keep both; ignore same-link social reposts.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "the_dis",
+      "displayName": "The DIS / WDWInfo",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.wdwinfo.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 90,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Universal Orlando"
+      ],
+      "contentCategories": [
+        "news",
+        "planning",
+        "forums",
+        "podcast",
+        "reviews"
+      ],
+      "platforms": {
+        "rss": "https://www.wdwinfo.com/feed/",
+        "youtube": "https://www.youtube.com/@TheDIS",
+        "podcast": "https://www.wdwinfo.com/podcast/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube",
+        "podcast"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Keep RSS, YouTube shows, and podcast discussions separately.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "chip_and_company",
+      "displayName": "Chip and Company",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://chipandco.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Disney General"
+      ],
+      "contentCategories": [
+        "news",
+        "family",
+        "merchandise",
+        "dining",
+        "entertainment"
+      ],
+      "platforms": {
+        "rss": "https://chipandco.com/feed/",
+        "youtube": "https://www.youtube.com/@ChipandCompany"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "RSS canonical; YouTube can be related media if original.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_tourist_blog",
+      "displayName": "Disney Tourist Blog",
+      "publisherType": "Travel Planning Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.disneytouristblog.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 88,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Tokyo Disney Resort",
+        "Disneyland Paris",
+        "Hong Kong Disneyland",
+        "Shanghai Disney Resort"
+      ],
+      "contentCategories": [
+        "planning",
+        "reviews",
+        "hotels",
+        "dining",
+        "analysis"
+      ],
+      "platforms": {
+        "rss": "https://www.disneytouristblog.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Excellent long-form planning/analysis; less breaking-news focused.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "blogmickey",
+      "displayName": "BlogMickey",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://blogmickey.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 92,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "breaking news",
+        "construction",
+        "park operations",
+        "ride closures",
+        "photos"
+      ],
+      "platforms": {
+        "rss": "https://blogmickey.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Fast WDW parks coverage; high priority for WDW news.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "touringplans",
+      "displayName": "TouringPlans Blog",
+      "publisherType": "Travel Planning Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://touringplans.com/blog/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 87,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Universal Orlando"
+      ],
+      "contentCategories": [
+        "planning",
+        "wait times",
+        "data",
+        "touring",
+        "podcast"
+      ],
+      "platforms": {
+        "rss": "https://touringplans.com/blog/feed/",
+        "youtube": "https://www.youtube.com/@touringplans",
+        "podcast": null
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Keep data/planning articles; videos may be related planning media.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "kenny_the_pirate",
+      "displayName": "Kenny the Pirate",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.kennythepirate.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "characters",
+        "entertainment",
+        "news",
+        "planning"
+      ],
+      "platforms": {
+        "rss": "https://www.kennythepirate.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong for character and entertainment updates.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "attractions_magazine",
+      "displayName": "Attractions Magazine",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://attractionsmagazine.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 84,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Universal Orlando",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "news",
+        "videos",
+        "events",
+        "attractions"
+      ],
+      "platforms": {
+        "rss": "https://attractionsmagazine.com/feed/",
+        "youtube": "https://www.youtube.com/@AttractionsMagazine"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Broader theme park site; tag Disney-only items using entity/location classifier.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "laughing_place",
+      "displayName": "Laughing Place",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.laughingplace.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 86,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Disney Entertainment"
+      ],
+      "contentCategories": [
+        "news",
+        "entertainment",
+        "parks",
+        "events",
+        "podcast"
+      ],
+      "platforms": {
+        "rss": "https://www.laughingplace.com/w/feed/",
+        "youtube": "https://www.youtube.com/@LaughingPlace"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Long-running Disney outlet; covers parks and entertainment.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "allears",
+      "displayName": "AllEars.net",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://allears.net/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 92,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "news",
+        "planning",
+        "dining",
+        "resorts",
+        "videos"
+      ],
+      "platforms": {
+        "rss": "https://allears.net/feed/",
+        "youtube": "https://www.youtube.com/@AllEarsNet"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "AllEars articles and YouTube videos can be different; keep both.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "mickeyblog",
+      "displayName": "MickeyBlog",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://mickeyblog.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Disney General"
+      ],
+      "contentCategories": [
+        "news",
+        "planning",
+        "dining",
+        "events"
+      ],
+      "platforms": {
+        "rss": "https://mickeyblog.com/feed/",
+        "youtube": "https://www.youtube.com/@MickeyBlog"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "youtube"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "RSS canonical.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "inside_the_magic",
+      "displayName": "Inside the Magic",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://insidethemagic.net/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 72,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Entertainment",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "news",
+        "rumors",
+        "entertainment",
+        "opinion"
+      ],
+      "platforms": {
+        "rss": "https://insidethemagic.net/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Use lower trust/priority and require Disney classifier due broad coverage.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "wdwmagic",
+      "displayName": "WDWMagic",
+      "publisherType": "News Site / Forum",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.wdwmagic.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": true,
+      "trustPriority": 88,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "news",
+        "rumors",
+        "forums",
+        "construction"
+      ],
+      "platforms": {
+        "rss": "https://www.wdwmagic.com/news/rss.xml",
+        "forum": "https://forums.wdwmagic.com/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss",
+        "forum"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong WDW news and forum source. Confirmed 2026-07: old rss.xml path was dead (moved); correct current feed is /news/rss.xml, confirmed live and returning a valid RSS 2.0 feed. Updated below.",
+      "verificationStatus": "confirmed_working_url_updated"
+    },
+    {
+      "sourceId": "mouseplanet",
+      "displayName": "MousePlanet",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.mouseplanet.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 75,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "news",
+        "columns",
+        "history",
+        "trip planning"
+      ],
+      "platforms": {
+        "rss": "https://mouseplanet.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Good optional long-running source. Confirmed 2026-07: old www.mouseplanet.com/rss.xml URL 404s/500s; the working feed is the canonical (non-www) https://mouseplanet.com/feed/ — updated below.",
+      "verificationStatus": "confirmed_working_url_updated"
+    },
+    {
+      "sourceId": "micechat",
+      "displayName": "MiceChat",
+      "publisherType": "News Site / Forum",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.micechat.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Disneyland Resort",
+        "Walt Disney World",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "news",
+        "editorials",
+        "forums",
+        "construction"
+      ],
+      "platforms": {
+        "rss": "https://www.micechat.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong Disneyland/community editorial coverage.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "theme_park_tourist",
+      "displayName": "Theme Park Tourist",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.themeparktourist.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 68,
+      "coverageAreas": [
+        "Theme Parks General",
+        "Walt Disney World",
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "news",
+        "history",
+        "analysis"
+      ],
+      "platforms": {
+        "rss": "https://www.themeparktourist.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional broad theme park analysis source. Confirmed 2026-07: themeparktourist.com now redirects to parklore.com — the site has rebranded. Both the old URL and parklore.com/feed/ return HTTP 403 under automated fetch (likely bot/Cloudflare protection blocking non-browser requests), so a working feed URL couldn't be confirmed programmatically. Since this source is already opt-in (defaultEnabled: false), left as-is rather than guessing; worth a manual check of parklore.com for its current RSS link before re-enabling.",
+      "verificationStatus": "confirmed_rebranded_needs_manual_check"
+    },
+    {
+      "sourceId": "orlando_park_stop",
+      "displayName": "Orlando ParkStop",
+      "publisherType": "News Site",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://orlandoparkstop.com/",
+      "primaryContentType": "article",
+      "defaultEnabled": false,
+      "trustPriority": 72,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Universal Orlando",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "news",
+        "rumors",
+        "construction"
+      ],
+      "platforms": {
+        "rss": "https://orlandoparkstop.com/feed/"
+      },
+      "canonicalPlatform": "rss",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [
+        "facebook",
+        "instagram",
+        "threads",
+        "x"
+      ],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Mostly Orlando/theme-park; filter Disney matches carefully.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "mammoth_club",
+      "displayName": "Mammoth Club",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@Mammoth_Club",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 90,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "videos",
+        "planning",
+        "reviews",
+        "dining",
+        "entertainment"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@Mammoth_Club"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original video content; do not discard as duplicate.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "the_tim_tracker",
+      "displayName": "The Tim Tracker",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@TheTimTracker",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 86,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line",
+        "Universal Orlando"
+      ],
+      "contentCategories": [
+        "videos",
+        "vlogs",
+        "reviews",
+        "events"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@TheTimTracker"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original vlog/review content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "super_enthused",
+      "displayName": "Super Enthused",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@SuperEnthused",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 84,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Universal Orlando"
+      ],
+      "contentCategories": [
+        "videos",
+        "vlogs",
+        "events",
+        "reviews"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@SuperEnthused"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original video content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "resorttv1",
+      "displayName": "ResortTV1",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@ResortTV1",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 85,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "live streams",
+        "videos",
+        "parks",
+        "resorts"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@ResortTV1"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Live streams are unique and should not be grouped away.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "paging_mr_morrow",
+      "displayName": "Paging Mr. Morrow",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@PagingMrMorrow",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "videos",
+        "vlogs",
+        "dining",
+        "events"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@PagingMrMorrow"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional original video source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "fresh_baked",
+      "displayName": "Fresh Baked",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@FreshBakedDisney",
+      "primaryContentType": "video",
+      "defaultEnabled": true,
+      "trustPriority": 87,
+      "coverageAreas": [
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "videos",
+        "news",
+        "construction",
+        "vlogs"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@FreshBakedDisney"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong Disneyland-focused video source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "ordinary_adventures",
+      "displayName": "Ordinary Adventures",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@OrdinaryAdventures",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Disneyland Resort",
+        "Walt Disney World",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "videos",
+        "reviews",
+        "vlogs"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@OrdinaryAdventures"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original travel/video content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "provost_park_pass",
+      "displayName": "Provost Park Pass",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@provostparkpass",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Disneyland Resort",
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "videos",
+        "tips",
+        "history",
+        "planning"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@provostparkpass"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original tips/history videos.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "ear_scouts",
+      "displayName": "Ear Scouts",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@EarScouts",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "videos",
+        "planning",
+        "lightning lane",
+        "tips"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@EarScouts"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong planning/tutorial source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "offhand_disney",
+      "displayName": "Offhand Disney",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@OffhandDisney",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "videos",
+        "history",
+        "commentary",
+        "attractions"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@OffhandDisney"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Original history/commentary.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "tpmvids",
+      "displayName": "TPMvids",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@TPMvids",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 76,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "videos",
+        "history",
+        "lists",
+        "attractions"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@TPMvids"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional video content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "magic_journeys",
+      "displayName": "Magic Journeys",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@MagicJourneys",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "videos",
+        "dining",
+        "food",
+        "events"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@MagicJourneys"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong Disneyland food/video source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_dan",
+      "displayName": "Disney Dan",
+      "publisherType": "YouTube Creator",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.youtube.com/@DisneyDan",
+      "primaryContentType": "video",
+      "defaultEnabled": false,
+      "trustPriority": 75,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "videos",
+        "history",
+        "characters",
+        "entertainment"
+      ],
+      "platforms": {
+        "youtube": "https://www.youtube.com/@DisneyDan"
+      },
+      "canonicalPlatform": "video",
+      "includedPlatforms": [
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional history/entertainment source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "be_our_guest_podcast",
+      "displayName": "Be Our Guest Podcast",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://beourguestpodcast.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 88,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disney Cruise Line",
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "trip reports"
+      ],
+      "platforms": {
+        "podcast": "https://beourguestpodcast.libsyn.com/rss"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Keep as original podcast discussion.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "wdw_radio",
+      "displayName": "WDW Radio",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.wdwradio.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 90,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disney Cruise Line",
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "podcast",
+        "history",
+        "interviews",
+        "planning"
+      ],
+      "platforms": {
+        "rss": "https://www.wdwradio.com/feed/",
+        "podcast": "https://www.wdwradio.com/feed/podcast/",
+        "youtube": "https://www.youtube.com/@WDWRadio"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "rss",
+        "podcast",
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Podcast-first; articles/video can be related media.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "dis_unplugged",
+      "displayName": "The DIS Unplugged",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.wdwinfo.com/podcast/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 86,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "podcast",
+        "discussion",
+        "planning",
+        "news"
+      ],
+      "platforms": {
+        "podcast": "https://www.wdwinfo.com/podcast/feed/",
+        "youtube": "https://www.youtube.com/@DISUnplugged"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast",
+        "youtube"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Podcast/video show content should remain separate from articles.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "window_to_the_magic",
+      "displayName": "Window to the Magic",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.windowtothemagic.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Disneyland Resort",
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "podcast",
+        "audio",
+        "parks"
+      ],
+      "platforms": {
+        "podcast": "https://windowtothemagic.libsyn.com/rss"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Audio park experiences; unique content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "unlocking_the_magic",
+      "displayName": "Unlocking the Magic",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://unlockingthemagic.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 84,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "discussion"
+      ],
+      "platforms": {
+        "podcast": "https://feeds.megaphone.fm/unlockingthemagic"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Podcast-first content.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disney_dish_jim_hill",
+      "displayName": "The Disney Dish with Jim Hill",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://jimhillmedia.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": true,
+      "trustPriority": 88,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "podcast",
+        "history",
+        "news analysis",
+        "planning"
+      ],
+      "platforms": {
+        "podcast": null
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Often known as Disney Dish with Jim Hill and Len Testa; verify podcast RSS in app setup.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "connecting_with_walt",
+      "displayName": "Connecting with Walt",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.wdwinfo.com/podcast/connecting-with-walt/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "podcast",
+        "history",
+        "discussion"
+      ],
+      "platforms": {
+        "podcast": null
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Verify RSS; likely DIS network podcast.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "main_street_magic",
+      "displayName": "Main Street Magic",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.mainstmagic.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "discussion"
+      ],
+      "platforms": {
+        "podcast": null
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Verify RSS.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "rope_drop_radio",
+      "displayName": "Rope Drop Radio",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://ropedropradio.libsyn.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "tips"
+      ],
+      "platforms": {
+        "podcast": "https://ropedropradio.libsyn.com/rss"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional podcast.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "retro_disney_world",
+      "displayName": "Retro Disney World",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.retrodisneyworld.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "podcast",
+        "history",
+        "archives"
+      ],
+      "platforms": {
+        "podcast": null
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional history podcast.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "dcl_podcast",
+      "displayName": "DCL Podcast",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://dclpodcast.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 82,
+      "coverageAreas": [
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "podcast",
+        "cruise",
+        "planning",
+        "news"
+      ],
+      "platforms": {
+        "podcast": "https://dclpodcast.com/feed/podcast/"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Strong Disney Cruise source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "wdw_prep_to_go",
+      "displayName": "WDW Prep To Go",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://wdwprepschool.com/podcast/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "trip reports"
+      ],
+      "platforms": {
+        "podcast": "https://wdwprepschool.com/feed/podcast/"
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [
+        "podcast"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Planning podcast.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "addicted_to_the_mouse",
+      "displayName": "Addicted to the Mouse",
+      "publisherType": "Podcast",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://addictedtothemouse.com/",
+      "primaryContentType": "podcast",
+      "defaultEnabled": false,
+      "trustPriority": 75,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "podcast",
+        "planning",
+        "trip reports"
+      ],
+      "platforms": {
+        "podcast": null
+      },
+      "canonicalPlatform": "podcast",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Verify RSS.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_waltdisneyworld",
+      "displayName": "r/WaltDisneyWorld",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/WaltDisneyWorld/",
+      "primaryContentType": "community",
+      "defaultEnabled": true,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "community",
+        "discussion",
+        "trip reports",
+        "questions"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/WaltDisneyWorld/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Keep as community discussion; do not merge away with publisher news.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_disneyland",
+      "displayName": "r/Disneyland",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/Disneyland/",
+      "primaryContentType": "community",
+      "defaultEnabled": true,
+      "trustPriority": 80,
+      "coverageAreas": [
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "community",
+        "discussion",
+        "trip reports",
+        "questions"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/Disneyland/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Community source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_disneyparks",
+      "displayName": "r/DisneyParks",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/DisneyParks/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 74,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "community",
+        "discussion"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/DisneyParks/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Community source.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_disneycruise",
+      "displayName": "r/DisneyCruise",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/DisneyCruise/",
+      "primaryContentType": "community",
+      "defaultEnabled": true,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "community",
+        "discussion",
+        "planning"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/DisneyCruise/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Cruise community.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_disneyvacationclub",
+      "displayName": "r/DisneyVacationClub",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/DisneyVacationClub/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 72,
+      "coverageAreas": [
+        "Disney Vacation Club"
+      ],
+      "contentCategories": [
+        "community",
+        "DVC",
+        "planning"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/DisneyVacationClub/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "DVC community.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "reddit_disneyfood",
+      "displayName": "r/DisneyFood",
+      "publisherType": "Reddit Community",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.reddit.com/r/DisneyFood/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 70,
+      "coverageAreas": [
+        "Disney Parks General"
+      ],
+      "contentCategories": [
+        "community",
+        "dining",
+        "food"
+      ],
+      "platforms": {
+        "rss": "https://www.reddit.com/r/DisneyFood/.rss"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "rss"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Food community.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "disboards",
+      "displayName": "DISboards",
+      "publisherType": "Forum",
+      "officialStatus": "Community",
+      "websiteUrl": "https://www.disboards.com/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort",
+        "Disney Cruise Line"
+      ],
+      "contentCategories": [
+        "forums",
+        "community",
+        "planning"
+      ],
+      "platforms": {
+        "forum": "https://www.disboards.com/"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "forum"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Future/forum support; not necessarily RSS.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "wdwmagic_forums",
+      "displayName": "WDWMagic Forums",
+      "publisherType": "Forum",
+      "officialStatus": "Community",
+      "websiteUrl": "https://forums.wdwmagic.com/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Walt Disney World"
+      ],
+      "contentCategories": [
+        "forums",
+        "community",
+        "rumors",
+        "construction"
+      ],
+      "platforms": {
+        "forum": "https://forums.wdwmagic.com/"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "forum"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Forum support optional.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "touringplans_forums",
+      "displayName": "TouringPlans Forums",
+      "publisherType": "Forum",
+      "officialStatus": "Community",
+      "websiteUrl": "https://forum.touringplans.com/",
+      "primaryContentType": "community",
+      "defaultEnabled": false,
+      "trustPriority": 72,
+      "coverageAreas": [
+        "Walt Disney World",
+        "Disneyland Resort"
+      ],
+      "contentCategories": [
+        "forums",
+        "planning",
+        "community"
+      ],
+      "platforms": {
+        "forum": "https://forum.touringplans.com/"
+      },
+      "canonicalPlatform": "community",
+      "includedPlatforms": [
+        "forum"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional community.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "scott_gustin",
+      "displayName": "Scott Gustin",
+      "publisherType": "Individual Reporter",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.scottgustin.com/",
+      "primaryContentType": "social",
+      "defaultEnabled": true,
+      "trustPriority": 88,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Disney Entertainment"
+      ],
+      "contentCategories": [
+        "breaking news",
+        "official announcements",
+        "media"
+      ],
+      "platforms": {
+        "x": "https://x.com/ScottGustin",
+        "bluesky": null
+      },
+      "canonicalPlatform": "social",
+      "includedPlatforms": [
+        "x"
+      ],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Individual reporter/social source. Keep if it creates original/early info.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "brooke_geiger_mcdonald",
+      "displayName": "Brooke Geiger McDonald",
+      "publisherType": "Individual Reporter",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.brookegeigermcdonald.com/",
+      "primaryContentType": "social",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "reporting",
+        "travel",
+        "parks"
+      ],
+      "platforms": {
+        "x": null,
+        "instagram": null
+      },
+      "canonicalPlatform": "social",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional individual reporter.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    },
+    {
+      "sourceId": "carlye_wisel",
+      "displayName": "Carlye Wisel",
+      "publisherType": "Individual Reporter",
+      "officialStatus": "Unofficial",
+      "websiteUrl": "https://www.carlyewisel.com/",
+      "primaryContentType": "social",
+      "defaultEnabled": false,
+      "trustPriority": 78,
+      "coverageAreas": [
+        "Disney Parks General",
+        "Theme Parks General"
+      ],
+      "contentCategories": [
+        "reporting",
+        "podcast",
+        "theme parks"
+      ],
+      "platforms": {
+        "x": null,
+        "instagram": null
+      },
+      "canonicalPlatform": "social",
+      "includedPlatforms": [],
+      "ignoredPlatforms": [],
+      "deduplicationRule": "RSS/article is canonical for same-publisher social reposts. Do not automatically discard YouTube videos or podcast episodes; attach them as related media when about the same story, or show separately when original.",
+      "timelineBehavior": "eligible_for_unified_timeline",
+      "notes": "Optional individual reporter.",
+      "verificationStatus": "starter_researched_needs_feed_validation"
+    }
+  ]
+}

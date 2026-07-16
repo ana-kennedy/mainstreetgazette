@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   AccessibilityInfo,
+  Alert,
+  Animated,
   Modal,
   Pressable,
   ScrollView,
@@ -9,18 +11,29 @@ import {
   View,
   findNodeHandle
 } from "react-native";
+import { useReduceMotion } from "../hooks/useReduceMotion";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FreshnessLabel } from "./FreshnessLabel";
 import {
   DISNEY_PARKS,
   ParkInfo,
   WeatherData,
   describeWeatherCode,
   fetchWeatherForPark,
+  humidityAccessText,
+  resolveWeatherUnit,
+  selectDisplayHours,
+  summarizeHourly,
   tempAccessText,
   tempDisplay,
   uvIndexLabel,
+  windAccessText,
+  windDisplay,
 } from "../services/weatherService";
+import type { ParkHours } from "../services/parksService";
+import { useAppContext } from "../context/AppContext";
 
 interface WeatherModalProps {
   visible: boolean;
@@ -32,31 +45,57 @@ interface WeatherModalProps {
 export interface WeatherContentProps {
   data: WeatherData;
   currentRef: React.RefObject<View | null>;
+  /** When set, the hourly list trims to this park's operating window ± 1 hour. */
+  parkHours?: ParkHours | null;
 }
 
 // Keep internal alias for the component's own usage
 type SectionProps = WeatherContentProps;
 
-export function WeatherContent({ data, currentRef }: SectionProps) {
+export function WeatherContent({ data, currentRef, parkHours }: SectionProps) {
   const theme = useTheme();
+  const app = useAppContext();
+  const weatherUnit = resolveWeatherUnit(app.settings?.weatherUnit ?? "auto");
   const { current, tonight, today, nextThreeDays, hourlyToday } = data;
   const currentDesc = describeWeatherCode(current.weatherCode);
-  const tonightDesc  = describeWeatherCode(tonight.weatherCode);
+  const tonightDesc  = describeWeatherCode(tonight.weatherCode, true);
+  const displayHours = selectDisplayHours(hourlyToday, parkHours);
+  const hourlySummary = summarizeHourly(displayHours);
 
   const updatedLabel = data.fetchedAt.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
   });
 
+  const handleAboutWeather = () => {
+    Alert.alert(
+      "About This Information",
+      `Weather is provided by Open-Meteo, an independent weather data service, and is not an official Disney source. Last updated ${updatedLabel}.`
+    );
+  };
+
   return (
     <>
-      {/* ── Updated timestamp ── */}
-      <Text
-        style={[styles.updatedAt, { color: theme.colors.onSurfaceVariant }]}
-        accessibilityLabel={`Last updated: ${updatedLabel}`}
-      >
-        Updated {updatedLabel}
-      </Text>
+      {/* ── Updated timestamp + trust label — Constitution rule 11: every dynamic card
+          shows last update time and offers About This Information (Phase 04). ── */}
+      <View style={styles.updatedRow}>
+        <FreshnessLabel kind="live" />
+        <Text
+          style={[styles.updatedAt, { color: theme.colors.onSurfaceVariant }]}
+          accessibilityLabel={`Last updated: ${updatedLabel}`}
+        >
+          Updated {updatedLabel}
+        </Text>
+        <Pressable
+          onPress={handleAboutWeather}
+          accessibilityRole="button"
+          accessibilityLabel="About This Information"
+          accessibilityHint="Double tap to learn where this weather data comes from."
+          hitSlop={8}
+        >
+          <Text style={[styles.aboutLink, { color: theme.colors.primary }]}>About This Information</Text>
+        </Pressable>
+      </View>
 
       {/* ── Current conditions ── */}
       <Text
@@ -71,10 +110,9 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
         style={[styles.currentCard, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
         accessibilityLabel={
           `Current conditions at ${data.park.name}. ` +
-          `Temperature: ${tempAccessText(current.temperatureF)}. ` +
-          `Feels like ${tempAccessText(current.feelsLikeF)}. ` +
-          `${currentDesc.label}. ` +
-          `UV index ${Math.round(current.uvIndex)}, ${uvIndexLabel(current.uvIndex)}.`
+          `Temperature: ${tempAccessText(current.temperatureF, weatherUnit)}. ` +
+          `Feels like ${tempAccessText(current.feelsLikeF, weatherUnit)}. ` +
+          `${currentDesc.label}.`
         }
       >
         <Text
@@ -82,29 +120,73 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          {tempDisplay(current.temperatureF)}
+          {tempDisplay(current.temperatureF, weatherUnit)}
         </Text>
         <Text
           style={[styles.feelsLike, { color: theme.colors.onSurfaceVariant }]}
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          Feels like {tempDisplay(current.feelsLikeF)}
+          Feels like {tempDisplay(current.feelsLikeF, weatherUnit)}
         </Text>
-        <Text
-          style={[styles.conditionText, { color: theme.colors.onSurface }]}
+        <View
+          style={styles.conditionRow}
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          {currentDesc.emoji}{"  "}{currentDesc.label}
-        </Text>
-        <Text
-          style={[styles.uvText, { color: theme.colors.onSurfaceVariant }]}
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
+          <MaterialCommunityIcons name={currentDesc.icon as any} size={24} color={theme.colors.onSurface} />
+          <Text style={[styles.conditionText, { color: theme.colors.onSurface }]}>
+            {currentDesc.label}
+          </Text>
+        </View>
+      </View>
+
+      {/* ── Details grid ── */}
+      <View style={styles.detailsGrid}>
+        <View
+          accessible
+          style={[styles.detailCard, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
+          accessibilityLabel={`UV index ${Math.round(current.uvIndex)}, ${uvIndexLabel(current.uvIndex)}.`}
         >
-          UV {Math.round(current.uvIndex)} · {uvIndexLabel(current.uvIndex)}
-        </Text>
+          <MaterialCommunityIcons name="weather-sunny-alert" size={20} color={theme.colors.primary} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
+          <Text style={[styles.detailLabel, { color: theme.colors.onSurfaceVariant }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">UV Index</Text>
+          <Text style={[styles.detailValue, { color: theme.colors.onSurface }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            {Math.round(current.uvIndex)} · {uvIndexLabel(current.uvIndex)}
+          </Text>
+        </View>
+        <View
+          accessible
+          style={[styles.detailCard, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
+          accessibilityLabel={humidityAccessText(current.humidityPercent)}
+        >
+          <MaterialCommunityIcons name="water-percent" size={20} color={theme.colors.primary} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
+          <Text style={[styles.detailLabel, { color: theme.colors.onSurfaceVariant }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">Humidity</Text>
+          <Text style={[styles.detailValue, { color: theme.colors.onSurface }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            {Math.round(current.humidityPercent)}%
+          </Text>
+        </View>
+        <View
+          accessible
+          style={[styles.detailCard, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
+          accessibilityLabel={`Wind ${windAccessText(current.windSpeedMph, current.windDirectionDeg)}.`}
+        >
+          <MaterialCommunityIcons name="weather-windy" size={20} color={theme.colors.primary} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
+          <Text style={[styles.detailLabel, { color: theme.colors.onSurfaceVariant }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">Wind</Text>
+          <Text style={[styles.detailValue, { color: theme.colors.onSurface }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            {windDisplay(current.windSpeedMph, current.windDirectionDeg)}
+          </Text>
+        </View>
+        <View
+          accessible
+          style={[styles.detailCard, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
+          accessibilityLabel={`Sunset at ${data.sunsetLabel}. Sunrise was at ${data.sunriseLabel}.`}
+        >
+          <MaterialCommunityIcons name="weather-sunset-down" size={20} color={theme.colors.primary} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
+          <Text style={[styles.detailLabel, { color: theme.colors.onSurfaceVariant }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">Sunset</Text>
+          <Text style={[styles.detailValue, { color: theme.colors.onSurface }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            {data.sunsetLabel}
+          </Text>
+        </View>
       </View>
 
       {/* ── Today & Tonight ── */}
@@ -124,7 +206,7 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
             style={[styles.forecastRow, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
             accessibilityLabel={
               `Today. ${d.label}. ` +
-              `High ${tempAccessText(today.highF)}, low ${tempAccessText(today.lowF)}. ` +
+              `High ${tempAccessText(today.highF, weatherUnit)}, low ${tempAccessText(today.lowF, weatherUnit)}. ` +
               `${today.precipitationChance}% chance of rain.`
             }
           >
@@ -135,21 +217,25 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
             >
               Today
             </Text>
-            <Text
-              style={[styles.forecastCondition, { color: theme.colors.onSurface }]}
+            <View
+              style={styles.forecastConditionRow}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              {d.emoji}{"  "}{d.label}
-            </Text>
+              <MaterialCommunityIcons name={d.icon as any} size={18} color={theme.colors.onSurface} />
+              <Text style={[styles.forecastCondition, { color: theme.colors.onSurface }]}>{d.label}</Text>
+            </View>
             <View
               style={styles.forecastRight}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>H: {tempDisplay(today.highF)}</Text>
-              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(today.lowF)}</Text>
-              <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>🌧  {today.precipitationChance}%</Text>
+              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>H: {tempDisplay(today.highF, weatherUnit)}</Text>
+              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(today.lowF, weatherUnit)}</Text>
+              <View style={styles.rainChanceRow}>
+                <MaterialCommunityIcons name="water" size={12} color={theme.colors.onSurfaceVariant} />
+                <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>{today.precipitationChance}%</Text>
+              </View>
             </View>
           </View>
         );
@@ -161,7 +247,7 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
         style={[styles.forecastRow, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
         accessibilityLabel={
           `Tonight. ${tonightDesc.label}. ` +
-          `Low ${tempAccessText(tonight.lowF)}. ` +
+          `Low ${tempAccessText(tonight.lowF, weatherUnit)}. ` +
           `${tonight.precipitationChance}% chance of rain.`
         }
       >
@@ -172,20 +258,24 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
         >
           Tonight
         </Text>
-        <Text
-          style={[styles.forecastCondition, { color: theme.colors.onSurface }]}
+        <View
+          style={styles.forecastConditionRow}
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          {tonightDesc.emoji}{"  "}{tonightDesc.label}
-        </Text>
+          <MaterialCommunityIcons name={tonightDesc.icon as any} size={18} color={theme.colors.onSurface} />
+          <Text style={[styles.forecastCondition, { color: theme.colors.onSurface }]}>{tonightDesc.label}</Text>
+        </View>
         <View
           style={styles.forecastRight}
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
         >
-          <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(tonight.lowF)}</Text>
-          <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>🌧  {tonight.precipitationChance}%</Text>
+          <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(tonight.lowF, weatherUnit)}</Text>
+          <View style={styles.rainChanceRow}>
+            <MaterialCommunityIcons name="water" size={12} color={theme.colors.onSurfaceVariant} />
+            <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>{tonight.precipitationChance}%</Text>
+          </View>
         </View>
       </View>
 
@@ -205,7 +295,7 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
             style={[styles.forecastRow, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
             accessibilityLabel={
               `${day.dateLabel}. ${d.label}. ` +
-              `High ${tempAccessText(day.highF)}, low ${tempAccessText(day.lowF)}. ` +
+              `High ${tempAccessText(day.highF, weatherUnit)}, low ${tempAccessText(day.lowF, weatherUnit)}. ` +
               `${day.precipitationChance}% chance of rain.`
             }
           >
@@ -216,42 +306,51 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
             >
               {day.dateLabel}
             </Text>
-            <Text
-              style={[styles.forecastCondition, { color: theme.colors.onSurface }]}
+            <View
+              style={styles.forecastConditionRow}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              {d.emoji}{"  "}{d.label}
-            </Text>
+              <MaterialCommunityIcons name={d.icon as any} size={18} color={theme.colors.onSurface} />
+              <Text style={[styles.forecastCondition, { color: theme.colors.onSurface }]}>{d.label}</Text>
+            </View>
             <View
               style={styles.forecastRight}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>H: {tempDisplay(day.highF)}</Text>
-              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(day.lowF)}</Text>
-              <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>🌧  {day.precipitationChance}%</Text>
+              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>H: {tempDisplay(day.highF, weatherUnit)}</Text>
+              <Text style={[styles.forecastTemp, { color: theme.colors.onSurface }]}>L: {tempDisplay(day.lowF, weatherUnit)}</Text>
+              <View style={styles.rainChanceRow}>
+                <MaterialCommunityIcons name="water" size={12} color={theme.colors.onSurfaceVariant} />
+                <Text style={[styles.rainChance, { color: theme.colors.onSurfaceVariant }]}>{day.precipitationChance}%</Text>
+              </View>
             </View>
           </View>
         );
       })}
 
-      {/* ── Today Hourly (every 3 hours) ── */}
+      {/* ── Today Hourly ── */}
       <Text
         style={[styles.sectionTitle, { color: theme.colors.onSurface }]}
         accessibilityRole="header"
       >
         Today Hourly
       </Text>
-      {hourlyToday.map(slot => {
+      {hourlySummary ? (
+        <Text style={[styles.hourlySummary, { color: theme.colors.onSurfaceVariant }]}>
+          {hourlySummary}
+        </Text>
+      ) : null}
+      {displayHours.map(slot => {
         const d = describeWeatherCode(slot.weatherCode);
         return (
           <View
-            key={slot.timeLabel}
+            key={slot.hour}
             accessible
             style={[styles.hourlyRow, { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline }]}
             accessibilityLabel={
-              `${slot.timeLabel}. ${tempAccessText(slot.temperatureF)}. ` +
+              `${slot.timeLabel}. ${tempAccessText(slot.temperatureF, weatherUnit)}. ` +
               `${d.label}. ${slot.precipitationChance}% chance of rain.`
             }
           >
@@ -267,22 +366,24 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              {tempDisplay(slot.temperatureF)}
+              {tempDisplay(slot.temperatureF, weatherUnit)}
             </Text>
-            <Text
-              style={[styles.hourCondition, { color: theme.colors.onSurface }]}
+            <View
+              style={styles.hourConditionRow}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              {d.emoji}{"  "}{d.label}
-            </Text>
-            <Text
-              style={[styles.hourRain, { color: theme.colors.onSurfaceVariant }]}
+              <MaterialCommunityIcons name={d.icon as any} size={16} color={theme.colors.onSurface} />
+              <Text style={[styles.hourCondition, { color: theme.colors.onSurface }]}>{d.label}</Text>
+            </View>
+            <View
+              style={styles.hourRainRow}
               accessibilityElementsHidden
               importantForAccessibility="no-hide-descendants"
             >
-              🌧  {slot.precipitationChance}%
-            </Text>
+              <MaterialCommunityIcons name="water" size={12} color={theme.colors.onSurfaceVariant} />
+              <Text style={[styles.hourRain, { color: theme.colors.onSurfaceVariant }]}>{slot.precipitationChance}%</Text>
+            </View>
           </View>
         );
       })}
@@ -297,10 +398,30 @@ export function WeatherContent({ data, currentRef }: SectionProps) {
 export function WeatherModal({ visible, onClose }: WeatherModalProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const reduceMotion = useReduceMotion();
   const [selectedPark, setSelectedPark] = useState<ParkInfo | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const springAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (visible) {
+      if (reduceMotion) {
+        springAnim.setValue(1);
+      } else {
+        springAnim.setValue(0.88);
+        Animated.spring(springAnim, {
+          toValue: 1,
+          damping: 18,
+          stiffness: 280,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible]);
 
   const firstParkRef      = useRef<View>(null);
   const currentRef        = useRef<View>(null);
@@ -384,13 +505,14 @@ export function WeatherModal({ visible, onClose }: WeatherModalProps) {
       onRequestClose={handleBack}
       statusBarTranslucent
     >
-      <View
+      <Animated.View
         style={[
           styles.screen,
           {
             backgroundColor: theme.colors.background,
             paddingTop:    insets.top,
             paddingBottom: insets.bottom,
+            transform: [{ scale: springAnim }],
           }
         ]}
         accessibilityViewIsModal
@@ -504,7 +626,7 @@ export function WeatherModal({ visible, onClose }: WeatherModalProps) {
             ) : null}
           </ScrollView>
         )}
-      </View>
+      </Animated.View>
     </Modal>
   );
 }
@@ -591,10 +713,20 @@ const styles = StyleSheet.create({
   },
 
   // Timestamp
+  updatedRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: 8,
+    marginBottom: 4,
+  },
   updatedAt: {
     fontSize:     12,
-    textAlign:    "right",
-    marginBottom: 4,
+  },
+  aboutLink: {
+    fontSize: 12,
+    fontWeight: "600",
+    textDecorationLine: "underline",
   },
 
   // Section headers
@@ -603,6 +735,12 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginTop:  20,
     marginBottom: 8,
+  },
+  hourlySummary: {
+    fontSize:     14,
+    lineHeight:   20,
+    marginTop:    -4,
+    marginBottom: 10,
   },
 
   // Current conditions card
@@ -619,12 +757,38 @@ const styles = StyleSheet.create({
   feelsLike: {
     fontSize: 16,
   },
+  conditionRow: {
+    flexDirection: "row",
+    alignItems:    "center",
+    gap:           8,
+  },
   conditionText: {
     fontSize:   20,
     lineHeight: 28,
   },
-  uvText: {
-    fontSize: 15,
+
+  // Details grid (UV, humidity, wind, sunset)
+  detailsGrid: {
+    flexDirection: "row",
+    flexWrap:      "wrap",
+    gap:           10,
+    marginTop:     12,
+  },
+  detailCard: {
+    flexBasis:    "47%",
+    flexGrow:     1,
+    borderRadius: 12,
+    borderWidth:  StyleSheet.hairlineWidth,
+    padding:      12,
+    gap:          4,
+  },
+  detailLabel: {
+    fontSize:   12,
+    fontWeight: "600",
+  },
+  detailValue: {
+    fontSize:   16,
+    fontWeight: "700",
   },
 
   // Forecast rows (today, tonight, 3-day)
@@ -642,6 +806,12 @@ const styles = StyleSheet.create({
     fontSize:   15,
     fontWeight: "600",
   },
+  forecastConditionRow: {
+    flex:          1,
+    flexDirection: "row",
+    alignItems:    "center",
+    gap:           6,
+  },
   forecastCondition: {
     flex:     1,
     fontSize: 14,
@@ -653,6 +823,11 @@ const styles = StyleSheet.create({
   },
   forecastTemp: {
     fontSize: 13,
+  },
+  rainChanceRow: {
+    flexDirection: "row",
+    alignItems:    "center",
+    gap:           4,
   },
   rainChance: {
     fontSize: 13,
@@ -678,15 +853,26 @@ const styles = StyleSheet.create({
     fontSize:   14,
     fontWeight: "600",
   },
+  hourConditionRow: {
+    flex:          1,
+    flexDirection: "row",
+    alignItems:    "center",
+    gap:           6,
+  },
   hourCondition: {
     flex:       1,
     fontSize:   13,
     lineHeight: 18,
   },
+  hourRainRow: {
+    width:          56,
+    flexDirection:  "row",
+    alignItems:     "center",
+    justifyContent: "flex-end",
+    gap:            4,
+  },
   hourRain: {
-    width:    56,
     fontSize: 13,
-    textAlign: "right",
   },
 
   bottomPad: {

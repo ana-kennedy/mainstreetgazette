@@ -1,0 +1,71 @@
+[
+  {
+    "id": "topStories",
+    "label": "Top Stories",
+    "description": "Important Disney stories ranked by freshness, source quality, and user relevance.",
+    "default": true,
+    "sortMode": "smartScore"
+  },
+  {
+    "id": "breaking",
+    "label": "Breaking",
+    "description": "Fresh high-priority stories, official announcements, and fast-moving reports.",
+    "sortMode": "breakingScore"
+  },
+  {
+    "id": "today",
+    "label": "Today",
+    "description": "Stories published or updated today.",
+    "dateRange": "today",
+    "sortMode": "latestUpdate"
+  },
+  {
+    "id": "last3Days",
+    "label": "Last 3 Days",
+    "description": "Recent Disney stories from the last three days.",
+    "dateRange": "last3Days",
+    "sortMode": "smartScore"
+  },
+  {
+    "id": "thisWeek",
+    "label": "This Week",
+    "description": "Disney stories from the current week.",
+    "dateRange": "thisWeek",
+    "sortMode": "smartScore"
+  },
+  {
+    "id": "official",
+    "label": "Official",
+    "description": "Stories that include at least one official Disney source.",
+    "requiresOfficialSource": true,
+    "sortMode": "latestUpdate"
+  },
+  {
+    "id": "videos",
+    "label": "Videos",
+    "description": "Stories with YouTube or video coverage.",
+    "requiresMediaType": "video",
+    "sortMode": "latestUpdate"
+  },
+  {
+    "id": "podcasts",
+    "label": "Podcasts",
+    "description": "Stories with podcast or audio discussion.",
+    "requiresMediaType": "podcast",
+    "sortMode": "latestUpdate"
+  },
+  {
+    "id": "community",
+    "label": "Community",
+    "description": "Stories with Reddit, forum, or other community discussion.",
+    "requiresMediaType": "community",
+    "sortMode": "latestUpdate"
+  },
+  {
+    "id": "saved",
+    "label": "Saved",
+    "description": "Stories saved by the user.",
+    "requiresSaved": true,
+    "sortMode": "latestUpdate"
+  }
+]

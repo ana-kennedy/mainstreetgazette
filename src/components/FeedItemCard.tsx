@@ -1,28 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   AccessibilityActionEvent,
   AccessibilityInfo,
+  ActionSheetIOS,
+  Alert,
   Animated,
   Image,
   Linking,
-  Modal,
   Platform,
-  Pressable,
   Share,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  findNodeHandle
 } from "react-native";
 
 import { useTheme } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 import * as Clipboard from "expo-clipboard";
 import { openBrowserAsync } from "expo-web-browser";
 import type { FeedItem, UserSettings } from "../domain/models";
 import { useSounds } from "../context/SoundContext";
-import { buildFeedItemAccessibility } from "../utils/accessibility";
-import { clockString, relativePublishedText, summarizeItem } from "../utils/formatting";
+import { useHaptics } from "../hooks/useHaptics";
+import { useReduceMotion } from "../hooks/useReduceMotion";
+import { useDynamicType } from "../hooks/useDynamicType";
+import { useSystemAccessibility } from "../hooks/useSystemAccessibility";
+import { useScreenReaderEnabled } from "../hooks/useScreenReaderEnabled";
+import { buildFeedItemAccessibility, isAccessibilityTopic } from "../utils/accessibility";
+import { clockString, contentTypeDisplayName, relativePublishedText, summarizeItem } from "../utils/formatting";
+
+// Loaded at runtime — falls back gracefully in Expo Go where the native module is unavailable.
+let NativeMenuView: React.ComponentType<{
+  title: string;
+  actions: object[];
+  onPressAction: (e: { nativeEvent: { event: string } }) => void;
+  shouldOpenOnLongPress?: boolean;
+  children: React.ReactNode;
+}> | null = null;
+try {
+  NativeMenuView = require("@react-native-menu/menu").MenuView;
+} catch {}
 
 // Tracks item IDs that have already played their entrance animation this session.
 // Prevents the animation from replaying when FlatList virtualisation remounts cards.
@@ -36,9 +53,12 @@ interface FeedItemCardProps {
   onOpen: (item: FeedItem) => void;
   onPlay?: (item: FeedItem) => void;
   onQueue?: (item: FeedItem) => void;
+  onRemoveFromQueue?: (itemID: string) => void;
   onToggleSaved: (itemID: string) => void;
-  onSetMarker: (item: FeedItem) => void;
   onMarkRead?: (itemID: string) => void;
+  onMarkUnread?: (itemID: string) => void;
+  onMuteSource?: (sourceID: string) => void;
+  whyRecommended?: string;
   focusRef?: React.Ref<View>;
 }
 
@@ -62,33 +82,72 @@ function FeedItemCardInner({
   onOpen,
   onPlay,
   onQueue,
+  onRemoveFromQueue,
   onToggleSaved,
-  onSetMarker,
   onMarkRead,
+  onMarkUnread,
+  onMuteSource,
+  whyRecommended,
   focusRef
 }: FeedItemCardProps) {
   const theme = useTheme();
-  const { playSelect } = useSounds();
-  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+  const { playSelect, playSave, playUnsave } = useSounds();
+  const haptics = useHaptics();
+  const reduceMotion = useReduceMotion();
+  const { isLargeText, isExtraLargeText } = useDynamicType();
+  const { isBoldText, isGrayscale } = useSystemAccessibility();
+  const screenReaderEnabled = useScreenReaderEnabled();
+  const { t } = useTranslation();
+
+  // The native context-menu wrapper (@react-native-menu/menu) relies on a physical
+  // long-press gesture and, on iOS, renders an unlabeled SwiftUI trigger view that
+  // VoiceOver announces as "Unimplemented" — and it shadows this card's own
+  // accessibilityActions, making the VoiceOver rotor's Actions menu unreachable.
+  // With a screen reader on, skip the wrapper entirely and rely on
+  // accessibilityActions (rotor) plus the ActionSheet/Alert long-press fallback below.
+  const useNativeMenu = Boolean(NativeMenuView) && !screenReaderEnabled;
 
   const alreadySeen = animatedItemIDs.has(item.id);
   const fadeAnim = useRef(new Animated.Value(alreadySeen ? 1 : 0)).current;
   useEffect(() => {
     if (animatedItemIDs.has(item.id)) return;
     animatedItemIDs.add(item.id);
-    Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+    if (reduceMotion) {
+      fadeAnim.setValue(1);
+    } else {
+      Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const firstContextItemRef = useRef<View>(null);
-  const payload = buildFeedItemAccessibility(item, sourceName);
+
+  const payload = buildFeedItemAccessibility(
+    item,
+    sourceName,
+    settings?.simplifiedLayoutEnabled ? "simple" : settings?.announcementLevel ?? "all"
+  );
   const isMinimal = displayMode === "minimal";
-  const showThumbnail = !isMinimal && settings?.showThumbnails && !settings.hideThumbnailsForLowVision && item.thumbnailURL;
-  const summary = summarizeItem(item, settings?.previewLength ?? 3);
+  const isSimplified = settings?.simplifiedLayoutEnabled ?? false;
+  const isCompact = settings?.cardDensity === "compact";
+  const isSpacious = settings?.cardDensity === "spacious";
+  const cardPadding = isCompact ? 7 : isSpacious ? 13 : 10;
+  const cardMarginVertical = isCompact ? 2 : isSpacious ? 6 : 4;
+  const textColumnGap = isCompact ? 2 : isSpacious ? 4 : 3;
+  const showBoldMetadata = (settings?.lowVisionBoldMetadata ?? false) || isBoldText;
+  const artworkDensity = settings?.artworkDensity ?? "full";
+  const showThumbnail =
+    !isMinimal &&
+    !isSimplified &&
+    !isLargeText &&
+    artworkDensity !== "textFirst" &&
+    !settings?.hideThumbnailsForLowVision &&
+    item.thumbnailURL;
+  const thumbnailSize = artworkDensity === "reduced" ? 44 : 62;
+  const showSecondaryMeta = !isSimplified && !isExtraLargeText;
+  const summary = !isSimplified ? summarizeItem(item, settings?.previewLength ?? 3) : null;
   const publishedText = relativePublishedText(item.publishedAt).replace(/\.$/, "");
   const authorText = item.authorOrChannel && item.authorOrChannel !== sourceName ? item.authorOrChannel : null;
-  const contentLabel = item.contentType === "podcast" ? "Podcast" : item.contentType === "video" ? "Video" : "Article";
-
-  const closeContextMenu = () => setIsContextMenuVisible(false);
+  const contentLabel = contentTypeDisplayName(item.contentType);
+  const hasAccessibilityTopic = isAccessibilityTopic(item);
 
   const handleOpen = async () => {
     playSelect();
@@ -107,279 +166,325 @@ function FeedItemCardInner({
     }
   };
 
-  const openHint =
-    item.contentType === "article"
-      ? "Double tap to open this article in reader view."
+  const menuActions = [
+    {
+      id: "activate",
+      title: item.contentType === "podcast" ? t("feed.play") : t("feed.open"),
+      image: Platform.select({ ios: item.contentType === "podcast" ? "play.fill" : "arrow.up.right.square" }),
+    },
+    ...(item.contentType === "podcast" && onRemoveFromQueue
+      ? [{ id: "remove-queue", title: t("feed.removeFromQueue"), image: Platform.select({ ios: "text.badge.minus" }) }]
       : item.contentType === "podcast"
-        ? "Double tap to play this episode."
-        : "Double tap to open this video.";
+        ? [{ id: "queue", title: t("feed.addToQueue"), image: Platform.select({ ios: "text.badge.plus" }) }]
+        : []),
+    {
+      id: "save",
+      title: item.isSaved
+        ? t("feed.removeFromSaved", { type: contentLabel })
+        : t("feed.saveForLater", { type: contentLabel }),
+      image: Platform.select({ ios: item.isSaved ? "bookmark.slash" : "bookmark" }),
+    },
+    ...(!item.isRead && onMarkRead
+      ? [{ id: "mark-read", title: t("a11y.markRead"), image: Platform.select({ ios: "checkmark.circle" }) }]
+      : []),
+    ...(item.isRead && onMarkUnread
+      ? [{ id: "mark-unread", title: t("a11y.markUnread"), image: Platform.select({ ios: "circle" }) }]
+      : []),
+    {
+      id: "copy-link",
+      title: t("feed.copyLink"),
+      image: Platform.select({ ios: "link" }),
+    },
+    {
+      id: "view-web",
+      title: t("feed.viewOnWeb"),
+      image: Platform.select({ ios: "safari" }),
+    },
+    {
+      id: "share",
+      title: t("feed.share", { type: contentLabel }),
+      image: Platform.select({ ios: "square.and.arrow.up" }),
+    },
+    ...(onMuteSource
+      ? [{ id: "mute-source", title: t("feed.muteSource", { name: sourceName }), image: Platform.select({ ios: "bell.slash" }) }]
+      : []),
+  ];
 
-  const contextMenuItems = [
-    {
-      key: "activate",
-      label: item.contentType === "podcast" ? "Play" : "Open",
-      hint: openHint,
-      onPress: () => { closeContextMenu(); handleOpen(); }
-    },
-    ...(item.contentType === "podcast" ? [{
-      key: "queue",
-      label: "Add to Queue",
-      hint: "Double tap to add this episode to the playback queue.",
-      onPress: () => { closeContextMenu(); onQueue?.(item); }
-    }] : []),
-    {
-      key: "save",
-      label: item.isSaved ? "Remove from Saved" : "Save for Later",
-      hint: item.isSaved
-        ? `Double tap to remove this ${contentLabel.toLowerCase()} from saved.`
-        : `Double tap to save this ${contentLabel.toLowerCase()} for later.`,
-      onPress: () => { closeContextMenu(); onToggleSaved(item.id); }
-    },
-    {
-      key: "copy-link",
-      label: "Copy Link",
-      hint: `Double tap to copy the link to your clipboard.`,
-      onPress: async () => {
-        closeContextMenu();
-        await Clipboard.setStringAsync(item.canonicalURL);
-        AccessibilityInfo.announceForAccessibility("Link copied to clipboard.");
-      }
-    },
-    {
-      key: "view-web",
-      label: "View on Web",
-      hint: `Double tap to open in your web browser.`,
-      onPress: () => { closeContextMenu(); Linking.openURL(item.canonicalURL); }
-    },
-    {
-      key: "share",
-      label: `Share ${contentLabel}`,
-      hint: `Double tap to open the share sheet.`,
-      onPress: async () => {
-        closeContextMenu();
-        await Share.share(
+  const handleMenuAction = ({ nativeEvent: { event } }: { nativeEvent: { event: string } }) => {
+    switch (event) {
+      case "activate": handleOpen(); break;
+      case "queue": onQueue?.(item); break;
+      case "remove-queue": onRemoveFromQueue?.(item.id); break;
+      case "save":
+        if (item.isSaved) { playUnsave(); haptics.light(); } else { playSave(); haptics.success(); }
+        onToggleSaved(item.id);
+        break;
+      case "mark-read": onMarkRead?.(item.id); break;
+      case "mark-unread": onMarkUnread?.(item.id); break;
+      case "copy-link":
+        Clipboard.setStringAsync(item.canonicalURL).then(() => {
+          AccessibilityInfo.announceForAccessibility(t("feed.linkCopied"));
+        });
+        break;
+      case "view-web": Linking.openURL(item.canonicalURL); break;
+      case "share":
+        Share.share(
           Platform.OS === "ios"
             ? { url: item.canonicalURL, title: item.title }
             : { message: item.canonicalURL, title: item.title }
         );
-      }
-    },
-    {
-      key: "set-marker",
-      label: "Set Marker",
-      hint: "Double tap to set a timeline marker at this item.",
-      onPress: () => { closeContextMenu(); onSetMarker(item); }
+        break;
+      case "mute-source":
+        onMuteSource?.(item.sourceID);
+        haptics.light();
+        AccessibilityInfo.announceForAccessibility(t("feed.sourceMuted", { name: sourceName }));
+        break;
     }
-  ];
-
-  const contextAccessibilityActions = contextMenuItems.map((ci) => ({
-    name: ci.key,
-    label: ci.label
-  }));
-
-  const handleContextAccessibilityAction = (event: AccessibilityActionEvent) => {
-    const action = contextMenuItems.find((ci) => ci.key === event.nativeEvent.actionName);
-    if (action) action.onPress();
   };
 
-  useEffect(() => {
-    if (!isContextMenuVisible) return;
-    const timer = setTimeout(() => {
-      const node = findNodeHandle(firstContextItemRef.current);
-      if (node) AccessibilityInfo.setAccessibilityFocus(node);
-    }, 150);
-    return () => clearTimeout(timer);
-  }, [isContextMenuVisible]);
+  // Fallback long-press for Expo Go / environments without the native context menu.
+  const handleLongPressFallback = () => {
+    haptics.light();
+    const fallbackActions = [
+      { label: item.contentType === "podcast" ? t("feed.play") : t("feed.open"), id: "activate" },
+      ...(item.contentType === "podcast" && onRemoveFromQueue
+        ? [{ label: t("feed.removeFromQueue"), id: "remove-queue" }]
+        : item.contentType === "podcast"
+          ? [{ label: t("feed.addToQueue"), id: "queue" }]
+          : []),
+      {
+        label: item.isSaved
+          ? t("feed.removeFromSaved", { type: contentLabel })
+          : t("feed.saveForLater", { type: contentLabel }),
+        id: "save",
+      },
+      ...(!item.isRead && onMarkRead ? [{ label: t("a11y.markRead"), id: "mark-read" }] : []),
+      ...(item.isRead && onMarkUnread ? [{ label: t("a11y.markUnread"), id: "mark-unread" }] : []),
+      { label: t("feed.share", { type: contentLabel }), id: "share" },
+      ...(onMuteSource ? [{ label: t("feed.muteSource", { name: sourceName }), id: "mute-source" }] : []),
+    ];
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: item.title,
+          options: [...fallbackActions.map((a) => a.label), t("common.dismiss")],
+          cancelButtonIndex: fallbackActions.length,
+        },
+        (index) => {
+          if (index < fallbackActions.length) {
+            handleMenuAction({ nativeEvent: { event: fallbackActions[index].id } });
+          }
+        }
+      );
+    } else {
+      Alert.alert(
+        item.title,
+        undefined,
+        [
+          ...fallbackActions.map((a) => ({
+            text: a.label,
+            onPress: () => handleMenuAction({ nativeEvent: { event: a.id } }),
+          })),
+          { text: t("common.dismiss"), style: "cancel" as const },
+        ]
+      );
+    }
+  };
+
+  // Braille-optimised action list: short labels for 40-char display lines.
+  const brailleActions: Array<{ name: string; label: string }> = [
+    { name: "activate", label: item.contentType === "podcast" ? t("feed.play") : t("feed.open") },
+    ...(item.contentType === "podcast" && onRemoveFromQueue
+      ? [{ name: "remove-queue", label: t("a11y.removeQueue") }]
+      : item.contentType === "podcast"
+        ? [{ name: "queue", label: t("a11y.queue") }]
+        : []),
+    { name: "save", label: item.isSaved ? t("a11y.unsave") : t("a11y.save") },
+    ...(!item.isRead && onMarkRead ? [{ name: "mark-read", label: t("a11y.markRead") }] : []),
+    ...(item.isRead && onMarkUnread ? [{ name: "mark-unread", label: t("a11y.markUnread") }] : []),
+    ...(item.summary ? [{ name: "summary", label: t("a11y.summary") }] : []),
+    { name: "share", label: t("a11y.share") },
+    ...(onMuteSource ? [{ name: "mute-source", label: t("a11y.muteSource") }] : []),
+  ];
+
+  const handleContextAccessibilityAction = (event: AccessibilityActionEvent) => {
+    const { actionName } = event.nativeEvent;
+    switch (actionName) {
+      case "activate": handleOpen(); break;
+      case "queue": onQueue?.(item); break;
+      case "remove-queue": onRemoveFromQueue?.(item.id); break;
+      case "save":
+        if (item.isSaved) { playUnsave(); haptics.light(); } else { playSave(); haptics.success(); }
+        onToggleSaved(item.id);
+        break;
+      case "mark-read":
+        onMarkRead?.(item.id);
+        haptics.light();
+        break;
+      case "mark-unread":
+        onMarkUnread?.(item.id);
+        haptics.light();
+        break;
+      case "summary":
+        if (item.summary) AccessibilityInfo.announceForAccessibility(item.summary);
+        break;
+      case "share":
+        Share.share(
+          Platform.OS === "ios"
+            ? { url: item.canonicalURL, title: item.title }
+            : { message: item.canonicalURL, title: item.title }
+        );
+        break;
+      case "mute-source":
+        onMuteSource?.(item.sourceID);
+        haptics.light();
+        AccessibilityInfo.announceForAccessibility(t("feed.sourceMuted", { name: sourceName }));
+        break;
+    }
+  };
 
   const cardHint =
     Platform.OS === "ios"
       ? item.contentType === "article"
-        ? "Double tap to open in reader view. Swipe up or down to access Save, Copy Link, Share, and Set Marker."
+        ? t("feed.openHintIosArticle")
         : item.contentType === "podcast"
-          ? "Double tap to play. Swipe up or down to access Add to Queue, Save, Copy Link, Share, and Set Marker."
-          : "Double tap to open video. Swipe up or down to access Save, Copy Link, Share, and Set Marker."
-      : "Double tap to open. Double tap and hold for more options.";
+          ? t("feed.openHintIosPodcast")
+          : t("feed.openHintIosVideo")
+      : t("feed.openAndroid");
 
-  // Pill styling — subtle, not overwhelming
   const pillBg = theme.colors.surfaceVariant;
   const pillFg = theme.colors.onSurfaceVariant;
   const savedPillBg = theme.colors.primaryContainer ?? theme.colors.surfaceVariant;
   const savedPillFg = theme.colors.onPrimaryContainer ?? theme.colors.onSurfaceVariant;
 
+  const cardBody = (
+    <TouchableOpacity
+      ref={focusRef}
+      style={[styles.content, { padding: cardPadding }]}
+      activeOpacity={0.8}
+      onPress={handleOpen}
+      onLongPress={!useNativeMenu ? handleLongPressFallback : undefined}
+      delayLongPress={!useNativeMenu ? 500 : undefined}
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={whyRecommended ? `${payload.label} ${whyRecommended}.` : payload.label}
+      accessibilityHint={cardHint}
+      accessibilityValue={payload.value ? { text: payload.value } : undefined}
+      accessibilityActions={brailleActions}
+      onAccessibilityAction={handleContextAccessibilityAction}
+    >
+      <View style={styles.bodyRow}>
+        <View style={[styles.textColumn, { gap: textColumnGap }]}>
+          <Text style={[styles.title, { color: theme.colors.onSurface }]}>{item.title}</Text>
+
+          {/* Source · Type · date — secondary line below the headline */}
+          <View style={styles.metaTopRow}>
+            <Text
+              style={[styles.sourceName, { color: theme.colors.primary, fontWeight: showBoldMetadata ? "700" : "600" }]}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.4}
+            >
+              {sourceName}
+            </Text>
+            {!isSimplified ? (
+              <>
+                <Text style={[styles.metaDot, { color: theme.colors.onSurfaceVariant }]} maxFontSizeMultiplier={1.4}>·</Text>
+                <Text style={[styles.publishedText, { color: theme.colors.onSurfaceVariant }]} maxFontSizeMultiplier={1.4}>
+                  {contentLabel}
+                </Text>
+              </>
+            ) : null}
+            <Text style={[styles.metaDot, { color: theme.colors.onSurfaceVariant }]} maxFontSizeMultiplier={1.4}>·</Text>
+            <Text
+              style={[styles.publishedText, { color: theme.colors.onSurfaceVariant, fontWeight: showBoldMetadata ? "700" : "400" }]}
+              maxFontSizeMultiplier={1.4}
+            >
+              {publishedText}
+            </Text>
+          </View>
+
+          {!isMinimal && showSecondaryMeta && authorText ? (
+            <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
+              {t("feed.by", { name: authorText })}
+            </Text>
+          ) : null}
+          {!isMinimal && showSecondaryMeta && item.durationSeconds ? (
+            <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
+              {clockString(item.durationSeconds)}
+            </Text>
+          ) : null}
+          {!isMinimal && summary ? (
+            <Text style={[styles.summary, { color: theme.colors.onSurface }]}>{summary}</Text>
+          ) : null}
+
+          {whyRecommended ? (
+            <Text
+              style={[styles.whyRecommended, { color: theme.colors.primary }]}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              numberOfLines={1}
+            >
+              {whyRecommended}
+            </Text>
+          ) : null}
+
+          {!isMinimal ? (
+            <View
+              style={styles.pillRow}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+            >
+              {!isSimplified && item.isSaved ? (
+                <TypePill label={t("feed.savedPill")} color={savedPillBg} textColor={savedPillFg} />
+              ) : null}
+              {isGrayscale && item.isNewRelativeToCheckpoint ? (
+                <TypePill label={t("a11y.new").replace(".", "")} color={pillBg} textColor={pillFg} />
+              ) : null}
+              {hasAccessibilityTopic ? (
+                <TypePill label="Accessibility" color={pillBg} textColor={pillFg} />
+              ) : null}
+            </View>
+          ) : null}
+        </View>
+
+        {showThumbnail ? (
+          <Image
+            source={{ uri: item.thumbnailURL ?? undefined }}
+            style={[
+              styles.thumbnail,
+              { backgroundColor: theme.colors.surfaceVariant, width: thumbnailSize, height: thumbnailSize },
+            ]}
+            accessible={false}
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            accessibilityIgnoresInvertColors
+          />
+        ) : null}
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <Animated.View
       style={[
         styles.card,
-        { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline },
-        item.isNewRelativeToCheckpoint && !isMinimal
+        { backgroundColor: theme.colors.surface, borderColor: theme.colors.outline, marginVertical: cardMarginVertical },
+        item.isNewRelativeToCheckpoint && !isMinimal && !isSimplified
           ? { borderLeftColor: theme.colors.primary, borderLeftWidth: 3 }
           : null,
         { opacity: fadeAnim }
       ]}
     >
-      <TouchableOpacity
-        ref={focusRef}
-        style={styles.content}
-        activeOpacity={0.8}
-        onPress={handleOpen}
-        onLongPress={() => setIsContextMenuVisible(true)}
-        delayLongPress={500}
-        accessible
-        accessibilityRole="button"
-        accessibilityLabel={payload.label}
-        accessibilityHint={cardHint}
-        accessibilityValue={payload.value ? { text: payload.value } : undefined}
-        accessibilityActions={contextAccessibilityActions}
-        onAccessibilityAction={handleContextAccessibilityAction}
-      >
-        <View style={styles.bodyRow}>
-          <View style={styles.textColumn}>
-            {/* Source + date line above title (editorial style) */}
-            <View style={styles.metaTopRow}>
-              <Text
-                style={[
-                  styles.sourceName,
-                  {
-                    color: theme.colors.primary,
-                    fontWeight: settings?.lowVisionBoldMetadata ? "700" : "600"
-                  }
-                ]}
-                numberOfLines={1}
-              >
-                {sourceName}
-              </Text>
-              <Text
-                style={[
-                  styles.metaDot,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
-                ·
-              </Text>
-              <Text
-                style={[
-                  styles.publishedText,
-                  {
-                    color: theme.colors.onSurfaceVariant,
-                    fontWeight: settings?.lowVisionBoldMetadata ? "700" : "400"
-                  }
-                ]}
-              >
-                {publishedText}
-              </Text>
-            </View>
-
-            <Text style={[styles.title, { color: theme.colors.onSurface }]}>{item.title}</Text>
-
-            {!isMinimal && authorText ? (
-              <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
-                By {authorText}
-              </Text>
-            ) : null}
-            {!isMinimal && item.durationSeconds ? (
-              <Text style={[styles.metaLine, { color: theme.colors.onSurfaceVariant }]}>
-                {clockString(item.durationSeconds)}
-              </Text>
-            ) : null}
-            {!isMinimal && summary ? (
-              <Text style={[styles.summary, { color: theme.colors.onSurface }]}>{summary}</Text>
-            ) : null}
-
-            {!isMinimal ? (
-              <View
-                style={styles.pillRow}
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-              >
-                {item.contentType !== "article" ? (
-                  <TypePill label={contentLabel} color={pillBg} textColor={pillFg} />
-                ) : null}
-                {item.isSaved ? (
-                  <TypePill label="Saved" color={savedPillBg} textColor={savedPillFg} />
-                ) : null}
-              </View>
-            ) : null}
-          </View>
-
-          {showThumbnail ? (
-            <Image
-              source={{ uri: item.thumbnailURL ?? undefined }}
-              style={[styles.thumbnail, { backgroundColor: theme.colors.surfaceVariant }]}
-              accessible={false}
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-            />
-          ) : null}
-        </View>
-      </TouchableOpacity>
-
-      {isContextMenuVisible ? (
-        <Modal
-          visible={isContextMenuVisible}
-          transparent
-          animationType="slide"
-          onRequestClose={closeContextMenu}
+      {useNativeMenu && NativeMenuView ? (
+        <NativeMenuView
+          title={item.title}
+          actions={menuActions}
+          onPressAction={handleMenuAction}
+          shouldOpenOnLongPress
         >
-          <View style={styles.contextMenuContainer} accessibilityViewIsModal>
-            <Pressable
-              style={StyleSheet.absoluteFill}
-              onPress={closeContextMenu}
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-            />
-            <View
-              style={[
-                styles.contextMenuPanel,
-                { backgroundColor: theme.colors.surface, borderTopColor: theme.colors.outline }
-              ]}
-              accessible={false}
-            >
-              <View
-                style={[styles.contextMenuHandle, { backgroundColor: theme.colors.outline }]}
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-              />
-              <Text
-                style={[styles.contextMenuItemTitle, { color: theme.colors.onSurfaceVariant }]}
-                numberOfLines={2}
-              >
-                {item.title}
-              </Text>
-              {contextMenuItems.map((ci, idx) => (
-                <Pressable
-                  key={ci.key}
-                  ref={idx === 0 ? firstContextItemRef : undefined}
-                  onPress={ci.onPress}
-                  style={({ pressed }) => [
-                    styles.contextMenuItem,
-                    { backgroundColor: pressed ? theme.colors.surfaceVariant : "transparent" }
-                  ]}
-                  accessibilityRole="menuitem"
-                  accessibilityLabel={ci.label}
-                  accessibilityHint={ci.hint}
-                >
-                  <Text style={[styles.contextMenuText, { color: theme.colors.onSurface }]}>{ci.label}</Text>
-                </Pressable>
-              ))}
-              <Pressable
-                onPress={closeContextMenu}
-                style={({ pressed }) => [
-                  styles.contextMenuCloseItem,
-                  {
-                    backgroundColor: pressed ? theme.colors.outline : theme.colors.surfaceVariant,
-                    borderTopColor: theme.colors.outline
-                  }
-                ]}
-                accessibilityRole="button"
-                accessibilityLabel="Close menu"
-                accessibilityHint="Double tap to close this action menu."
-              >
-                <Text style={[styles.contextMenuText, { color: theme.colors.primary, fontWeight: "700" }]}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      ) : null}
+          {cardBody}
+        </NativeMenuView>
+      ) : cardBody}
     </Animated.View>
   );
 }
@@ -395,7 +500,9 @@ export const FeedItemCard = React.memo(FeedItemCardInner, (prev, next) =>
   prev.onPlay === next.onPlay &&
   prev.onQueue === next.onQueue &&
   prev.onToggleSaved === next.onToggleSaved &&
-  prev.onSetMarker === next.onSetMarker
+  prev.onMarkRead === next.onMarkRead &&
+  prev.onMarkUnread === next.onMarkUnread &&
+  prev.onMuteSource === next.onMuteSource
 );
 
 const styles = StyleSheet.create({
@@ -451,6 +558,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 2
   },
+  whyRecommended: {
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 3
+  },
   pillRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -474,44 +586,4 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     flexShrink: 0
   },
-  contextMenuContainer: {
-    flex: 1,
-    justifyContent: "flex-end"
-  },
-  contextMenuPanel: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    paddingBottom: 36,
-    paddingTop: 12
-  },
-  contextMenuHandle: {
-    width: 36,
-    height: 4,
-    borderRadius: 2,
-    alignSelf: "center",
-    marginBottom: 12
-  },
-  contextMenuItemTitle: {
-    fontSize: 13,
-    paddingHorizontal: 20,
-    paddingBottom: 8,
-    lineHeight: 18
-  },
-  contextMenuItem: {
-    minHeight: 52,
-    justifyContent: "center",
-    paddingHorizontal: 20
-  },
-  contextMenuCloseItem: {
-    minHeight: 52,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginTop: 8,
-    borderTopWidth: StyleSheet.hairlineWidth
-  },
-  contextMenuText: {
-    fontSize: 17,
-    lineHeight: 22
-  }
 });

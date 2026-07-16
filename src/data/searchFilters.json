@@ -1,0 +1,21 @@
+{
+  "mediaTypeFilters": [
+    { "id": "all", "label": "All" },
+    { "id": "stories", "label": "Stories" },
+    { "id": "article", "label": "Articles" },
+    { "id": "video", "label": "Videos" },
+    { "id": "podcast", "label": "Podcasts" },
+    { "id": "community", "label": "Community" },
+    { "id": "official", "label": "Official" }
+  ],
+  "timelineFilters": [
+    { "id": "latest", "label": "Latest" },
+    { "id": "today", "label": "Today" },
+    { "id": "yesterday", "label": "Yesterday" },
+    { "id": "last_3_days", "label": "Last 3 Days" },
+    { "id": "this_week", "label": "This Week" },
+    { "id": "this_month", "label": "This Month" },
+    { "id": "all_time", "label": "All Time" },
+    { "id": "disney_history", "label": "Disney History" }
+  ]
+}

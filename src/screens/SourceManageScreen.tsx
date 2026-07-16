@@ -1,5 +1,6 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, SectionList, StyleSheet, View } from "react-native";
 import { Switch, Text, useTheme } from "react-native-paper";
 import { PlainSearchField } from "../components/PlainSearchField";
@@ -57,6 +58,7 @@ export function SourceManageScreen({ navigation }: Props) {
   const app = useAppContext();
   const theme = useTheme();
   const { playConfirm } = useSounds();
+  const { t } = useTranslation();
   const enabledCount = app.sources.filter((s) => s.isEnabled).length;
 
   const sections = useMemo(() => {
@@ -68,13 +70,13 @@ export function SourceManageScreen({ navigation }: Props) {
     const podcasts = filtered.filter((s) => s.sourceType === "podcastRSS");
     const social = filtered.filter((s) => s.sourceType === "redditFeed");
     const result: { title: string; data: Source[] }[] = [];
-    if (articles.length > 0) result.push({ title: "Articles", data: articles });
-    if (international.length > 0) result.push({ title: "International", data: international });
-    if (videos.length > 0) result.push({ title: "Videos", data: videos });
-    if (podcasts.length > 0) result.push({ title: "Podcasts", data: podcasts });
-    if (social.length > 0) result.push({ title: "Social", data: social });
+    if (articles.length > 0) result.push({ title: t("sources.section.articles"), data: articles });
+    if (international.length > 0) result.push({ title: t("sources.section.international"), data: international });
+    if (videos.length > 0) result.push({ title: t("sources.section.videos"), data: videos });
+    if (podcasts.length > 0) result.push({ title: t("sources.section.podcasts"), data: podcasts });
+    if (social.length > 0) result.push({ title: t("sources.section.social"), data: social });
     return result;
-  }, [app.sources, app.searchQuery]);
+  }, [app.sources, app.searchQuery, t]);
 
   return (
     <Screen>
@@ -83,25 +85,25 @@ export function SourceManageScreen({ navigation }: Props) {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
-          accessibilityHint="Double tap to return to Sources."
+          accessibilityLabel={t("common.back")}
+          accessibilityHint={t("common.back")}
         >
-          <Text style={[styles.backText, { color: theme.colors.primary }]}>← Sources</Text>
+          <Text style={[styles.backText, { color: theme.colors.primary }]}>← {t("sources.title")}</Text>
         </Pressable>
-        <View accessible accessibilityRole="header" accessibilityLabel={`Manage Sources. ${enabledCount} of ${app.sources.length} sources enabled.`}>
+        <View accessible accessibilityRole="header" accessibilityLabel={t("screens.manageSources")}>
           <Text style={[styles.pageTitle, { color: theme.colors.onSurface }]} accessible={false}>
-            Manage Sources
+            {t("screens.manageSources")}
           </Text>
           <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }} accessible={false}>
-            {enabledCount} of {app.sources.length} enabled
+            {enabledCount} / {app.sources.length}
           </Text>
         </View>
         <PlainSearchField
           value={app.searchQuery}
           onChangeText={app.setSearchQuery}
-          placeholder="Search sources"
-          accessibilityLabel="Search sources"
-          accessibilityHint="Enter words to search source names, descriptions, and categories."
+          placeholder={t("sources.searchPlaceholder")}
+          accessibilityLabel={t("sources.searchA11y")}
+          accessibilityHint={t("sources.searchHint")}
         />
       </View>
       <SectionList

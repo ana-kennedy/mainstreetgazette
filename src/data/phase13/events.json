@@ -1,0 +1,101 @@
+[
+  {
+    "id": "epcot_festival_arts_2025",
+    "title": "EPCOT International Festival of the Arts",
+    "type": "festival",
+    "startDate": "2025-01-17",
+    "endDate": "2025-02-24",
+    "parkIds": ["epcot"],
+    "entityIds": [],
+    "description": "Annual festival celebrating art, music, and cuisine across EPCOT.",
+    "isConfirmed": true
+  },
+  {
+    "id": "epcot_flower_garden_2025",
+    "title": "EPCOT International Flower & Garden Festival",
+    "type": "festival",
+    "startDate": "2025-03-05",
+    "endDate": "2025-06-02",
+    "parkIds": ["epcot"],
+    "entityIds": [],
+    "description": "Spectacular topiaries, garden displays, and outdoor kitchens.",
+    "isConfirmed": true
+  },
+  {
+    "id": "mnsshp_2025",
+    "title": "Mickey's Not-So-Scary Halloween Party",
+    "type": "ticketed_party",
+    "startDate": "2025-08-12",
+    "endDate": "2025-11-01",
+    "parkIds": ["magic_kingdom"],
+    "entityIds": ["mickey_mouse"],
+    "description": "Separately ticketed after-hours Halloween event at Magic Kingdom.",
+    "isConfirmed": true
+  },
+  {
+    "id": "epcot_food_wine_2025",
+    "title": "EPCOT International Food & Wine Festival",
+    "type": "festival",
+    "startDate": "2025-07-25",
+    "endDate": "2025-11-22",
+    "parkIds": ["epcot"],
+    "entityIds": [],
+    "description": "The beloved culinary festival featuring flavors from around the world.",
+    "isConfirmed": true
+  },
+  {
+    "id": "rundisney_wine_dine_2025",
+    "title": "Walt Disney World Wine & Dine Half Marathon Weekend",
+    "type": "rundisney",
+    "startDate": "2025-11-06",
+    "endDate": "2025-11-09",
+    "parkIds": ["epcot", "hollywood_studios"],
+    "entityIds": [],
+    "description": "Annual runDisney race weekend coinciding with Food & Wine Festival.",
+    "isConfirmed": true
+  },
+  {
+    "id": "mvmcp_2025",
+    "title": "Mickey's Very Merry Christmas Party",
+    "type": "ticketed_party",
+    "startDate": "2025-11-07",
+    "endDate": "2025-12-22",
+    "parkIds": ["magic_kingdom"],
+    "entityIds": ["mickey_mouse"],
+    "description": "Separately ticketed after-hours holiday event with snow, fireworks, and carolers.",
+    "isConfirmed": true
+  },
+  {
+    "id": "epcot_festival_holidays_2025",
+    "title": "EPCOT International Festival of the Holidays",
+    "type": "festival",
+    "startDate": "2025-11-28",
+    "endDate": "2025-12-31",
+    "parkIds": ["epcot"],
+    "entityIds": [],
+    "description": "Holiday storytellers, Candlelight Processional, and global holiday kitchens.",
+    "isConfirmed": true
+  },
+  {
+    "id": "wdw_marathon_2026",
+    "title": "Walt Disney World Marathon Weekend",
+    "type": "rundisney",
+    "startDate": "2026-01-07",
+    "endDate": "2026-01-11",
+    "parkIds": ["magic_kingdom", "epcot", "animal_kingdom", "hollywood_studios"],
+    "entityIds": [],
+    "description": "The flagship runDisney race weekend spanning all four Walt Disney World parks.",
+    "isConfirmed": true
+  },
+  {
+    "id": "epcot_festival_arts_2026",
+    "title": "EPCOT International Festival of the Arts",
+    "type": "festival",
+    "startDate": "2026-01-16",
+    "endDate": "2026-02-23",
+    "parkIds": ["epcot"],
+    "entityIds": [],
+    "description": "Annual festival celebrating art, music, and cuisine across EPCOT.",
+    "isConfirmed": true
+  }
+]

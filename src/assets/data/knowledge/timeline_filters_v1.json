@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "filters": [
+    {
+      "id": "now",
+      "label": "Now",
+      "description": "Live and breaking updates from the last 6 hours.",
+      "windowHours": 6
+    },
+    {
+      "id": "today",
+      "label": "Today",
+      "description": "Items from today in the user's local time zone.",
+      "windowHours": 24
+    },
+    {
+      "id": "last_3_days",
+      "label": "Last 3 Days",
+      "description": "Good default for active Disney news cycles.",
+      "windowHours": 72
+    },
+    {
+      "id": "this_week",
+      "label": "This Week",
+      "description": "Rolling 7-day view for stories and related coverage.",
+      "windowHours": 168
+    },
+    {
+      "id": "this_month",
+      "label": "This Month",
+      "description": "Rolling 30-day view for slower-moving projects.",
+      "windowHours": 720
+    },
+    {
+      "id": "future_dates",
+      "label": "Upcoming Dates",
+      "description": "Announcements containing future opening, closing, event, ticket, or sailing dates.",
+      "windowHours": null
+    },
+    {
+      "id": "deep_archive",
+      "label": "Deep Archive",
+      "description": "Older items retained for entity pages and timeline history.",
+      "windowHours": null
+    }
+  ]
+}

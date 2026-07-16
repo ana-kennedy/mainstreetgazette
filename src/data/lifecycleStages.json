@@ -1,0 +1,18 @@
+[
+  { "id": "rumor", "label": "Rumor", "description": "Unconfirmed report or speculation." },
+  { "id": "leaked", "label": "Leaked", "description": "Unverified information from leaked material or unofficial source." },
+  { "id": "permitFiled", "label": "Permit Filed", "description": "Permit, filing, or public record has appeared." },
+  { "id": "officiallyAnnounced", "label": "Officially Announced", "description": "Confirmed by Disney or another official source." },
+  { "id": "constructionStarted", "label": "Construction Started", "description": "Visible construction or site work has begun." },
+  { "id": "testing", "label": "Testing", "description": "Ride, show, venue, or system is being tested." },
+  { "id": "openingDateAnnounced", "label": "Opening Date Announced", "description": "Opening date or reopening date is known." },
+  { "id": "nowOpen", "label": "Now Open", "description": "Offering has opened or returned." },
+  { "id": "reviewPhase", "label": "Reviews & Reactions", "description": "Reviews, first impressions, and community reactions are being published." },
+  { "id": "closureAnnounced", "label": "Closure Announced", "description": "A closure date has been announced." },
+  { "id": "temporarilyClosed", "label": "Temporarily Closed", "description": "Temporary closure or downtime." },
+  { "id": "refurbishment", "label": "Refurbishment", "description": "Refurbishment or maintenance period." },
+  { "id": "delayed", "label": "Delayed", "description": "Opening, reopening, or planned event has been delayed." },
+  { "id": "canceled", "label": "Canceled", "description": "Project, event, or offering has been canceled." },
+  { "id": "completed", "label": "Completed", "description": "The story arc appears complete." },
+  { "id": "historical", "label": "Historical", "description": "Historical or archive content." }
+]

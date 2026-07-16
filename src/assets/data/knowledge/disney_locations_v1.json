@@ -1,0 +1,136 @@
+{
+  "version": "2.0.0",
+  "generated": "2026-06-28",
+  "locations": [
+    {
+      "id": "wdw",
+      "name": "Walt Disney World Resort",
+      "type": "resort",
+      "aliases": [
+        "WDW",
+        "Disney World",
+        "Walt Disney World",
+        "Orlando Disney"
+      ],
+      "children": [
+        "wdw_magic_kingdom",
+        "wdw_epcot",
+        "wdw_hollywood_studios",
+        "wdw_animal_kingdom",
+        "wdw_typhoon_lagoon",
+        "wdw_blizzard_beach",
+        "wdw_disney_springs"
+      ]
+    },
+    {
+      "id": "dlr",
+      "name": "Disneyland Resort",
+      "type": "resort",
+      "aliases": [
+        "Disneyland Anaheim",
+        "Disneyland California",
+        "DLR"
+      ],
+      "children": [
+        "dlr_disneyland",
+        "dlr_california_adventure",
+        "dlr_downtown_disney"
+      ]
+    },
+    {
+      "id": "dcl",
+      "name": "Disney Cruise Line",
+      "type": "cruise_line",
+      "aliases": [
+        "DCL",
+        "Disney Cruise",
+        "Disney cruises"
+      ],
+      "children": [
+        "dcl_magic",
+        "dcl_wonder",
+        "dcl_dream",
+        "dcl_fantasy",
+        "dcl_wish",
+        "dcl_treasure",
+        "dcl_destiny",
+        "dcl_adventure",
+        "dcl_believe"
+      ]
+    },
+    {
+      "id": "dlp",
+      "name": "Disneyland Paris",
+      "type": "resort",
+      "aliases": [
+        "DLP",
+        "Euro Disney",
+        "Paris Disney"
+      ],
+      "children": [
+        "dlp_disneyland_park",
+        "dlp_walt_disney_studios",
+        "dlp_disney_village"
+      ]
+    },
+    {
+      "id": "tdr",
+      "name": "Tokyo Disney Resort",
+      "type": "resort",
+      "aliases": [
+        "TDR",
+        "Tokyo Disney"
+      ],
+      "children": [
+        "tdr_tokyo_disneyland",
+        "tdr_tokyo_disneysea"
+      ]
+    },
+    {
+      "id": "hkdl",
+      "name": "Hong Kong Disneyland Resort",
+      "type": "resort",
+      "aliases": [
+        "HKDL",
+        "Hong Kong Disney"
+      ],
+      "children": [
+        "hkdl_park"
+      ]
+    },
+    {
+      "id": "shdr",
+      "name": "Shanghai Disney Resort",
+      "type": "resort",
+      "aliases": [
+        "Shanghai Disneyland",
+        "SHDR"
+      ],
+      "children": [
+        "shdr_park",
+        "shdr_disneytown"
+      ]
+    },
+    {
+      "id": "aulani",
+      "name": "Aulani, A Disney Resort & Spa",
+      "type": "resort",
+      "aliases": [
+        "Aulani",
+        "Disney Aulani",
+        "Ko Olina Disney"
+      ],
+      "children": []
+    },
+    {
+      "id": "abd",
+      "name": "Adventures by Disney",
+      "type": "travel_product",
+      "aliases": [
+        "ABD",
+        "Adventures by Disney trips"
+      ],
+      "children": []
+    }
+  ]
+}

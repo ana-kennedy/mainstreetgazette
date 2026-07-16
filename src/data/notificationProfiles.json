@@ -1,0 +1,29 @@
+[
+  {
+    "id": "quiet",
+    "displayName": "Quiet",
+    "description": "Only official announcements, major closures, and saved favorites.",
+    "minImportance": 85,
+    "allowRumors": false,
+    "allowCommunityOnly": false,
+    "dailyDigest": true
+  },
+  {
+    "id": "balanced",
+    "displayName": "Balanced",
+    "description": "Major news, favorites, and important official updates.",
+    "minImportance": 70,
+    "allowRumors": false,
+    "allowCommunityOnly": false,
+    "dailyDigest": true
+  },
+  {
+    "id": "breaking_heavy",
+    "displayName": "Breaking News Heavy",
+    "description": "More alerts for fast-moving Disney parks news and high-confidence rumors.",
+    "minImportance": 55,
+    "allowRumors": true,
+    "allowCommunityOnly": false,
+    "dailyDigest": false
+  }
+]

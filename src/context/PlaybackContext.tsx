@@ -1,9 +1,16 @@
 import { createAudioPlayer, setAudioModeAsync } from "expo-audio";
 import type { AudioPlayer } from "expo-audio";
-import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
 import { loadPlaybackProgress, loadQueue, savePlaybackProgress, saveQueue } from "../services/storage";
+import {
+  addNowPlayingCommandListener,
+  clearNowPlayingMetadata,
+  setNowPlayingMetadata,
+  setupNowPlayingRemoteCommands,
+  updateNowPlayingElapsed,
+} from "../services/nowPlaying";
 
 function isHTTPSURL(value: string): boolean {
   try {
@@ -54,6 +61,14 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const subscriptionRef = useRef<{ remove: () => void } | null>(null);
   const currentItemRef = useRef<FeedItem | null>(null);
   const isLoadingRef = useRef(false);
+  const currentSpeedRef = useRef(1);
+  const currentTimeRef = useRef(0);
+  // Forward refs so remote command callbacks registered on mount always call the latest versions.
+  const playRef = useRef<() => Promise<void>>(async () => {});
+  const pauseRef = useRef<() => Promise<void>>(async () => {});
+  const togglePlayPauseRef = useRef<() => Promise<void>>(async () => {});
+  const skipForwardRef = useRef<(seconds?: number) => Promise<void>>(async () => {});
+  const skipBackwardRef = useRef<(seconds?: number) => Promise<void>>(async () => {});
 
   const [currentItem, setCurrentItem] = useState<FeedItem | null>(null);
   const [queue, setQueue] = useState<PlaybackQueueItem[]>([]);
@@ -64,6 +79,20 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingItemID, setLoadingItemID] = useState<string | null>(null);
   const [currentSpeed, setCurrentSpeed] = useState(1);
+
+  useEffect(() => {
+    setupNowPlayingRemoteCommands();
+    const sub = addNowPlayingCommandListener((cmd) => {
+      switch (cmd.command) {
+        case "play": playRef.current(); break;
+        case "pause": pauseRef.current(); break;
+        case "togglePlayPause": togglePlayPauseRef.current(); break;
+        case "skipForward": skipForwardRef.current(cmd.interval); break;
+        case "skipBackward": skipBackwardRef.current(cmd.interval); break;
+      }
+    });
+    return () => sub.remove();
+  }, []);
 
   const setActiveItem = useCallback((item: FeedItem | null) => {
     currentItemRef.current = item;
@@ -87,6 +116,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     (status: AudioStatus) => {
       const position = Math.round(status.currentTime ?? 0);
       const duration = Math.round(status.duration ?? 0);
+      currentTimeRef.current = position;
       setCurrentTimeSeconds(position);
       if (duration > 0) setDurationSeconds(duration);
       setIsBuffering(status.isBuffering ?? false);
@@ -94,10 +124,12 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       // we want to play — don't let that override the intent and show "Paused".
       if (!status.isBuffering) {
         setIsPlaying(status.playing ?? false);
+        updateNowPlayingElapsed(position, currentSpeedRef.current);
       }
       if (status.didJustFinish) {
         setIsBuffering(false);
         persistProgress(duration, duration);
+        clearNowPlayingMetadata();
         AccessibilityInfo.announceForAccessibility("Episode finished.");
       }
     },
@@ -122,6 +154,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     if (isLoadingRef.current) return;
     playerRef.current?.play();
     setIsPlaying(true);
+    updateNowPlayingElapsed(currentTimeRef.current, currentSpeedRef.current);
   }, []);
 
   const playItem = useCallback(
@@ -174,6 +207,13 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           player.seekTo(savedProgress.positionSeconds);
         }
         setIsPlaying(true);
+        setNowPlayingMetadata({
+          title: item.title,
+          artist: item.authorOrChannel ?? undefined,
+          duration: item.durationSeconds ?? 0,
+          elapsed: savedProgress?.positionSeconds ?? 0,
+          speed: currentSpeed,
+        });
         AccessibilityInfo.announceForAccessibility(`Playing ${item.title}.`);
       } catch (error) {
         // Clean up any partially-created player on failure.
@@ -198,13 +238,15 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
 
   const pause = useCallback(async () => {
     if (!playerRef.current) return;
+    const pos = Math.round(playerRef.current.currentTime ?? 0);
     // Save progress at the exact paused position (player.currentTime is in seconds).
     await persistProgress(
-      Math.round(playerRef.current.currentTime ?? 0),
+      pos,
       Math.round(playerRef.current.duration ?? 0)
     );
     playerRef.current.pause();
     setIsPlaying(false);
+    updateNowPlayingElapsed(pos, 0);
   }, [persistProgress]);
 
   const stop = useCallback(async () => {
@@ -214,6 +256,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     setDurationSeconds(0);
     setIsPlaying(false);
     setIsBuffering(false);
+    clearNowPlayingMetadata();
     AccessibilityInfo.announceForAccessibility("Podcast stopped.");
   }, [setActiveItem, unloadCurrent]);
 
@@ -241,6 +284,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   }, [currentTimeSeconds, seek]);
 
   const setSpeed = useCallback(async (speed: number) => {
+    currentSpeedRef.current = speed;
     setCurrentSpeed(speed);
     if (playerRef.current) {
       playerRef.current.playbackRate = speed;
@@ -277,6 +321,12 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     await saveQueue(next);
     AccessibilityInfo.announceForAccessibility("Episode removed from queue.");
   }, []);
+
+  playRef.current = play;
+  pauseRef.current = pause;
+  togglePlayPauseRef.current = togglePlayPause;
+  skipForwardRef.current = skipForward;
+  skipBackwardRef.current = skipBackward;
 
   const value = useMemo(
     () => ({

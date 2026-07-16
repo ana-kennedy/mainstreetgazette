@@ -30,6 +30,9 @@ export interface ParkHours {
   isOperating: boolean;
   openingTimeLabel: string;
   closingTimeLabel: string;
+  /** Local hour of day as a decimal (e.g. 9.5 for 9:30 AM), or null if unknown. */
+  openingHour24: number | null;
+  closingHour24: number | null;
 }
 
 export interface WaitTimeEntry {
@@ -104,6 +107,13 @@ function formatParkTime(isoString: string | null): string {
   return minute === "00" ? `${displayHour} ${period}` : `${displayHour}:${minute} ${period}`;
 }
 
+function parseHour24(isoString: string | null): number | null {
+  if (!isoString) return null;
+  const match = isoString.match(/T(\d{2}):(\d{2})/);
+  if (!match) return null;
+  return parseInt(match[1], 10) + parseInt(match[2], 10) / 60;
+}
+
 // Derive the park's local "today" date string from the timezone offset embedded in
 // the schedule's openingTime ISO strings (e.g. "+09:00" for Tokyo). Falls back to
 // the device's UTC date if no timezone info is present.
@@ -152,7 +162,11 @@ export async function fetchParkHours(park: ParkSummary): Promise<ParkHours> {
   const entry = schedule.find((s) => s.date === todayStr && s.type === "OPERATING");
 
   if (!entry) {
-    return { parkId: park.id, parkName: park.name, isOperating: false, openingTimeLabel: "Closed", closingTimeLabel: "—" };
+    return {
+      parkId: park.id, parkName: park.name, isOperating: false,
+      openingTimeLabel: "Closed", closingTimeLabel: "—",
+      openingHour24: null, closingHour24: null,
+    };
   }
 
   return {
@@ -161,6 +175,8 @@ export async function fetchParkHours(park: ParkSummary): Promise<ParkHours> {
     isOperating: true,
     openingTimeLabel: formatParkTime(entry.openingTime),
     closingTimeLabel: formatParkTime(entry.closingTime),
+    openingHour24: parseHour24(entry.openingTime),
+    closingHour24: parseHour24(entry.closingTime),
   };
 }
 

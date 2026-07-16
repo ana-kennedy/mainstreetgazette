@@ -97,22 +97,64 @@ export const midnightPaperTheme = {
   }
 };
 
-export function getThemeForColorTheme(colorTheme: ColorTheme, systemIsDark: boolean) {
+type PaperTheme = typeof lightPaperTheme;
+
+// Overlays stronger contrast values — pure black/white backgrounds, maximum text contrast,
+// and heavier borders. Applied on top of any base theme when highVisualContrastMode is enabled.
+function applyHighContrast(base: PaperTheme): PaperTheme {
+  if (base.dark) {
+    return {
+      ...base,
+      colors: {
+        ...base.colors,
+        background: "#000000",
+        surface: "#0a0a0a",
+        surfaceVariant: "#1c1c1c",
+        onSurface: "#ffffff",
+        onSurfaceVariant: "#eeeeee",
+        outline: "#777777",
+        outlineVariant: "#555555",
+        primary: "#7eb8ff",
+        onPrimary: "#000000",
+        error: "#ff6b6b",
+      },
+    };
+  }
+  return {
+    ...base,
+    colors: {
+      ...base.colors,
+      background: "#ffffff",
+      surface: "#ffffff",
+      surfaceVariant: "#e0e0e0",
+      onSurface: "#000000",
+      onSurfaceVariant: "#111111",
+      outline: "#333333",
+      outlineVariant: "#555555",
+      primary: "#003399",
+      onPrimary: "#ffffff",
+      error: "#c00000",
+    },
+  };
+}
+
+export function getThemeForColorTheme(
+  colorTheme: ColorTheme,
+  systemIsDark: boolean,
+  highContrast = false
+): PaperTheme {
+  let base: PaperTheme;
   switch (colorTheme) {
-    case "light":
-      return lightPaperTheme;
-    case "dark":
-      return darkPaperTheme;
-    case "gazette":
-      return gazettePaperTheme;
-    case "midnight":
-      return midnightPaperTheme;
-    case "fantasy":
-      return fantasyPaperTheme;
+    case "light":   base = lightPaperTheme; break;
+    case "dark":    base = darkPaperTheme; break;
+    case "gazette": base = gazettePaperTheme; break;
+    case "midnight": base = midnightPaperTheme; break;
+    case "fantasy": base = fantasyPaperTheme; break;
     case "system":
     default:
-      return systemIsDark ? darkPaperTheme : lightPaperTheme;
+      base = systemIsDark ? darkPaperTheme : lightPaperTheme;
   }
+  return highContrast ? applyHighContrast(base) : base;
 }
 
 // Legacy helper kept for any callers that haven't migrated yet

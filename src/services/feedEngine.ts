@@ -1,8 +1,10 @@
 import { XMLParser } from "fast-xml-parser";
 import type { FeedItem, RefreshResult, Source, SourceMeta } from "../domain/models";
-import { groupFeedItems } from "../utils/grouping";
 import { parseDuration, stableHash, stripHTML } from "../utils/formatting";
 import { applyParkTags } from "../utils/parkTagger";
+import { matchDisneyEntities, classifyTopic, buildStoryFingerprint } from "./knowledgeMatcher";
+import { classifyContentItemByRules } from "./classification/ruleBasedClassifier";
+import { logDiagnostic } from "./diagnosticLogger";
 
 type RSSLink = {
   url?: string;
@@ -68,12 +70,54 @@ const FEED_FETCH_TIMEOUT_MS = 8000;
 const SOURCE_REFRESH_TIMEOUT_MS = 12000;
 // After N consecutive failures, skip a source for progressively longer periods.
 const BACKOFF_INTERVALS_MS = [2 * 60_000, 5 * 60_000, 15 * 60_000, 30 * 60_000];
-const MAX_ITEMS_PER_SOURCE: Record<Source["sourceType"], number> = {
+export const MAX_ITEMS_PER_SOURCE: Record<Source["sourceType"], number> = {
   rssArticle: 50,
   youtubeChannel: 50,
   podcastRSS: 75,
   redditFeed: 10
 };
+
+// A source is "high volume" when a single fetch fills ≥80% of the per-source cap.
+// This means the feed window may be too narrow and articles could fall off between fetches.
+export function isHighVolumeSource(meta: Pick<import("../domain/models").SourceMeta, "lastFetchedItemCount">, sourceType: Source["sourceType"]): boolean {
+  const count = meta.lastFetchedItemCount ?? 0;
+  return count >= MAX_ITEMS_PER_SOURCE[sourceType] * 0.8;
+}
+
+// Phase 06 — adaptive backfill. Standard RSS/Atom/podcast feeds don't support paging
+// into history before their own current window, so "backfill" here means: raise how
+// deep into that already-available window we ingest, gradually, only during favorable
+// background runs — never during interactive/manual refresh (which always uses the
+// flat MAX_ITEMS_PER_SOURCE baseline above).
+const BACKFILL_CEILING = 500;
+const BACKFILL_INCREMENT = 50;
+
+export function effectiveItemCap(
+  source: Source,
+  meta: Pick<SourceMeta, "backfillCursorCount">,
+  allowBackfill: boolean
+): number {
+  const baseline = MAX_ITEMS_PER_SOURCE[source.sourceType];
+  if (!allowBackfill) return baseline;
+  const current = meta.backfillCursorCount ?? baseline;
+  return Math.min(BACKFILL_CEILING, current + BACKFILL_INCREMENT);
+}
+
+// "Essential" sources (enabled out of the box) target the spec's ~150-200 initial
+// metadata-record band; everything else targets the lower ~100 band. Used only to
+// decide whether the quiet "still growing" message shows — never surfaced as a
+// number or progress bar.
+const ESSENTIAL_BACKFILL_TARGET = 200;
+const REGULAR_BACKFILL_TARGET = 100;
+
+export function isBackfillInProgress(sources: Source[], sourceMeta: Record<string, SourceMeta>): boolean {
+  return sources.some((source) => {
+    if (!source.isEnabled) return false;
+    const target = source.isDefaultEnabled ? ESSENTIAL_BACKFILL_TARGET : REGULAR_BACKFILL_TARGET;
+    const current = sourceMeta[source.id]?.backfillCursorCount ?? 0;
+    return current < target;
+  });
+}
 const xmlParser = new XMLParser({
   attributeNamePrefix: "",
   ignoreAttributes: false,
@@ -155,8 +199,7 @@ function itemTags(item: RSSItem): string[] {
   return item.categories?.map((category) => category.name).filter((name): name is string => Boolean(name)) ?? [];
 }
 
-function recentItemsForSource(source: Source, items: RSSItem[]): RSSItem[] {
-  const limit = MAX_ITEMS_PER_SOURCE[source.sourceType];
+function recentItemsForSource(source: Source, items: RSSItem[], limit: number): RSSItem[] {
   if (source.sourceType === "redditFeed") {
     // Reddit's top.rss feed is already sorted by popularity — preserve that order
     return items.slice(0, limit);
@@ -546,20 +589,83 @@ function normalizePodcast(source: Source, feed: RSSFeed, item: RSSItem): FeedIte
   };
 }
 
-function parseFeedItems(source: Source, feed: RSSFeed): FeedItem[] {
+function enrichFeedItem(item: FeedItem, source?: Source): FeedItem {
+  const entityMatches = matchDisneyEntities(item.title, item.summary ?? "");
+  const topicMatches = classifyTopic(item.title, item.summary ?? "");
+  const primaryMatch = entityMatches[0];
+  const primaryLocationId = primaryMatch?.locationId;
+  const primaryParkId = primaryMatch?.parkId ?? undefined;
+  const storyFingerprint = buildStoryFingerprint({
+    title: item.title,
+    summary: item.summary ?? undefined,
+    publishedAt: item.publishedAt,
+  });
+  const enriched: FeedItem = {
+    ...item,
+    entityMatches: entityMatches.length > 0 ? entityMatches : undefined,
+    topicMatches: topicMatches.length > 0 ? topicMatches : undefined,
+    primaryLocationId,
+    primaryParkId,
+    storyFingerprint,
+  };
+  // Phase 4: classify after enrichment so classification can use entity matches
+  const classification = classifyContentItemByRules({
+    title: enriched.title,
+    summary: enriched.summary,
+    sourceName: source?.name ?? enriched.authorOrChannel ?? "",
+    sourceType: enriched.sourceType,
+    contentType: enriched.contentType,
+    publishedAt: enriched.publishedAt,
+    isOfficialSource: source?.officialStatus === "Official",
+    entityMatches: enriched.entityMatches,
+  });
+  return { ...enriched, classification };
+}
+
+// Disney's own corporate channels are on-topic by definition — even a very early
+// teaser post might not yet name a park/attraction we have in the knowledge base.
+// Everything else (fan sites, forums, YouTube, etc.) gets held to the entity-match
+// gate below, since even "mostly Disney" sources occasionally cover other parks.
+function isDisneyRelevant(item: FeedItem, source?: Source): boolean {
+  if (source?.officialStatus === "Official") return true;
+  return (item.entityMatches?.length ?? 0) > 0;
+}
+
+function dropIfNotDisneyRelevant(item: FeedItem, source?: Source): FeedItem | null {
+  if (isDisneyRelevant(item, source)) return item;
+  logDiagnostic(
+    "info",
+    "feedRelevance",
+    `Dropped non-Disney item from ${source?.name ?? "unknown source"}`,
+    item.title
+  );
+  return null;
+}
+
+function parseFeedItems(source: Source, feed: RSSFeed, itemCap: number): FeedItem[] {
   const items = Array.isArray(feed.items) ? feed.items : [];
-  return recentItemsForSource(source, items)
+  return recentItemsForSource(source, items, itemCap)
     .map((item) => {
-      if (source.sourceType === "youtubeChannel") return normalizeYouTube(source, item);
-      if (source.sourceType === "podcastRSS") return normalizePodcast(source, feed, item);
-      return normalizeArticle(source, feed, item); // rssArticle and redditFeed both parse as articles
+      let parsed: FeedItem | null;
+      if (source.sourceType === "youtubeChannel") {
+        parsed = normalizeYouTube(source, item);
+      } else if (source.sourceType === "podcastRSS") {
+        parsed = normalizePodcast(source, feed, item);
+      } else {
+        parsed = normalizeArticle(source, feed, item);
+        if (parsed && (source.sourceType === "redditFeed" || source.publisherType === "Reddit Community" || source.publisherType === "Forum")) {
+          parsed = { ...parsed, contentType: "community" as const };
+        }
+      }
+      const enriched = parsed ? enrichFeedItem(parsed, source) : null;
+      return enriched ? dropIfNotDisneyRelevant(enriched, source) : null;
     })
     .filter((item): item is FeedItem => Boolean(item));
 }
 
 type FetchSourceResult = { items: FeedItem[]; updatedMeta: SourceMeta };
 
-async function fetchSource(source: Source, meta: SourceMeta, previousItems: FeedItem[]): Promise<FetchSourceResult> {
+async function fetchSource(source: Source, meta: SourceMeta, previousItems: FeedItem[], itemCap: number): Promise<FetchSourceResult> {
   const cachedSourceItems = previousItems.filter((item) => item.sourceID === source.id);
 
   return withTimeout(
@@ -581,8 +687,11 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
           return { items: cachedSourceItems, updatedMeta: { ...meta, failureCount: 0, nextRetryAt: undefined } };
         }
 
-        const fallbackItems = parseYouTubeHTMLFallback(source, html);
-        if (fallbackItems.length === 0) throw error;
+        const parsedFallbackItems = parseYouTubeHTMLFallback(source, html).map((fi) => enrichFeedItem(fi, source));
+        if (parsedFallbackItems.length === 0) throw error;
+        const fallbackItems = parsedFallbackItems
+          .map((item) => dropIfNotDisneyRelevant(item, source))
+          .filter((item): item is FeedItem => Boolean(item));
         const fallbackIDs = new Set(fallbackItems.map((item) => item.id));
         const survivingFromYTCache = cachedSourceItems.filter((item) => !fallbackIDs.has(item.id));
         return {
@@ -608,9 +717,9 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
       }
 
       const feed = parseFeed(text);
-      const freshItems = parseFeedItems(source, feed);
+      const freshItems = parseFeedItems(source, feed, itemCap);
       // Preserve cached articles that have since left the feed — the global cache
-      // window/limit in AppContext (enforceCacheLimit) controls how long they stay.
+      // window in AppContext (enforceCacheWindow) controls how long they stay.
       const freshIDs = new Set(freshItems.map((item) => item.id));
       const survivingCached = cachedSourceItems.filter((item) => !freshIDs.has(item.id));
       const items = [...freshItems, ...survivingCached];
@@ -623,7 +732,9 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
           lastModified: lastModified ?? meta.lastModified,
           rawHash: newHash,
           failureCount: 0,
-          nextRetryAt: undefined
+          nextRetryAt: undefined,
+          lastFetchedAt: new Date().toISOString(),
+          lastFetchedItemCount: freshItems.length,
         }
       };
     })(),
@@ -660,10 +771,13 @@ export async function refreshFeeds(
   sourceMeta: Record<string, SourceMeta>,
   previousItems: FeedItem[],
   checkpointDate?: string | null,
-  onProgress?: (partialItems: FeedItem[]) => void
+  onProgress?: (partialItems: FeedItem[]) => void,
+  options?: { allowBackfill?: boolean }
 ): Promise<RefreshResult> {
+  const allowBackfill = options?.allowBackfill ?? false;
   const enabledSources = sources.filter((source) => source.isEnabled);
   const failures: RefreshResult["failures"] = [];
+  const gapWarnings: RefreshResult["gapWarnings"] = [];
   const rawItems: FeedItem[] = [];
   const checkpointTime = checkpointDate ? new Date(checkpointDate).getTime() : null;
   const updatedSourceMeta: Record<string, SourceMeta> = { ...sourceMeta };
@@ -680,10 +794,25 @@ export async function refreshFeeds(
       }
 
       try {
-        const { items, updatedMeta } = await fetchSource(source, meta, previousItems);
+        const itemCap = effectiveItemCap(source, meta, allowBackfill);
+        const { items, updatedMeta } = await fetchSource(source, meta, previousItems, itemCap);
         rawItems.push(...items);
-        updatedSourceMeta[source.id] = updatedMeta;
+        updatedSourceMeta[source.id] = allowBackfill
+          ? {
+              ...updatedMeta,
+              backfillCursorCount: Math.max(meta.backfillCursorCount ?? 0, updatedMeta.lastFetchedItemCount ?? 0),
+              lastBackfillBatchAt: new Date().toISOString(),
+            }
+          : updatedMeta;
         onProgress?.(normalizeSnapshot(rawItems, savedIDs, checkpointTime));
+
+        // Gap detection: if this source filled its window at capacity and has prior
+        // cached items, some articles may have fallen off the feed between fetches.
+        const freshCount = updatedMeta.lastFetchedItemCount ?? 0;
+        const hasPriorCache = previousItems.some((i) => i.sourceID === source.id);
+        if (freshCount >= itemCap && hasPriorCache) {
+          gapWarnings.push({ sourceId: source.id, sourceName: source.name });
+        }
       } catch (e) {
         failures.push({ sourceID: source.id, message: e instanceof Error ? e.message : "Refresh failed" });
         const failureCount = (meta.failureCount ?? 0) + 1;
@@ -697,14 +826,14 @@ export async function refreshFeeds(
   );
 
   const normalized = normalizeSnapshot(rawItems, savedIDs, checkpointTime);
-  const grouped = groupFeedItems(normalized);
 
   return {
-    items: grouped.items,
-    groups: grouped.groups,
+    items: normalized,
+    groups: [],
     fetchedSourceCount: enabledSources.length - failures.length,
     fetchedItemCount: rawItems.length,
     failures,
+    gapWarnings,
     updatedSourceMeta
   };
 }

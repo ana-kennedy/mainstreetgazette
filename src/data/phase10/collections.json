@@ -1,0 +1,107 @@
+[
+  {
+    "id": "villains_land",
+    "title": "Villains Land",
+    "description": "The latest news, construction updates, and official announcements for the upcoming Villains Land at Magic Kingdom.",
+    "icon": "castle",
+    "type": "editorial",
+    "status": "active",
+    "entityIds": ["villains_land", "magic_kingdom"],
+    "topicIds": ["new_land", "construction", "official_announcement", "villains"],
+    "keywords": ["villains land", "villain land"]
+  },
+  {
+    "id": "epcot_festivals",
+    "title": "EPCOT Festivals",
+    "description": "Coverage of EPCOT's world-renowned festivals including Festival of the Arts, Flower & Garden, Food & Wine, and Festival of the Holidays.",
+    "icon": "firework",
+    "type": "editorial",
+    "status": "active",
+    "entityIds": ["epcot"],
+    "topicIds": ["festival", "dining", "entertainment", "food_and_wine", "flower_and_garden", "festival_of_the_arts"],
+    "keywords": ["festival of the arts", "food & wine", "flower & garden", "festival of the holidays", "epcot festival"]
+  },
+  {
+    "id": "disney_treasure",
+    "title": "Disney Treasure",
+    "description": "News and updates for the Disney Treasure, the newest Disney Cruise Line ship.",
+    "icon": "ferry",
+    "type": "editorial",
+    "status": "active",
+    "entityIds": ["disney_treasure", "disney_cruise_line"],
+    "topicIds": ["cruise", "new_ship"],
+    "keywords": ["disney treasure", "dcl", "cruise ship"]
+  },
+  {
+    "id": "halloween",
+    "title": "Mickey's Halloween Party",
+    "description": "Everything you need to know about Mickey's Not-So-Scary Halloween Party and Oogie Boogie Bash.",
+    "icon": "ghost",
+    "type": "editorial",
+    "status": "seasonal",
+    "startDate": "2025-07-01",
+    "endDate": "2025-11-02",
+    "topicIds": ["halloween", "special_event", "after_hours"],
+    "keywords": ["not-so-scary", "halloween party", "oogie boogie bash", "hocus pocus"]
+  },
+  {
+    "id": "das_accessibility",
+    "title": "Disney Accessibility",
+    "description": "DAS updates, accessibility announcements, wheelchair access, and disability resources for Disney parks.",
+    "icon": "human-wheelchair",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["accessibility", "das", "disability", "service_animal"],
+    "keywords": ["das", "disability access service", "wheelchair", "accessibility", "ada", "service animal", "voiceover"]
+  },
+  {
+    "id": "trip_planning",
+    "title": "Trip Planning",
+    "description": "Tips, guides, and essential news for planning your Disney vacation.",
+    "icon": "bag-suitcase",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["trip_planning", "genie_plus", "lightning_lane", "hotel", "dining_reservation"],
+    "keywords": ["lightning lane", "genie+", "park hopper", "dining reservation", "rope drop", "early entry", "trip planning"]
+  },
+  {
+    "id": "new_attractions",
+    "title": "New Attractions",
+    "description": "Track every new ride, show, and land coming to Disney parks worldwide.",
+    "icon": "ticket-confirmation",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["new_attraction", "new_land", "construction", "official_announcement", "opening"],
+    "keywords": ["new attraction", "grand opening", "soft opening", "construction", "opening date"]
+  },
+  {
+    "id": "refurbishments",
+    "title": "Refurbishments & Closures",
+    "description": "Stay on top of ride closures, refurbishment schedules, and reopening dates.",
+    "icon": "tools",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["refurbishment", "closure", "temporary_closure", "reopening"],
+    "keywords": ["refurbishment", "rehab", "closed for", "closure", "reopening"]
+  },
+  {
+    "id": "disney_dining",
+    "title": "Disney Dining",
+    "description": "Restaurant news, menu changes, new food offerings, and dining reservation tips.",
+    "icon": "silverware-fork-knife",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["dining", "restaurant", "food", "menu"],
+    "keywords": ["dining", "restaurant", "menu", "food", "reservation", "snack"]
+  },
+  {
+    "id": "breaking_news",
+    "title": "Breaking News",
+    "description": "The biggest Disney stories right now, confirmed by multiple sources.",
+    "icon": "lightning-bolt",
+    "type": "editorial",
+    "status": "active",
+    "topicIds": ["breaking_news", "official_announcement"],
+    "keywords": []
+  }
+]

@@ -3,12 +3,14 @@ import { StyleSheet, View } from "react-native";
 import { ActivityIndicator, IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { usePlayback } from "../context/PlaybackContext";
+import { useSystemAccessibility } from "../hooks/useSystemAccessibility";
 import { clockString } from "../utils/formatting";
 
 export function MiniPlayer() {
   const playback = usePlayback();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const { isReduceTransparency } = useSystemAccessibility();
   if (!playback.currentItem) return null;
   const progress = playback.durationSeconds > 0 ? playback.currentTimeSeconds / playback.durationSeconds : 0;
   const safeProgress = Number.isFinite(progress) ? progress : 0;
@@ -23,7 +25,8 @@ export function MiniPlayer() {
           backgroundColor: theme.colors.surface,
           borderColor: theme.colors.outline,
           borderTopColor: theme.colors.outline,
-          bottom: insets.bottom + 56
+          bottom: insets.bottom + 56,
+          ...(isReduceTransparency ? { shadowOpacity: 0, shadowRadius: 0, elevation: 0, borderWidth: 2 } : null)
         }
       ]}
       accessible={false}

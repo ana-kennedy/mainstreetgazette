@@ -1,0 +1,32 @@
+import type { UserPersonalizationPreferences } from "./personalizationTypes";
+
+export const defaultPersonalizationPreferences: UserPersonalizationPreferences = {
+  version: 1,
+  favoriteLocations: [],
+  favoriteParks: [],
+  favoriteEntities: [],
+  favoriteTopics: [],
+  mutedLocations: [],
+  mutedParks: [],
+  mutedEntities: [],
+  mutedTopics: [],
+  mutedSources: [],
+  preferredSources: [],
+  preferredMediaTypes: ["article", "youtube", "podcast", "community"],
+  hiddenMediaTypes: [],
+  sourceDisplayMode: "balanced",
+  newsFeedMode: "all",
+  timelineDefault: "today",
+  notificationProfile: "balanced",
+  breakingNewsOnly: false,
+  allowOfficialAnnouncementsAlways: true,
+  allowHighConfidenceSafetyOrClosureAlerts: true,
+  savedSearches: [],
+  savedTimelineViews: [],
+  accessibility: {
+    useCompactRows: false,
+    announceWhyRecommended: true,
+    includeSourceCountInLabels: true,
+    includeMediaTypeInLabels: true,
+  },
+};

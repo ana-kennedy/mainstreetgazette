@@ -1,4 +1,5 @@
 import type { ContentType, FeedItem, SourceCategory, SourceType, TrustLabel } from "../domain/models";
+import i18n from "../i18n";
 
 const namedHTMLEntities: Record<string, string> = {
   amp: "&",
@@ -84,7 +85,7 @@ export function clockString(seconds?: number | null): string {
 export function relativePublishedText(isoDate: string): string {
   const published = new Date(isoDate);
   if (Number.isNaN(published.getTime())) {
-    return "Published date unknown.";
+    return i18n.t("time.unknownDate");
   }
 
   const secondsAgo = Math.round((Date.now() - published.getTime()) / 1000);
@@ -101,49 +102,56 @@ export function relativePublishedText(isoDate: string): string {
 
   for (const [unit, unitSeconds] of ranges) {
     if (absoluteSeconds >= unitSeconds) {
-      const value = Math.max(1, Math.round(absoluteSeconds / unitSeconds));
-      const pluralized = value === 1 ? unit : `${unit}s`;
-      return future ? `Published in ${value} ${pluralized}.` : `Published ${value} ${pluralized} ago.`;
+      const count = Math.max(1, Math.round(absoluteSeconds / unitSeconds));
+      return future
+        ? i18n.t(`time.future.${unit}`, { count })
+        : i18n.t(`time.past.${unit}`, { count });
     }
   }
 
-  return future ? "Published soon." : "Published just now.";
+  return future ? i18n.t("time.soon") : i18n.t("time.justNow");
 }
 
 export function contentTypeDisplayName(type: ContentType): string {
-  if (type === "article") return "Article";
-  if (type === "video") return "Video";
-  return "Podcast";
+  return i18n.t(`contentType.${type}`);
 }
 
 export function sourceTypeDisplayName(type: SourceType): string {
-  if (type === "rssArticle") return "News";
-  if (type === "youtubeChannel") return "Video";
-  if (type === "redditFeed") return "Social";
-  return "Podcast";
+  return i18n.t(`sourceType.${type}`);
 }
 
 export function trustLabelDisplayName(label?: TrustLabel | null): string {
-  if (label === "official") return "Official";
-  if (label === "verifiedNews") return "Verified News";
-  return "Community Source";
+  if (label === "official") return i18n.t("trustLabel.official");
+  if (label === "verifiedNews") return i18n.t("trustLabel.verifiedNews");
+  return i18n.t("trustLabel.communitySource");
 }
 
 export function sourceCategoryDisplayName(category: SourceCategory): string {
-  const labels: Record<SourceCategory, string> = {
-    parksNews: "Parks News",
-    food: "Food",
-    planning: "Planning",
-    hotels: "Hotels",
-    attractions: "Attractions",
-    video: "Video",
-    podcast: "Podcast",
-    official: "Official",
-    community: "Community",
-    social: "Social",
-    international: "International"
-  };
-  return labels[category] ?? category;
+  return i18n.t(`sourceCategory.${category}`, { defaultValue: category });
+}
+
+// Spoken-language versions of display strings for VoiceOver announcements.
+// Visual strings use compact notation ("4 min", "2h ago"); these are natural speech.
+
+export function a11yDuration(seconds?: number | null): string {
+  if (!seconds || seconds <= 0) return "";
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  if (hours > 0 && minutes > 0) return `${hours} hour${hours > 1 ? "s" : ""} and ${minutes} minute${minutes !== 1 ? "s" : ""}`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""}`;
+  return `${minutes} minute${minutes !== 1 ? "s" : ""}`;
+}
+
+export function a11yRelativeTime(isoDate: string): string {
+  // Already returns natural language — reuse relativePublishedText directly
+  return relativePublishedText(isoDate);
+}
+
+export function a11ySpeed(speed: number): string {
+  if (speed === 1) return "normal speed";
+  if (speed === 1.5) return "one and a half times speed";
+  if (speed === 0.75) return "three quarter speed";
+  return `${speed} times speed`;
 }
 
 export function summarizeItem(item: FeedItem, previewLength: number): string | null {

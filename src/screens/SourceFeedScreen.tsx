@@ -76,11 +76,12 @@ export function SourceFeedScreen({ route, navigation }: Props) {
         onPlay={playItem}
         onQueue={addToQueue}
         onToggleSaved={app.toggleSaved}
-        onSetMarker={app.setCheckpointAtItem}
         onMarkRead={app.markAsRead}
+        onMarkUnread={app.markAsUnread}
+        onMuteSource={app.muteSource}
       />
     ),
-    [app.settings, app.toggleSaved, app.setCheckpointAtItem, app.markAsRead, handleOpen, playItem, addToQueue, source.name]
+    [app.settings, app.toggleSaved, app.markAsRead, app.markAsUnread, app.muteSource, handleOpen, playItem, addToQueue, source.name]
   );
 
   return (

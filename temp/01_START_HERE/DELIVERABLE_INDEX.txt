@@ -1,0 +1,36 @@
+01_START_HERE
+- README_START_HERE.md
+- DELIVERABLE_INDEX.txt
+
+02_PRODUCT_RULES
+- MAIN_STREET_GAZETTE_CONSTITUTION.md
+- EDITORIAL_AND_HOSPITALITY_GUIDE.md
+
+03_IMPLEMENTATION_PHASES
+- Phase 00 through Phase 10
+
+04_SCREEN_SPECIFICATIONS
+- News, Explore, For You, Settings
+
+05_TECHNICAL_ARCHITECTURE
+- Content/storage model
+- Navigation migration
+
+06_ACCESSIBILITY
+- VoiceOver, braille, low vision, motion and sound standard
+
+07_VISUAL_AND_SOUND
+- Visual system
+- Existing sound audit and new sound acquisition requirements
+
+08_COPY_AND_CONTENT
+- Approved app wording reference
+
+09_TESTING_AND_ACCEPTANCE
+- Master acceptance checklist
+
+10_CODEX_PROMPTS
+- Master prompt to paste into Codex
+
+11_PROJECT_AUDIT
+- Existing project mapping and known issues

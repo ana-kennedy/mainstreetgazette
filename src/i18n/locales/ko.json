@@ -1,0 +1,452 @@
+{
+  "common": {
+    "done": "�™„�Œ",
+    "back": "�’��œ",
+    "refresh": "�ƒˆ�œ 고침",
+    "loading": "�œ�”� �‘�€�",
+    "on": "�œ짐",
+    "off": "꺼짐",
+    "dismiss": "�‹�기",
+    "search": "�€�ƒ‰"
+  },
+  "time": {
+    "justNow": "방�ˆ �Œ�‹œ됨.",
+    "soon": "곧 �Œ�‹œ될 �˜ˆ�•.",
+    "unknownDate": "�Œ�‹œ �‚��œ �ˆ�….",
+    "past": {
+      "minute_one": "{{count}}�„ �„ �Œ�‹œ.",
+      "minute_other": "{{count}}�„ �„ �Œ�‹œ.",
+      "hour_one": "{{count}}�‹œ�„ �„ �Œ�‹œ.",
+      "hour_other": "{{count}}�‹œ�„ �„ �Œ�‹œ.",
+      "day_one": "{{count}}일 �„ �Œ�‹œ.",
+      "day_other": "{{count}}일 �„ �Œ�‹œ.",
+      "week_one": "{{count}}주 �„ �Œ�‹œ.",
+      "week_other": "{{count}}주 �„ �Œ�‹œ.",
+      "month_one": "{{count}}�œ�›” �„ �Œ�‹œ.",
+      "month_other": "{{count}}�œ�›” �„ �Œ�‹œ.",
+      "year_one": "{{count}}�…„ �„ �Œ�‹œ.",
+      "year_other": "{{count}}�…„ �„ �Œ�‹œ."
+    },
+    "future": {
+      "minute_one": "{{count}}�„ �›„ �Œ�‹œ.",
+      "minute_other": "{{count}}�„ �›„ �Œ�‹œ.",
+      "hour_one": "{{count}}�‹œ�„ �›„ �Œ�‹œ.",
+      "hour_other": "{{count}}�‹œ�„ �›„ �Œ�‹œ.",
+      "day_one": "{{count}}일 �›„ �Œ�‹œ.",
+      "day_other": "{{count}}일 �›„ �Œ�‹œ.",
+      "week_one": "{{count}}주 �›„ �Œ�‹œ.",
+      "week_other": "{{count}}주 �›„ �Œ�‹œ.",
+      "month_one": "{{count}}�œ�›” �›„ �Œ�‹œ.",
+      "month_other": "{{count}}�œ�›” �›„ �Œ�‹œ.",
+      "year_one": "{{count}}�…„ �›„ �Œ�‹œ.",
+      "year_other": "{{count}}�…„ �›„ �Œ�‹œ."
+    }
+  },
+  "contentType": {
+    "article": "기�‚�",
+    "video": "�™�˜��ƒ�",
+    "podcast": "�ŒŸ캐�Š��Š�",
+    "community": "Community"
+  },
+  "sourceType": {
+    "rssArticle": "�‰��Š�",
+    "youtubeChannel": "�™�˜��ƒ�",
+    "podcastRSS": "�ŒŸ캐�Š��Š�",
+    "redditFeed": "�†Œ�…œ"
+  },
+  "trustLabel": {
+    "official": "공�‹�",
+    "verifiedNews": "�€증�œ �‰��Š�",
+    "communitySource": "커뮤�‹ˆ�‹� �†Œ�Š�"
+  },
+  "sourceCategory": {
+    "parksNews": "�ŒŒ크 �‰��Š�",
+    "food": "�Œ�‹�",
+    "planning": "�„�š�",
+    "hotels": "�˜��…”",
+    "attractions": "�–��Š��ž™�…˜",
+    "video": "�™�˜��ƒ�",
+    "podcast": "�ŒŸ캐�Š��Š�",
+    "official": "공�‹�",
+    "community": "커뮤�‹ˆ�‹�",
+    "social": "�†Œ�…œ",
+    "international": "국�œ"
+  },
+  "a11y": {
+    "author": "�€�ž�: {{name}}.",
+    "source": "�œ�˜: {{name}}.",
+    "unknownSource": "�•Œ �ˆ˜ �—†�Š” �œ�˜",
+    "duration": "길이 {{clock}}.",
+    "new": "�ƒˆ �˜�…�츠.",
+    "savedLabel": "�€�ž�됨.",
+    "downloaded": "�‹��š��œ�“œ됨.",
+    "enabled": "�™œ�„��™”됨.",
+    "disabled": "�„�™œ�„��™”됨.",
+    "sourceLabel": "{{name}}. {{type}} �†Œ�Š�. {{trust}}. {{state}}",
+    "enableHint": "�‘� �ˆ �ƒ��•˜�—� �™œ�„��™”.",
+    "disableHint": "�‘� �ˆ �ƒ��•˜�—� �„�™œ�„��™”.",
+    "itemHintIos": "�‘� �ˆ �ƒ��•˜�—� �—�기. �œ„�•„�ž˜�œ �Š��™€이�”„�•˜�—� �€�ž�, 링크 복�‚�, 공�œ�, �ˆ커�—� �‘근.",
+    "itemHintIosPodcast": "�‘� �ˆ �ƒ��•˜�—� �—��”��†Œ�“œ �—�기. �œ„�•„�ž˜�œ �Š��™€이�”„�•˜�—� �€�ž�, 링크 복�‚�, 공�œ�, �ˆ커�—� �‘근.",
+    "itemHintAndroid": "�‘� �ˆ �ƒ��•˜�—� �—�기. 길�Œ �ˆ„르면 �” �Ž�€ �˜��…˜.",
+    "itemHintAndroidPodcast": "�‘� �ˆ �ƒ��•˜�—� �—��”��†Œ�“œ �—�기. 길�Œ �ˆ„르면 �” �Ž�€ �˜��…˜.",
+    "unsave": "�€�ž� 취�†Œ",
+    "save": "�€�ž�",
+    "expandGroup": "그룹 �Ž��˜기",
+    "openInYouTube": "YouTube�—��„œ �—�기",
+    "resumePodcast": "�ŒŸ캐�Š��Š� �ž��œ",
+    "playPodcast": "�ŒŸ캐�Š��Š� �ž��ƒ�",
+    "addToQueue": "�Œ€기�—��—� �”�€"
+  },
+  "greeting": {
+    "morning": "�‹�€ �•„침이�—��š”",
+    "afternoon": "�‹�€ �˜��›„�˜ˆ�š”",
+    "evening": "�‹�€ �€�…�이�—��š”",
+    "night": "�•ˆ�…•�žˆ 주무�„��š”",
+    "morning_name": "�‹�€ �•„침이�—��š”, {{name}}�‹˜",
+    "afternoon_name": "�‹�€ �˜��›„�˜ˆ�š”, {{name}}�‹˜",
+    "evening_name": "�‹�€ �€�…�이�—��š”, {{name}}�‹˜",
+    "night_name": "�•ˆ�…•�žˆ 주무�„��š”, {{name}}�‹˜"
+  },
+  "tabs": {
+    "news": "�‰��Š�",
+    "parks": "�ŒŒ크",
+    "saved": "�€�ž�됨",
+    "sources": "�†Œ�Š�",
+    "settings": "�„��•"
+  },
+  "screens": {
+    "today": "�˜��Š˜",
+    "story": "기�‚�",
+    "player": "�”Œ�ˆ이�–�",
+    "savedStory": "�€�ž��œ 기�‚�",
+    "sourceFeed": "�†Œ�Š� �”��“œ",
+    "manageSources": "�†Œ�Š� �€리"
+  },
+  "home": {
+    "title": "Main Street Gazette",
+    "timeline": "�ƒ€�ž„라인",
+    "searchPlaceholder": "�ƒ€�ž„라인 �€�ƒ‰",
+    "searchDoneLabel": "�€�ƒ‰ �™„�Œ",
+    "searchDoneHint": "�‘� �ˆ �ƒ��•˜�—� �€�ƒ‰ �•„�“œ �‹�기.",
+    "searchHint": "�œ목, �š”�•�, �†Œ�Š�, �ƒœ그를 �€�ƒ‰�•� �‚��›Œ�“œ를 �ž…력�•˜�„��š”.",
+    "sort": {
+      "newestFirst": "�œ�‹��ˆœ",
+      "oldestFirst": "�˜��ž˜�œ�ˆœ"
+    },
+    "filter": {
+      "all": "�„체",
+      "article": "기�‚�",
+      "video": "�™�˜��ƒ�",
+      "podcast": "�ŒŸ캐�Š��Š�",
+      "social": "�†Œ�…œ"
+    },
+    "park": {
+      "all": "모�“� �ŒŒ크",
+      "magic_kingdom": "매직 �‚�덤",
+      "epcot": "�—�콧",
+      "hollywood_studios": "�•�리�š��“œ �Š��Šœ�””�˜�",
+      "animal_kingdom": "�•��‹ˆ�€ �‚�덤",
+      "disneyland": "�””�ˆ�‹ˆ�žœ�“œ",
+      "california_adventure": "�˜리포�‹ˆ�•„ �–��“œ벤�˜",
+      "disneyland_paris": "�””�ˆ�‹ˆ�žœ�“œ �ŒŒ리",
+      "walt_disney_studios_paris": "WD �Š��Šœ�””�˜� �ŒŒ리",
+      "tokyo_disneyland": "�„�„ �””�ˆ�‹ˆ�žœ�“œ",
+      "tokyo_disneysea": "�„�„ �””�ˆ�‹ˆ�”�",
+      "shanghai_disneyland": "�ƒ��•˜이",
+      "hong_kong_disneyland": "�™�콩"
+    },
+    "menu": {
+      "displayStyle": "�‘œ�‹œ �Š��ƒ€일",
+      "displayFull": "�„체",
+      "displayMinimal": "미�‹ˆ�€",
+      "filter": "�•„�„�",
+      "filterLocked": "기�‚� (�ž��ˆ)",
+      "byPark": "�ŒŒ크�„",
+      "showOnlyNew": "�ƒˆ �•�목�Œ 보기",
+      "jumpToMarker": "�ˆ커�œ 이�™",
+      "jumpToTop": "맨 �œ„�œ 이�™",
+      "findInTimeline": "�ƒ€�ž„라인 �€�ƒ‰",
+      "hideFindInTimeline": "�€�ƒ‰ �ˆ�기기",
+      "closeMenu": "�”�‰� �‹�기"
+    },
+    "empty": {
+      "noNewTitle": "�ƒˆ 기�‚� �—†�Œ",
+      "todayTitle": "�˜��Š˜ �Œ�‹œ�œ �‚��š� �—†�Œ",
+      "noStoriesTitle": "�•„직 기�‚� �—†�Œ",
+      "noNewBody": "�ˆ커�Œ�€ 모�‘� 읽�—ˆ�Š��‹ˆ�‹�. '�„체 보기'를 �ƒ��•˜�—� 이�„ 기�‚�를 �™•인�•˜�„��š”.",
+      "todayBody": "�‚˜�‘�—� �‹��‹œ �˜�거�‚˜ �‹�겨�„œ �ƒˆ�œ 고침�•˜�„��š”.",
+      "noStoriesBody": "�”��“œ를 �ƒˆ�œ 고침�•˜거�‚˜ �” �Ž�€ �†Œ�Š�를 �™œ�„��™”�•˜�—� �””�ˆ�‹ˆ �‰��Š�를 �›�œ��„��š”.",
+      "showAll": "�„체 보기"
+    },
+    "announce": {
+      "jumpedTop": "�ƒ€�ž„라인 맨 �œ„�œ 이�™�–ˆ�Š��‹ˆ�‹�.",
+      "noMarker": "�ˆ커�€ �„��•�˜�€ �•Š�•˜�Š��‹ˆ�‹�.",
+      "jumpedMarker": "�ƒ€�ž„라인 �ˆ커�œ 이�™�–ˆ�Š��‹ˆ�‹�.",
+      "searchShown": "�€�ƒ‰ �•„�“œ�€ �‘œ�‹œ됩�‹ˆ�‹�. �€�ƒ‰�–�를 �ž…력�•˜�„��š”.",
+      "filterLocked": "�ŒŒ크�€ �„��ƒ��œ �™�•ˆ �•„�„��Š” 기�‚��œ �ž�겨 �žˆ�Š��‹ˆ�‹�."
+    }
+  },
+  "onboarding": {
+    "stepProgress": "{{total}}�‹��„ �‘ {{current}}�‹��„",
+    "back": "�’��œ",
+    "continue": "�„�†�",
+    "loading": "�œ�”� �‘�€�",
+    "welcome": {
+      "tagline": "�‹��‹��˜ �””�ˆ�‹ˆ �„��„, �•œ 곳�—��„œ.",
+      "body": "�ŒŒ크 �‰��Š�, �™�˜��ƒ�, �ŒŸ캐�Š��Š�, 커뮤�‹ˆ�‹� �—…데이�Š� �€” �””�ˆ�‹ˆ �Œ��„ �œ„�•� 큐�ˆ이�…˜됨.",
+      "getStarted": "�‹œ�ž‘�•˜기",
+      "getStartedHint": "�‘� �ˆ �ƒ��•˜�—� �”��“œ �„��• �‹œ�ž‘."
+    },
+    "sources": {
+      "title": "무�—‡�„ �Œ”�œ�š��•˜�‹œ겠�–��š”?",
+      "subtitle": "�†Œ�Š��Š” �„��•�—��„œ �–��œ�“��€ 조�•�•� �ˆ˜ �žˆ�Š��‹ˆ�‹�.",
+      "articles": "기�‚�",
+      "articlesDesc": "주�š” �””�ˆ�‹ˆ �‚�이�Š��˜ �ŒŒ크 �‰��Š�, �Œ�‹�, �„�š� �“�",
+      "videos": "�™�˜��ƒ�",
+      "videosDesc": "주�š” �””�ˆ�‹ˆ 크리�—�이�„��˜ YouTube �„�„�",
+      "podcasts": "�ŒŸ캐�Š��Š�",
+      "podcastsDesc": "�””�ˆ�‹ˆ �…Œ�ˆ �”„�œ그�ž�",
+      "reddit": "Reddit",
+      "redditDesc": "�””�ˆ�‹ˆ �„œ�Œ�ˆ�”��˜ 커뮤�‹ˆ�‹� �Œ�‹œ물"
+    },
+    "prefs": {
+      "title": "�‡ �€�€ 빠른 �„��•",
+      "subtitle": "�‚˜�‘�—� �„��•�—��„œ 모�‘� �€경�•� �ˆ˜ �žˆ�Š��‹ˆ�‹�.",
+      "cacheQuestion": "기�‚�를 �–��ˆ�‚˜ �˜��ž˜ 보�€�•��Œ�š”?",
+      "cacheA11y": "기�‚� 캐�‹œ 기�„",
+      "days30": "30일",
+      "days90": "3개월",
+      "days180": "6개월",
+      "days365": "1년",
+      "days90Star": "3개월 ★",
+      "days90Recommended": "3개월(권장)",
+      "refreshA11y": "�•� �—� �•Œ �‰��Š� �ƒˆ�œ 고침",
+      "refreshHint": "Main Street Gazette를 �—� �•Œ�ˆ�‹� �ž��™�œ��œ �œ�‹� 기�‚� �€져�˜�기",
+      "refreshOnLaunch": "�‹œ�ž‘ �‹œ �ƒˆ�œ 고침",
+      "refreshDesc": "�•� �—� �•Œ �œ�‹� 기�‚� �€져�˜�기",
+      "appearance": "�™��€",
+      "appearanceA11y": "�•� �™��€",
+      "themeSystem": "�‹œ�Š��…œ",
+      "themeLight": "라이�Š�",
+      "themeDark": "�‹�크",
+      "themeGazette": "�Œ젯",
+      "themeMidnight": "미�“œ�‚˜�ž‡",
+      "themeFantasy": "�Œ��ƒ€�€"
+    },
+    "done": {
+      "title": "�€�„ �™„�Œ!",
+      "body": "Main Street Gazette�—� �˜��‹� �ƒ�„ �™˜�˜��•��‹ˆ�‹�. 첫 �ˆ째 �‰��Š� �—…데이�Š��€ �„�–‰ �‘�ž…�‹ˆ�‹�.",
+      "startReading": "읽기 �‹œ�ž‘",
+      "startReadingHint": "�‘� �ˆ �ƒ��•˜�—� Main Street Gazette �ž…�ž�."
+    }
+  },
+  "settings": {
+    "title": "�„��•",
+    "hi": "�•ˆ�…•�•˜�„��š”, {{name}}�‹˜",
+    "section": {
+      "profile": "�”„�œ�•„",
+      "appearance": "�™��€",
+      "feed": "�”��“œ",
+      "reading": "읽기",
+      "cache": "캐�‹œ",
+      "accessibility": "�‘근�„�",
+      "playback": "�ž��ƒ�",
+      "privacy": "�œ인�•보 및 �•적 �•보"
+    },
+    "profile": {
+      "label": "이�„ (�„��ƒ� �‚��•�)",
+      "hint": "인�‚�말�„ �œ인�™”�•˜려면 이�„�„ �ž…력�•˜�„��š”. �‚��œ�•˜려면 �„�›Œ �‘��„��š”."
+    },
+    "theme": {
+      "system": "�‹œ�Š��…œ",
+      "systemSub": "기기 �„��• �”��„",
+      "light": "라이�Š�",
+      "lightSub": "깨�—�•œ �™”이�Š�",
+      "dark": "�‹�크",
+      "darkSub": "차�œ �‹�크",
+      "gazette": "�Œ젯",
+      "gazetteSub": "�”��œ��•œ �„��”��•„ �Ž��‘ �Š��ƒ€일",
+      "midnight": "미�“œ�‚˜�ž‡",
+      "midnightSub": "�ŒŒ�ž€ �•조�ƒ‰�˜ �™�€ �„�이�„",
+      "fantasy": "�Œ��ƒ€�€",
+      "fantasySub": "�œ�—� 퍼�”Œ과 �„� 골�“œ"
+    },
+    "feed": {
+      "autoRefreshTitle": "�‹œ�ž‘ �‹œ �ž��™ �ƒˆ�œ 고침",
+      "autoRefreshDesc": "�‹œ�ž‘ �‹œ �™œ�„��™”�œ �”��“œ �€져�˜�기.",
+      "showOnlyNewTitle": "�ˆ커 이�›„ �ƒˆ �•�목�Œ �‘œ�‹œ",
+      "showOnlyNewDesc": "이�„ 기�‚� �ˆ�기기.",
+      "sortOrder": "�•렬 �ˆœ�„œ",
+      "newestFirst": "�œ�‹��ˆœ",
+      "oldestFirst": "�˜��ž˜�œ�ˆœ",
+      "articlePreview": "기�‚� 미리보기",
+      "line1": "1�„",
+      "line2": "2�„",
+      "line3": "3�„",
+      "line4": "4�„",
+      "line5": "5�„",
+      "lineFull": "�„체",
+      "line1A11y": "1문�ž� 미리보기",
+      "line2A11y": "2문�ž� 미리보기",
+      "line3A11y": "3문�ž� 미리보기",
+      "line4A11y": "4문�ž� 미리보기",
+      "line5A11y": "5문�ž� 미리보기",
+      "lineFullA11y": "�„체 �š”�•�"
+    },
+    "reading": {
+      "readerModeTitle": "리�” 모�“œ",
+      "readerModeDesc": "Safari�˜ 방�•� �—†�Š” 리�” 보기�—��„œ 기�‚�를 �ž��™�œ��œ �—�기."
+    },
+    "cache": {
+      "offlineTitle": "�˜��”„라인 �€�ž�",
+      "offlineDesc": "�„��Š��›Œ크 �—†�„ �•Œ 캐�‹œ�œ �˜�…�츠 �‘œ�‹œ.",
+      "cacheWindow": "캐�‹œ 기�„",
+      "week1": "1주",
+      "month1": "1�œ�›”",
+      "week1A11y": "캐�‹œ 1주",
+      "month1A11y": "캐�‹œ 1�œ�›”",
+      "maxCached": "�œ�Œ€ 캐�‹œ �•�목",
+      "items100A11y": "�œ�Œ€ 100�•�목",
+      "items250A11y": "�œ�Œ€ 250�•�목",
+      "items500A11y": "�œ�Œ€ 500�•�목",
+      "items1000A11y": "�œ�Œ€ 1000�•�목"
+    },
+    "access": {
+      "spacingTitle": "�–��ƒ��œ �„격",
+      "spacingDesc": "�€�‹œ력 �ˆ이�•„�›ƒ�—� �” �Ž�€ 공�„ �”�€.",
+      "boldTitle": "�”�ƒ€데이�„� 굵�Œ",
+      "boldDesc": "�†Œ�Š��™€ �‹œ�„�„ �” �‰��Œ 읽기.",
+      "hideThumbnailsTitle": "썸�„�일 �ˆ�기기",
+      "hideThumbnailsDesc": "�”��“œ �–‰�˜ �‹œ각적 �˜��ž� 감�†Œ."
+    },
+    "playback": {
+      "defaultSpeed": "기본 �†��„"
+    },
+    "privacy": {
+      "disclaimer": "Main Street Gazette�Š” �”��“œ, �€�ž��œ �•�목, �†Œ�Š� �„��ƒ�, �„��•, �Œ€기�—� 및 �ž��ƒ� �„�–‰ �ƒ��™��„ 이 기기�—� �œ컬�œ �€�ž��•��‹ˆ�‹�. �„�•, �‘고, �„�„� �˜��Š” �”적이 �—†�Š��‹ˆ�‹�.",
+      "legal": "Main Street Gazette�Š” �…립적인 �”��“œ 리�” 및 �ŒŸ캐�Š��Š� �”Œ�ˆ이�–��ž…�‹ˆ�‹�. Disney �˜��Š” �‚˜�—��œ �œ�Œ��‚��™€ �œ�œ�, �Š�인 �˜��Š” �›„�›� �€�„�€ �—†�Š��‹ˆ�‹�.",
+      "privacyPolicy": "�œ인�•보 �˜리방침",
+      "support": "�€�›�",
+      "privacyPolicyHint": "�‘� �ˆ �ƒ��•˜�—� �œ인�•보 �˜리방침 �—�기.",
+      "supportHint": "�‘� �ˆ �ƒ��•˜�—� �€�›� �Ž˜이�€ �—�기."
+    }
+  },
+  "saved": {
+    "title": "�€�ž�됨",
+    "searchPlaceholder": "�€�ž��œ �•�목 �€�ƒ‰",
+    "searchA11y": "�€�ž��œ 기�‚� �€�ƒ‰",
+    "searchHint": "�€�ž��œ �•�목�„ �€�ƒ‰�•� �‚��›Œ�“œ를 �ž…력�•˜�„��š”.",
+    "emptyTitle": "�€�ž��œ 기�‚� �—†�Œ",
+    "emptyBody": "�€�ž��œ 기�‚��™€ �—��”��†Œ�“œ�€ �—�기�—� �‘œ�‹œ됩�‹ˆ�‹�."
+  },
+  "sources": {
+    "title": "�†Œ�Š�",
+    "searchPlaceholder": "�†Œ�Š� �€�ƒ‰",
+    "searchA11y": "�™œ�„��™”�œ �†Œ�Š� �€�ƒ‰",
+    "searchHint": "�†Œ�Š� 목록�„ �•„�„�링�•� �‚��›Œ�“œ를 �ž…력�•˜�„��š”.",
+    "manageLabel": "�†Œ�Š� �€리",
+    "manageHint": "�‘� �ˆ �ƒ��•˜�—� �†Œ�Š� �™œ�„��™” �˜��Š” �„�™œ�„��™”.",
+    "noEnabled": "�™œ�„��™”�œ �†Œ�Š��€ �—†�Š��‹ˆ�‹�. �†Œ�Š� �€리를 �ƒ��•˜�„��š”.",
+    "noMatch": "\"{{query}}\"�™€ 일�˜�•˜�Š” �†Œ�Š��€ �—†�Š��‹ˆ�‹�.",
+    "section": {
+      "articles": "기�‚�",
+      "international": "국�œ",
+      "videos": "�™�˜��ƒ�",
+      "podcasts": "�ŒŸ캐�Š��Š�",
+      "social": "�†Œ�…œ"
+    },
+    "unread_one": "읽�€ �•Š�Œ {{count}}�œ",
+    "unread_other": "읽�€ �•Š�Œ {{count}}�œ",
+    "sourceA11y_one": "{{name}}. 읽�€ �•Š�€ 기�‚� {{count}}�œ.",
+    "sourceA11y_other": "{{name}}. 읽�€ �•Š�€ 기�‚� {{count}}�œ.",
+    "sourceHint": "�‘� �ˆ �ƒ��•˜�—� 이 �†Œ�Š��˜ 기�‚� 읽기.",
+    "totalA11y": "�†Œ�Š�. 읽�€ �•Š�Œ {{count}}�œ.",
+    "totalBadge": "읽�€ �•Š�Œ {{count}}�œ"
+  },
+  "feed": {
+    "play": "�ž��ƒ�",
+    "open": "�—�기",
+    "addToQueue": "�Œ€기�—��—� �”�€",
+    "saveForLater": "�‚˜�‘�—� 읽기",
+    "removeFromSaved": "�€�ž� 취�†Œ",
+    "copyLink": "링크 복�‚�",
+    "viewOnWeb": "�›��—��„œ 보기",
+    "setMarker": "�ˆ커 �„��•",
+    "share": "{{type}} 공�œ�",
+    "savedPill": "�€�ž�됨",
+    "by": "{{name}} �ž‘�„�",
+    "openArticleHint": "�‘� �ˆ �ƒ��•˜�—� 리�” 보기�œ �—�기.",
+    "openPodcastHint": "�‘� �ˆ �ƒ��•˜�—� 이 �—��”��†Œ�“œ �ž��ƒ�.",
+    "openVideoHint": "�‘� �ˆ �ƒ��•˜�—� 이 �™�˜��ƒ� �—�기.",
+    "openAndroid": "�‘� �ˆ �ƒ��•˜�—� �—�기. 길�Œ �ˆŒ�Ÿ� �” �Ž�€ �˜��…˜.",
+    "openHintIosArticle": "�‘� �ˆ �ƒ��•˜�—� 리�” 보기�œ �—�기. �Š��™€이�”„�•˜�—� �€�ž�, 링크 복�‚�, 공�œ�, �ˆ커�—� �‘근.",
+    "openHintIosPodcast": "�‘� �ˆ �ƒ��•˜�—� �ž��ƒ�. �Š��™€이�”„�•˜�—� �Œ€기�—�, �€�ž�, 링크 복�‚�, 공�œ�, �ˆ커�—� �‘근.",
+    "openHintIosVideo": "�‘� �ˆ �ƒ��•˜�—� �™�˜��ƒ� �—�기. �Š��™€이�”„�•˜�—� �€�ž�, 링크 복�‚�, 공�œ�, �ˆ커�—� �‘근.",
+    "addToQueueHint": "�‘� �ˆ �ƒ��•˜�—� �Œ€기�—��—� �”�€.",
+    "saveHint": "�‘� �ˆ �ƒ��•˜�—� 이 {{type}} �€�ž�.",
+    "removeHint": "�‘� �ˆ �ƒ��•˜�—� 이 {{type}} �€�ž� 취�†Œ.",
+    "copyLinkHint": "�‘� �ˆ �ƒ��•˜�—� 링크 복�‚�.",
+    "viewOnWebHint": "�‘� �ˆ �ƒ��•˜�—� �Œ라�š��€�—��„œ �—�기.",
+    "shareHint": "�‘� �ˆ �ƒ��•˜�—� 공�œ�.",
+    "setMarkerHint": "�‘� �ˆ �ƒ��•˜�—� �ˆ커 �„��•.",
+    "linkCopied": "링크�€ 복�‚��˜�—ˆ�Š��‹ˆ�‹�."
+  },
+  "errors": {
+    "unableToRefresh": "�”��“œ를 �ƒˆ�œ 고침�•� �ˆ˜ �—†�Š��‹ˆ�‹�.",
+    "unableToLoad": "Main Street Gazette 데이�„�를 �œ�“œ�•� �ˆ˜ �—†�Š��‹ˆ�‹�.",
+    "noStories": "�ƒˆ�œ 고침�—��„œ 기�‚��€ �˜�™˜�˜�€ �•Š�•˜�Š��‹ˆ�‹�.",
+    "sourceFailed_one": " {{name}} �ƒˆ�œ 고침�—� �‹��Œ��–ˆ�Š��‹ˆ�‹�.",
+    "sourceFailed_other": " {{count}}�œ �†Œ�Š��€ �‹��Œ��–ˆ�Š��‹ˆ�‹�.",
+    "refreshFailed_one": "1�œ �†Œ�Š� �ƒˆ�œ 고침 �‹��Œ�: {{message}}",
+    "refreshFailed_other": "{{count}}�œ �†Œ�Š� �ƒˆ�œ 고침 �‹��Œ�. 첫 �ˆ째 �˜��˜: {{message}}"
+  },
+  "refresh": {
+    "noNew": "�ƒˆ 기�‚� �—†�Œ.",
+    "noNewWithError": "�ƒˆ 기�‚� �—†�Œ.{{error}}",
+    "new_one": "�ƒˆ 기�‚� {{count}}�œ.",
+    "new_other": "�ƒˆ 기�‚� {{count}}�œ.",
+    "newWithError_one": "�ƒˆ 기�‚� {{count}}�œ.{{error}}",
+    "newWithError_other": "�ƒˆ 기�‚� {{count}}�œ.{{error}}",
+    "failedAnnounce": "�ƒˆ�œ 고침 �‹��Œ�. {{message}}",
+    "articleSaved": "기�‚��€ �€�ž��˜�—ˆ�Š��‹ˆ�‹�.",
+    "articleUnsaved": "기�‚��€ �€�ž�됨�—��„œ �œ거�˜�—ˆ�Š��‹ˆ�‹�.",
+    "checkpointSet": "�ˆ커�€ �„��•�˜�—ˆ�Š��‹ˆ�‹�."
+  },
+  "detail": {
+    "unknownWebsite": "�•Œ �ˆ˜ �—†�Š” �›��‚�이�Š�",
+    "play": "�ž��ƒ�",
+    "playing": "�ž��ƒ� �‘",
+    "loading": "�œ�”�",
+    "durationText": "길이 {{clock}}.",
+    "sourceText": "�œ�˜: {{name}}.",
+    "byText": "{{name}} �ž‘�„�.",
+    "saveLabel": "{{type}} �€�ž�",
+    "unsaveLabel": "{{type}} �€�ž� 취�†Œ",
+    "saveHint": "�‘� �ˆ �ƒ��•˜�—� �€�ž�.",
+    "unsaveHint": "�‘� �ˆ �ƒ��•˜�—� 이 {{type}} �€�ž� 취�†Œ.",
+    "playA11y": "�ŒŸ캐�Š��Š� �—��”��†Œ�“œ �ž��ƒ�: {{title}}",
+    "playLoadingHint": "�ŒŸ캐�Š��Š� �œ�”� �‘.",
+    "playHint": "�‘� �ˆ �ƒ��•˜�—� 이 �—��”��†Œ�“œ �ž��ƒ�."
+  },
+  "knowledge": {
+    "location": {
+      "label": "Location",
+      "all": "All Disney",
+      "wdw": "Walt Disney World",
+      "dlr": "Disneyland",
+      "dcl": "Disney Cruise",
+      "international": "International",
+      "a11ySelected": "Showing stories from {{label}}"
+    },
+    "timeline": {
+      "label": "Recency",
+      "all": "Any Time",
+      "now": "Now",
+      "today": "Today",
+      "last_3_days": "Last 3 Days",
+      "week": "This Week",
+      "month": "This Month",
+      "a11ySelected": "Showing stories from {{label}}"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { IconButton, ProgressBar, Text, useTheme } from "react-native-paper";
@@ -9,9 +10,22 @@ import { clockString } from "../utils/formatting";
 export function PlayerScreen() {
   const playback = usePlayback();
   const theme = useTheme();
+  const navigation = useNavigation();
+  const backButton = (
+    <IconButton
+      icon="arrow-left"
+      size={28}
+      onPress={() => navigation.goBack()}
+      style={styles.backButton}
+      accessibilityLabel="Back"
+      accessibilityRole="button"
+      accessibilityHint="Double tap to go back."
+    />
+  );
   if (!playback.currentItem) {
     return (
       <Screen>
+        {backButton}
         <EmptyState title="No podcast loaded" body="Choose a podcast episode from News or Saved to begin playback." />
       </Screen>
     );
@@ -21,6 +35,7 @@ export function PlayerScreen() {
 
   return (
     <Screen>
+      {backButton}
       <View style={styles.content}>
         <View accessible accessibilityRole="summary" accessibilityLabel={`Player. ${playback.currentItem.title}. ${playback.isLoading ? "Loading" : playback.isPlaying ? "Playing" : "Paused"}.`}>
           <Text variant="headlineSmall" accessibilityRole="header">
@@ -107,6 +122,10 @@ export function PlayerScreen() {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    alignSelf: "flex-start",
+    marginLeft: 8,
+  },
   content: {
     flex: 1,
     padding: 20,

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "effectiveDate": "2026-07-01",
+  "rules": [
+    {
+      "id": "dining-window",
+      "type": "dining_window",
+      "title": "Dining reservations may open today",
+      "description": "Table-service dining reservations typically open around 60 days before your first day. Check the official app for your destination's exact window.",
+      "daysBeforeStart": 60,
+      "destinationScope": ["wdw", "dlr"]
+    },
+    {
+      "id": "lightning-lane-window",
+      "type": "lightning_lane_window",
+      "title": "Lightning Lane selections open today",
+      "description": "Individual Lightning Lane and multi-pass selections typically become available the morning of your visit. Check the official app for exact timing.",
+      "daysBeforeStart": 0,
+      "destinationScope": ["wdw", "dlr"]
+    },
+    {
+      "id": "online-check-in",
+      "type": "check_in",
+      "title": "Online resort check-in may be available",
+      "description": "If you're staying on-site, online check-in is typically available a few days before arrival — a good time to add any special requests.",
+      "daysBeforeStart": 3,
+      "destinationScope": ["wdw", "dlr", "dcl"],
+      "requiresResort": true
+    },
+    {
+      "id": "weather-forecast-window",
+      "type": "weather_usefulness",
+      "title": "Your trip forecast is now more reliable",
+      "description": "Weather forecasts become meaningfully more accurate within about 10 days of a visit — a good time to check the Explore tab's forecast.",
+      "daysBeforeStart": 10,
+      "destinationScope": ["wdw", "dlr", "dcl", "international"]
+    },
+    {
+      "id": "park-hours-review",
+      "type": "park_hour_review",
+      "title": "Review park hours before you go",
+      "description": "Park hours and schedules can change as your trip approaches — worth a final check a couple of weeks out.",
+      "daysBeforeStart": 14,
+      "destinationScope": ["wdw", "dlr", "international"]
+    }
+  ]
+}

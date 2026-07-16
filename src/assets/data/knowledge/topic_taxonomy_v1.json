@@ -1,0 +1,256 @@
+{
+  "version": "2.0.0",
+  "topics": [
+    {
+      "id": "official_announcement",
+      "name": "Official Announcement",
+      "keywords": [
+        "announced",
+        "revealed",
+        "confirmed",
+        "officially",
+        "Disney announced"
+      ]
+    },
+    {
+      "id": "breaking_news",
+      "name": "Breaking News",
+      "keywords": [
+        "breaking",
+        "just announced",
+        "confirmed today",
+        "new details"
+      ]
+    },
+    {
+      "id": "ride_closure",
+      "name": "Ride Closure",
+      "keywords": [
+        "closed",
+        "closure",
+        "temporarily unavailable",
+        "downtime",
+        "refurbishment",
+        "reopens",
+        "reopening"
+      ]
+    },
+    {
+      "id": "construction",
+      "name": "Construction Update",
+      "keywords": [
+        "construction",
+        "permit",
+        "walls",
+        "crane",
+        "demolition",
+        "progress",
+        "site work"
+      ]
+    },
+    {
+      "id": "dining",
+      "name": "Dining/Food",
+      "keywords": [
+        "menu",
+        "restaurant",
+        "snack",
+        "food booth",
+        "dining",
+        "reservation",
+        "prix fixe",
+        "quick service"
+      ]
+    },
+    {
+      "id": "merchandise",
+      "name": "Merchandise",
+      "keywords": [
+        "merchandise",
+        "merch",
+        "souvenir",
+        "spirit jersey",
+        "popcorn bucket",
+        "Loungefly",
+        "MagicBand"
+      ]
+    },
+    {
+      "id": "entertainment",
+      "name": "Entertainment",
+      "keywords": [
+        "fireworks",
+        "parade",
+        "show",
+        "stage show",
+        "nighttime spectacular",
+        "character",
+        "meet and greet"
+      ]
+    },
+    {
+      "id": "resort_hotel",
+      "name": "Resort/Hotel",
+      "keywords": [
+        "hotel",
+        "resort",
+        "rooms",
+        "refurbishment",
+        "lobby",
+        "pool",
+        "DVC"
+      ]
+    },
+    {
+      "id": "transportation",
+      "name": "Transportation",
+      "keywords": [
+        "monorail",
+        "Skyliner",
+        "bus",
+        "boat",
+        "parking tram",
+        "transportation"
+      ]
+    },
+    {
+      "id": "cruise_news",
+      "name": "Disney Cruise Line",
+      "keywords": [
+        "cruise",
+        "ship",
+        "sailing",
+        "itinerary",
+        "port",
+        "stateroom",
+        "Castaway Cay",
+        "Lookout Cay"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "keywords": [
+        "accessibility",
+        "DAS",
+        "wheelchair",
+        "ECV",
+        "audio description",
+        "captioning",
+        "sensory"
+      ]
+    },
+    {
+      "id": "ticketing_pricing",
+      "name": "Tickets/Pricing",
+      "keywords": [
+        "price",
+        "ticket",
+        "annual pass",
+        "Magic Key",
+        "Lightning Lane",
+        "Multi Pass",
+        "Single Pass"
+      ]
+    },
+    {
+      "id": "rumor",
+      "name": "Rumor/Unconfirmed",
+      "keywords": [
+        "rumor",
+        "reportedly",
+        "could",
+        "may",
+        "speculation",
+        "unconfirmed"
+      ]
+    },
+    {
+      "id": "review",
+      "name": "Review/Opinion",
+      "keywords": [
+        "review",
+        "our thoughts",
+        "honest review",
+        "worth it",
+        "ranking",
+        "best and worst"
+      ]
+    },
+    {
+      "id": "attractions",
+      "name": "Attractions",
+      "keywords": [
+        "ride",
+        "attraction",
+        "roller coaster",
+        "dark ride",
+        "queue",
+        "single rider",
+        "ride vehicle"
+      ]
+    },
+    {
+      "id": "festivals_seasonal",
+      "name": "Festivals & Seasonal Events",
+      "keywords": [
+        "festival",
+        "food and wine",
+        "flower and garden",
+        "holiday",
+        "seasonal event",
+        "after hours party",
+        "halloween party",
+        "christmas party"
+      ]
+    },
+    {
+      "id": "rundisney",
+      "name": "runDisney",
+      "keywords": [
+        "rundisney",
+        "run disney",
+        "marathon",
+        "5k",
+        "10k",
+        "half marathon",
+        "race weekend"
+      ]
+    },
+    {
+      "id": "dvc",
+      "name": "Disney Vacation Club",
+      "keywords": [
+        "disney vacation club",
+        "dvc",
+        "vacation points",
+        "member cruise",
+        "dvc resale"
+      ]
+    },
+    {
+      "id": "disney_history",
+      "name": "Disney History",
+      "keywords": [
+        "disney history",
+        "walt disney",
+        "retro",
+        "opening day",
+        "anniversary",
+        "vintage",
+        "throwback"
+      ]
+    },
+    {
+      "id": "community_highlights",
+      "name": "Community Highlights",
+      "keywords": [
+        "fan photo",
+        "guest story",
+        "community spotlight",
+        "fan-submitted",
+        "reader photo"
+      ]
+    }
+  ]
+}

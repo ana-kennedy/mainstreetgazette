@@ -1,0 +1,452 @@
+{
+  "common": {
+    "done": "�Œ�ˆ�",
+    "back": "�”�›ž",
+    "refresh": "�ˆ��–�",
+    "loading": "�Š�载中�€�",
+    "on": "�€启",
+    "off": "�…��—�",
+    "dismiss": "�…��—�",
+    "search": "�œ索"
+  },
+  "time": {
+    "justNow": "�ˆš�ˆš�‘�ƒ�€‚",
+    "soon": "即�†�‘�ƒ�€‚",
+    "unknownDate": "�‘�ƒ�—��œŸ�œ��Ÿ��€‚",
+    "past": {
+      "minute_one": "{{count}}�ˆ†�’Ÿ�‰��‘�ƒ�€‚",
+      "minute_other": "{{count}}�ˆ†�’Ÿ�‰��‘�ƒ�€‚",
+      "hour_one": "{{count}}小�—��‰��‘�ƒ�€‚",
+      "hour_other": "{{count}}小�—��‰��‘�ƒ�€‚",
+      "day_one": "{{count}}天�‰��‘�ƒ�€‚",
+      "day_other": "{{count}}天�‰��‘�ƒ�€‚",
+      "week_one": "{{count}}�‘��‰��‘�ƒ�€‚",
+      "week_other": "{{count}}�‘��‰��‘�ƒ�€‚",
+      "month_one": "{{count}}个�œˆ�‰��‘�ƒ�€‚",
+      "month_other": "{{count}}个�œˆ�‰��‘�ƒ�€‚",
+      "year_one": "{{count}}年�‰��‘�ƒ�€‚",
+      "year_other": "{{count}}年�‰��‘�ƒ�€‚"
+    },
+    "future": {
+      "minute_one": "{{count}}�ˆ†�’Ÿ�Ž�‘�ƒ�€‚",
+      "minute_other": "{{count}}�ˆ†�’Ÿ�Ž�‘�ƒ�€‚",
+      "hour_one": "{{count}}小�—��Ž�‘�ƒ�€‚",
+      "hour_other": "{{count}}小�—��Ž�‘�ƒ�€‚",
+      "day_one": "{{count}}天�Ž�‘�ƒ�€‚",
+      "day_other": "{{count}}天�Ž�‘�ƒ�€‚",
+      "week_one": "{{count}}�‘��Ž�‘�ƒ�€‚",
+      "week_other": "{{count}}�‘��Ž�‘�ƒ�€‚",
+      "month_one": "{{count}}个�œˆ�Ž�‘�ƒ�€‚",
+      "month_other": "{{count}}个�œˆ�Ž�‘�ƒ�€‚",
+      "year_one": "{{count}}年�Ž�‘�ƒ�€‚",
+      "year_other": "{{count}}年�Ž�‘�ƒ�€‚"
+    }
+  },
+  "contentType": {
+    "article": "�–‡章",
+    "video": "�†�‘",
+    "podcast": "�’�客",
+    "community": "Community"
+  },
+  "sourceType": {
+    "rssArticle": "�–��—�",
+    "youtubeChannel": "�†�‘",
+    "podcastRSS": "�’�客",
+    "redditFeed": "社交"
+  },
+  "trustLabel": {
+    "official": "�˜�–�",
+    "verifiedNews": "已�Œ证�–��—�",
+    "communitySource": "社�Œ�来源"
+  },
+  "sourceCategory": {
+    "parksNews": "乐�›��–��—�",
+    "food": "�Ž�Ÿ",
+    "planning": "�„�ˆ’",
+    "hotels": "�…’�—",
+    "attractions": "�™��‚�",
+    "video": "�†�‘",
+    "podcast": "�’�客",
+    "official": "�˜�–�",
+    "community": "社�Œ�",
+    "social": "社交",
+    "international": "�›��™…"
+  },
+  "a11y": {
+    "author": "�œ�€…�š{{name}}�€‚",
+    "source": "来源�š{{name}}�€‚",
+    "unknownSource": "�œ��Ÿ�来源",
+    "duration": "�—��•� {{clock}}�€‚",
+    "new": "�–��†…容�€‚",
+    "savedLabel": "已保�˜�€‚",
+    "downloaded": "已�‹载�€‚",
+    "enabled": "已启�”��€‚",
+    "disabled": "已禁�”��€‚",
+    "sourceLabel": "{{name}}�€‚{{type}}来源�€‚{{trust}}�€‚{{state}}",
+    "enableHint": "�Œ�‡�以启�”��€‚",
+    "disableHint": "�Œ�‡�以禁�”��€‚",
+    "itemHintIos": "�Œ�‡��‰“�€�€‚�Š�‹�‘�Š�访�—�保�˜�€�复�ˆ��“��Ž��€��ˆ†享�’Œ�‡记�€‚",
+    "itemHintIosPodcast": "�Œ�‡��‰“�€�‰��›†�€‚�Š�‹�‘�Š�访�—�保�˜�€�复�ˆ��“��Ž��€��ˆ†享�’Œ�‡记�€‚",
+    "itemHintAndroid": "�Œ�‡��‰“�€�€‚�•��Œ‰�Ž��–�›��š�€‰项�€‚",
+    "itemHintAndroidPodcast": "�Œ�‡��‰“�€�‰��›†�€‚�•��Œ‰�Ž��–�›��š�€‰项�€‚",
+    "unsave": "�–�ˆ保�˜",
+    "save": "保�˜",
+    "expandGroup": "�•�€�„",
+    "openInYouTube": "�œ�YouTube中�‰“�€",
+    "resumePodcast": "继续�’�客",
+    "playPodcast": "�’��”��’�客",
+    "addToQueue": "添�Š��ˆ��˜Ÿ�ˆ—"
+  },
+  "greeting": {
+    "morning": "�—��Š好",
+    "afternoon": "�‹�ˆ好",
+    "evening": "�™š�Š好",
+    "night": "�™š�‰",
+    "morning_name": "�—��Š好�Œ{{name}}",
+    "afternoon_name": "�‹�ˆ好�Œ{{name}}",
+    "evening_name": "�™š�Š好�Œ{{name}}",
+    "night_name": "�™š�‰�Œ{{name}}"
+  },
+  "tabs": {
+    "news": "�–��—�",
+    "parks": "乐�›�",
+    "saved": "已保�˜",
+    "sources": "来源",
+    "settings": "设置"
+  },
+  "screens": {
+    "today": "�Š天",
+    "story": "�•…�‹",
+    "player": "�’��”��™�",
+    "savedStory": "已保�˜�•…�‹",
+    "sourceFeed": "来源订�˜…",
+    "manageSources": "管�†来源"
+  },
+  "home": {
+    "title": "Main Street Gazette",
+    "timeline": "�—��—�线",
+    "searchPlaceholder": "�œ��—��—�线中�œ索",
+    "searchDoneLabel": "�Œ�ˆ��œ索",
+    "searchDoneHint": "�Œ�‡��…��—��œ索�†�€‚",
+    "searchHint": "�“�…��…��”�词�œ索�‡�˜�€��‘˜要�€�来源�’Œ�‡签�€‚",
+    "sort": {
+      "newestFirst": "�œ€�–��˜�…ˆ",
+      "oldestFirst": "�œ€�—��˜�…ˆ"
+    },
+    "filter": {
+      "all": "�…��ƒ�",
+      "article": "�–‡章",
+      "video": "�†�‘",
+      "podcast": "�’�客",
+      "social": "社交"
+    },
+    "park": {
+      "all": "�‰€�œ‰乐�›�",
+      "magic_kingdom": "�ž�‡�Ž‹�›�",
+      "epcot": "�œ�来�–�•Œ",
+      "hollywood_studios": "好�Ž��ž影�ŸŽ",
+      "animal_kingdom": "�Š��‰��Ž‹�›�",
+      "disneyland": "迪士尼乐�›�",
+      "california_adventure": "�Š��ž�†’�™�",
+      "disneyland_paris": "巴�Ž迪士尼",
+      "walt_disney_studios_paris": "巴�Ž�Ž�‰�迪士尼影�ŸŽ",
+      "tokyo_disneyland": "�œ京迪士尼乐�›�",
+      "tokyo_disneysea": "�œ京迪士尼海�‹",
+      "shanghai_disneyland": "�Š海",
+      "hong_kong_disneyland": "�™港"
+    },
+    "menu": {
+      "displayStyle": "�˜�示样式",
+      "displayFull": "�Œ�•�",
+      "displayMinimal": "�€洁",
+      "filter": "�›�€‰",
+      "filterLocked": "�–‡章�ˆ已�”��š�‰",
+      "byPark": "�Œ‰乐�›�",
+      "showOnlyNew": "只�˜�示�–��†…容",
+      "jumpToMarker": "跳转�ˆ��‡记",
+      "jumpToTop": "跳转�ˆ�顶�ƒ�",
+      "findInTimeline": "�œ��—��—�线中�œ索",
+      "hideFindInTimeline": "�š��—��œ索",
+      "closeMenu": "�…��—��œ�•"
+    },
+    "empty": {
+      "noNewTitle": "没�œ‰�–��•…�‹",
+      "todayTitle": "�Š天没�œ‰�‘�ƒ",
+      "noStoriesTitle": "�š‚�—��•…�‹",
+      "noNewBody": "�‚�已读�Œ�‡记�„�‹�‰��š„�‰€�œ‰�†…容�€‚�‚��‡�'�…��ƒ��˜�示'�Ÿ��œ‹�›��—��š„�•…�‹�€‚",
+      "todayBody": "稍�Ž�†�来�Œ�ˆ–�‹�‹‰�ˆ��–�以�Ž��–�Š天�š„�•…�‹�€‚",
+      "noStoriesBody": "�ˆ��–�订�˜…源�ˆ–启�”��›��š来源以�Ž��–迪士尼�–��—��€‚",
+      "showAll": "�…��ƒ��˜�示"
+    },
+    "announce": {
+      "jumpedTop": "已跳转�ˆ��—��—�线顶�ƒ��€‚",
+      "noMarker": "�œ�设置�‡记�€‚",
+      "jumpedMarker": "已跳转�ˆ��—��—�线�‡记�€‚",
+      "searchShown": "�œ索�†已�˜�示�€‚请�“�…��œ索词�€‚",
+      "filterLocked": "�€‰�‹�乐�›��—��›�€‰�™��”��š为�–‡章�€‚"
+    }
+  },
+  "onboarding": {
+    "stepProgress": "第 {{current}} 步�Œ�…� {{total}} 步",
+    "back": "�”�›ž",
+    "continue": "继续",
+    "loading": "�Š�载中�€�",
+    "welcome": {
+      "tagline": "�‚��š„迪士尼�‡�™�Œ尽�œ��€�„�€‚",
+      "body": "乐�›��–��—��€��†�‘�€��’�客�’Œ社�Œ��›��–� �€” 为迪士尼�‰丝精�ƒ�–�ˆ’�€‚",
+      "getStarted": "�€�‹",
+      "getStartedHint": "�Œ�‡��€�‹设置�‚��š„订�˜…源�€‚"
+    },
+    "sources": {
+      "title": "�‚��ƒ��…�注�€�ˆ�Ÿ",
+      "subtitle": "可�š��—��œ�设置中�ƒ�•�来源�€‚",
+      "articles": "�–‡章",
+      "articlesDesc": "顶级迪士尼�‘�™�š„乐�›��–��—��€��Ž�Ÿ�€��„�ˆ’�‰",
+      "videos": "�†�‘",
+      "videosDesc": "顶级迪士尼�ˆ›�œ�€…�š„YouTube�‘�“",
+      "podcasts": "�’�客",
+      "podcastsDesc": "迪士尼主�˜�Š‚�›�",
+      "reddit": "Reddit",
+      "redditDesc": "迪士尼Reddit社�Œ��–子"
+    },
+    "prefs": {
+      "title": "�‡�项快�€Ÿ设置",
+      "subtitle": "�‰€�œ‰�†…容�ƒ�可以�œ�设置中�›��”��€‚",
+      "cacheQuestion": "�–‡章保�˜�š�•��—��—��Ÿ",
+      "cacheA11y": "�–‡章�“�˜�—��•�",
+      "days30": "30天",
+      "days90": "3个月",
+      "days180": "6个月",
+      "days365": "1年",
+      "days90Star": "3个月 ★",
+      "days90Recommended": "3个月(推荐)",
+      "refreshA11y": "启�Š��—��ˆ��–��–��—�",
+      "refreshHint": "每次�‰“�€ Main Street Gazette �—��‡��Š��Ž��–�œ€�–��•…�‹",
+      "refreshOnLaunch": "启�Š��—��ˆ��–�",
+      "refreshDesc": "�‰“�€�”�”��—��Ž��–�œ€�–��•…�‹",
+      "appearance": "�–�‚",
+      "appearanceA11y": "�”�”��–�‚",
+      "themeSystem": "系�Ÿ",
+      "themeLight": "�…�‰�",
+      "themeDark": "深�‰�",
+      "themeGazette": "Gazette",
+      "themeMidnight": "�ˆ�œ",
+      "themeFantasy": "幻�ƒ�"
+    },
+    "done": {
+      "title": "�€�ˆ‡就绪！",
+      "body": "欢�Ž使�”� Main Street Gazette�€‚�‚��š„第�€次�–��—��ˆ��–�即�†�€�‹�€‚",
+      "startReading": "�€�‹�˜…读",
+      "startReadingHint": "�Œ�‡��›�…� Main Street Gazette�€‚"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "hi": "你好�Œ{{name}}",
+    "section": {
+      "profile": "个人�„�–™",
+      "appearance": "�–�‚",
+      "feed": "订�˜…源",
+      "reading": "�˜…读",
+      "cache": "�“�˜",
+      "accessibility": "�…�Š��ŠŸ�ƒ�",
+      "playback": "�’��”�",
+      "privacy": "�š�私�Ž�•�‹"
+    },
+    "profile": {
+      "label": "�‚��š„�“名�ˆ可�€‰�‰",
+      "hint": "�“�…��‚��š„名�—以个�€��Œ–�—��€™语�€‚�•™空以�ˆ��™��€‚"
+    },
+    "theme": {
+      "system": "系�Ÿ",
+      "systemSub": "�Ÿ�š�设�‡设置",
+      "light": "�…�‰�",
+      "lightSub": "干�‡€�™��‰�",
+      "dark": "深�‰�",
+      "darkSub": "�‚��‘深�‰�",
+      "gazette": "Gazette",
+      "gazetteSub": "�š–�•�‰��–�‘�Ž格",
+      "midnight": "�ˆ�œ",
+      "midnightSub": "深海�†›�“��…��“��‰��‚��€",
+      "fantasy": "幻�ƒ�",
+      "fantasySub": "�š‡家紫�…��ŸŽ堡�‡‘"
+    },
+    "feed": {
+      "autoRefreshTitle": "启�Š��—��‡��Š��ˆ��–�",
+      "autoRefreshDesc": "启�Š��—��Ž��–已启�”��š„订�˜…源�€‚",
+      "showOnlyNewTitle": "�…�˜�示�‡记�Ž�š„�–��†…容",
+      "showOnlyNewDesc": "�š��—��—��•…�‹�€‚",
+      "sortOrder": "�Ž’序",
+      "newestFirst": "�œ€�–��˜�…ˆ",
+      "oldestFirst": "�œ€�—��˜�…ˆ",
+      "articlePreview": "�–‡章�„�ˆ",
+      "line1": "1�Œ",
+      "line2": "2�Œ",
+      "line3": "3�Œ",
+      "line4": "4�Œ",
+      "line5": "5�Œ",
+      "lineFull": "�Œ�•�",
+      "line1A11y": "1句�„�ˆ",
+      "line2A11y": "2句�„�ˆ",
+      "line3A11y": "3句�„�ˆ",
+      "line4A11y": "4句�„�ˆ",
+      "line5A11y": "5句�„�ˆ",
+      "lineFullA11y": "�Œ�•��‘˜要"
+    },
+    "reading": {
+      "readerModeTitle": "�˜…读模式",
+      "readerModeDesc": "�‡��Š��œ�Safari�˜…读�™��†�›�中�‰“�€�–‡章�€‚"
+    },
+    "cache": {
+      "offlineTitle": "离线保�˜",
+      "offlineDesc": "�—��‘�œ�—��˜�示�“�˜�†…容�€‚",
+      "cacheWindow": "�“�˜�—��—�",
+      "week1": "1�‘�",
+      "month1": "1个�œˆ",
+      "week1A11y": "�“�˜1�‘�",
+      "month1A11y": "�“�˜1个�œˆ",
+      "maxCached": "�œ€大�“�˜项�›�",
+      "items100A11y": "�œ€�š100项",
+      "items250A11y": "�œ€�š250项",
+      "items500A11y": "�œ€�š500项",
+      "items1000A11y": "�œ€�š1000项"
+    },
+    "access": {
+      "spacingTitle": "�ž强�—�距",
+      "spacingDesc": "为�Ž�†�Š›�ƒ�€添�Š��›��š空�—��€‚",
+      "boldTitle": "�…ƒ�•�据�Š��—",
+      "boldDesc": "使来源�’Œ�—��—��›��˜“�˜…读�€‚",
+      "hideThumbnailsTitle": "�š��—�缩�•��›�",
+      "hideThumbnailsDesc": "�‡��‘订�˜…源�Œ�š„�†�‰�‚乱�€‚"
+    },
+    "playback": {
+      "defaultSpeed": "�˜认�€Ÿ度"
+    },
+    "privacy": {
+      "disclaimer": "Main Street Gazette �†订�˜…源�€�已保�˜项�›��€�来源�€‰�‹��€�设置�€��˜Ÿ�ˆ—�’Œ�’��”��›度�œ��œ��˜�‚��œ�此设�‡�Š�€‚没�œ‰账�ˆ��€�广�‘Š�€��ˆ†�ž��ˆ–�Ÿ踪�€‚",
+      "legal": "Main Street Gazette �˜��€款�‹��‹�š„订�˜…源�˜…读�™��’Œ�’�客�’��”��™��€‚�Ž迪士尼�ˆ–�‰€�ˆ—�‡��‰ˆ�•†�—�任�•�š��ž�€�认可�ˆ–�ž�Š��…�系�€‚",
+      "privacyPolicy": "�š�私�”��–",
+      "support": "�”��Œ�",
+      "privacyPolicyHint": "�Œ�‡��‰“�€�š�私�”��–�€‚",
+      "supportHint": "�Œ�‡��‰“�€�”��Œ�页面�€‚"
+    }
+  },
+  "saved": {
+    "title": "已保�˜",
+    "searchPlaceholder": "�œ索已保�˜",
+    "searchA11y": "�œ索已保�˜�–‡章",
+    "searchHint": "�“�…��…��”�词�œ索已保�˜项�›��€‚",
+    "emptyTitle": "没�œ‰已保�˜�š„�–‡章",
+    "emptyBody": "已保�˜�š„�–‡章�’Œ�‰��›†�†�˜�示�œ�此�„�€‚"
+  },
+  "sources": {
+    "title": "来源",
+    "searchPlaceholder": "�œ索来源",
+    "searchA11y": "�œ索已启�”�来源",
+    "searchHint": "�“�…��…��”�词�›�€‰来源�ˆ—表�€‚",
+    "manageLabel": "管�†来源",
+    "manageHint": "�Œ�‡�启�”��ˆ–禁�”�来源�€‚",
+    "noEnabled": "没�œ‰启�”��š„来源�€‚�‚��‡�管�†来源�€‚",
+    "noMatch": "没�œ‰�Ž'{{query}}'�Œ��…��š„来源�€‚",
+    "section": {
+      "articles": "�–‡章",
+      "international": "�›��™…",
+      "videos": "�†�‘",
+      "podcasts": "�’�客",
+      "social": "社交"
+    },
+    "unread_one": "{{count}}条�œ�读",
+    "unread_other": "{{count}}条�œ�读",
+    "sourceA11y_one": "{{name}}�€‚{{count}}条�œ�读�•…�‹�€‚",
+    "sourceA11y_other": "{{name}}�€‚{{count}}条�œ�读�•…�‹�€‚",
+    "sourceHint": "�Œ�‡��˜…读此来源�š„�–‡章�€‚",
+    "totalA11y": "来源�€‚{{count}}条�œ�读�€‚",
+    "totalBadge": "{{count}}条�œ�读"
+  },
+  "feed": {
+    "play": "�’��”�",
+    "open": "�‰“�€",
+    "addToQueue": "添�Š��ˆ��˜Ÿ�ˆ—",
+    "saveForLater": "稍�Ž�˜…读",
+    "removeFromSaved": "�–�ˆ保�˜",
+    "copyLink": "复�ˆ��“��Ž�",
+    "viewOnWeb": "�œ��‘页�Ÿ��œ‹",
+    "setMarker": "设置�‡记",
+    "share": "�ˆ†享{{type}}",
+    "savedPill": "已保�˜",
+    "by": "�œ�€…�š{{name}}",
+    "openArticleHint": "�Œ�‡��œ��˜…读�™��†�›�中�‰“�€�€‚",
+    "openPodcastHint": "�Œ�‡��’��”�此�‰��›†�€‚",
+    "openVideoHint": "�Œ�‡��‰“�€此�†�‘�€‚",
+    "openAndroid": "�Œ�‡��‰“�€�€‚�•��Œ‰�Ž��–�›��š�€‰项�€‚",
+    "openHintIosArticle": "�Œ�‡��œ��˜…读�™��†�›�中�‰“�€�€‚�‘�Š�访�—�保�˜�€�复�ˆ��“��Ž��€��ˆ†享�’Œ�‡记�€‚",
+    "openHintIosPodcast": "�Œ�‡��’��”��€‚�‘�Š�访�—��˜Ÿ�ˆ—�€�保�˜�€�复�ˆ��“��Ž��€��ˆ†享�’Œ�‡记�€‚",
+    "openHintIosVideo": "�Œ�‡��‰“�€�†�‘�€‚�‘�Š�访�—�保�˜�€�复�ˆ��“��Ž��€��ˆ†享�’Œ�‡记�€‚",
+    "addToQueueHint": "�Œ�‡�添�Š��ˆ��˜Ÿ�ˆ—�€‚",
+    "saveHint": "�Œ�‡�保�˜此{{type}}�€‚",
+    "removeHint": "�Œ�‡��–�ˆ保�˜此{{type}}�€‚",
+    "copyLinkHint": "�Œ�‡�复�ˆ��“��Ž��€‚",
+    "viewOnWebHint": "�Œ�‡��œ�浏�ˆ�™�中�‰“�€�€‚",
+    "shareHint": "�Œ�‡��ˆ†享�€‚",
+    "setMarkerHint": "�Œ�‡�设置�‡记�€‚",
+    "linkCopied": "�“��Ž�已复�ˆ��€‚"
+  },
+  "errors": {
+    "unableToRefresh": "�—��•�ˆ��–�订�˜…源�€‚",
+    "unableToLoad": "�—��•�Š�载 Main Street Gazette �•�据�€‚",
+    "noStories": "�ˆ��–��œ��”�›ž�•…�‹�€‚",
+    "sourceFailed_one": " {{name}}�ˆ��–�失败�€‚",
+    "sourceFailed_other": " {{count}}个来源失败�€‚",
+    "refreshFailed_one": "1个来源�ˆ��–�失败�š{{message}}",
+    "refreshFailed_other": "{{count}}个来源�ˆ��–�失败�€‚第�€个�”™误�š{{message}}"
+  },
+  "refresh": {
+    "noNew": "没�œ‰�–��•…�‹�€‚",
+    "noNewWithError": "没�œ‰�–��•…�‹�€‚{{error}}",
+    "new_one": "{{count}}�‡�–��•…�‹�€‚",
+    "new_other": "{{count}}�‡�–��•…�‹�€‚",
+    "newWithError_one": "{{count}}�‡�–��•…�‹�€‚{{error}}",
+    "newWithError_other": "{{count}}�‡�–��•…�‹�€‚{{error}}",
+    "failedAnnounce": "�ˆ��–�失败�€‚{{message}}",
+    "articleSaved": "�–‡章已保�˜�€‚",
+    "articleUnsaved": "�–‡章已�Ž保�˜中移�™��€‚",
+    "checkpointSet": "�‡记已设置�€‚"
+  },
+  "detail": {
+    "unknownWebsite": "�œ��Ÿ��‘�™",
+    "play": "�’��”�",
+    "playing": "�’��”�中",
+    "loading": "�Š�载中",
+    "durationText": "�—��•� {{clock}}�€‚",
+    "sourceText": "来源�š{{name}}�€‚",
+    "byText": "�œ�€…�š{{name}}�€‚",
+    "saveLabel": "保�˜{{type}}",
+    "unsaveLabel": "�–�ˆ保�˜{{type}}",
+    "saveHint": "�Œ�‡�保�˜�€‚",
+    "unsaveHint": "�Œ�‡��–�ˆ保�˜此{{type}}�€‚",
+    "playA11y": "�’��”��’�客�‰��›† {{title}}",
+    "playLoadingHint": "�’�客�Š�载中�€‚",
+    "playHint": "�Œ�‡��’��”�此�‰��›†�€‚"
+  },
+  "knowledge": {
+    "location": {
+      "label": "Location",
+      "all": "All Disney",
+      "wdw": "Walt Disney World",
+      "dlr": "Disneyland",
+      "dcl": "Disney Cruise",
+      "international": "International",
+      "a11ySelected": "Showing stories from {{label}}"
+    },
+    "timeline": {
+      "label": "Recency",
+      "all": "Any Time",
+      "now": "Now",
+      "today": "Today",
+      "last_3_days": "Last 3 Days",
+      "week": "This Week",
+      "month": "This Month",
+      "a11ySelected": "Showing stories from {{label}}"
+    }
+  }
+}

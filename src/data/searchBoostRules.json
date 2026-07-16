@@ -1,0 +1,26 @@
+{
+  "boosts": {
+    "exactTitleMatch": 45,
+    "storyHeadlineMatch": 35,
+    "entityMatch": 40,
+    "parkMatch": 30,
+    "locationMatch": 25,
+    "topicMatch": 25,
+    "mediaTypeMatch": 25,
+    "sourceNameMatch": 20,
+    "officialSourceMatch": 35,
+    "summaryKeywordMatch": 15,
+    "bodyKeywordMatch": 10,
+    "highTrustSource": 15,
+    "mediumTrustSource": 8,
+    "recentToday": 20,
+    "recentThisWeek": 12,
+    "recentThisMonth": 6
+  },
+  "penalties": {
+    "promotionalSocialDuplicate": -50,
+    "lowClassifierConfidence": -15,
+    "hiddenSource": -1000,
+    "staleNewsOutsideTimeline": -30
+  }
+}

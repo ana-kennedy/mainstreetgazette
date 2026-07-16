@@ -1,0 +1,3721 @@
+{
+  "version": "2.5.0",
+  "generated": "2026-07-02",
+  "entityCount": 238,
+  "entities": [
+    {
+      "id": "wdw_magic_kingdom",
+      "name": "Magic Kingdom Park",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Magic Kingdom Park",
+        "Magic Kingdom"
+      ],
+      "keywords": [
+        "Magic Kingdom",
+        "Magic Kingdom Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_epcot",
+      "name": "EPCOT",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "EPCOT",
+        "Epcot"
+      ],
+      "keywords": [
+        "EPCOT",
+        "Epcot"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_hollywood_studios",
+      "name": "Disney's Hollywood Studios",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Hollywood Studios",
+        "Hollywood Studios"
+      ],
+      "keywords": [
+        "Disney's Hollywood Studios",
+        "Hollywood Studios"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_animal_kingdom",
+      "name": "Disney's Animal Kingdom Theme Park",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Animal Kingdom Theme Park",
+        "Animal Kingdom"
+      ],
+      "keywords": [
+        "Animal Kingdom",
+        "Animal Kingdom Theme Park",
+        "Disney's Animal Kingdom Theme Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_typhoon_lagoon",
+      "name": "Disney's Typhoon Lagoon Water Park",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Typhoon Lagoon Water Park",
+        "Typhoon Lagoon"
+      ],
+      "keywords": [
+        "Disney's Typhoon Lagoon Water Park",
+        "Typhoon Lagoon",
+        "Typhoon Lagoon Water Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_blizzard_beach",
+      "name": "Disney's Blizzard Beach Water Park",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Blizzard Beach Water Park",
+        "Blizzard Beach"
+      ],
+      "keywords": [
+        "Blizzard Beach",
+        "Blizzard Beach Water Park",
+        "Disney's Blizzard Beach Water Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_disney_springs",
+      "name": "Disney Springs",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disney Springs",
+        "Disney Springs"
+      ],
+      "keywords": [
+        "Disney Springs"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_space_mountain",
+      "name": "Space Mountain",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": [
+        "Space",
+        "SM"
+      ],
+      "keywords": [
+        "SM",
+        "Space",
+        "Space Mountain",
+        "TRON nearby",
+        "Tomorrowland coaster"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_tron",
+      "name": "TRON Lightcycle / Run",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": [
+        "TRON",
+        "Tron Lightcycle Run",
+        "Lightcycle Run"
+      ],
+      "keywords": [
+        "Individual Lightning Lane",
+        "Lightcycle Run",
+        "TRON",
+        "TRON Lightcycle / Run",
+        "Tron Lightcycle Run",
+        "virtual queue"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_tiana",
+      "name": "Tiana's Bayou Adventure",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Frontierland",
+      "aliases": [
+        "Tianas Bayou Adventure",
+        "Tiana ride",
+        "Splash Mountain replacement"
+      ],
+      "keywords": [
+        "Princess and the Frog",
+        "Splash Mountain replacement",
+        "Tiana ride",
+        "Tiana's Bayou Adventure",
+        "Tianas Bayou Adventure",
+        "bayou"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_haunted_mansion",
+      "name": "Haunted Mansion",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Liberty Square",
+      "aliases": [
+        "HM"
+      ],
+      "keywords": [
+        "999 happy haunts",
+        "HM",
+        "Haunted Mansion",
+        "ghost host"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_pirates",
+      "name": "Pirates of the Caribbean",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Adventureland",
+      "aliases": [
+        "Pirates",
+        "POTC"
+      ],
+      "keywords": [
+        "POTC",
+        "Pirates",
+        "Pirates of the Caribbean"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_big_thunder",
+      "name": "Big Thunder Mountain Railroad",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Frontierland",
+      "aliases": [
+        "Big Thunder",
+        "BTMRR",
+        "BTM"
+      ],
+      "keywords": [
+        "BTM",
+        "BTMRR",
+        "Big Thunder",
+        "Big Thunder Mountain Railroad",
+        "refurbishment"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_jungle_cruise",
+      "name": "Jungle Cruise",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Adventureland",
+      "aliases": [
+        "Jingle Cruise"
+      ],
+      "keywords": [
+        "Jingle Cruise",
+        "Jungle Cruise"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_seven_dwarfs",
+      "name": "Seven Dwarfs Mine Train",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": [
+        "Mine Train",
+        "7DMT"
+      ],
+      "keywords": [
+        "7DMT",
+        "Mine Train",
+        "Seven Dwarfs Mine Train"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_cinderella_castle",
+      "name": "Cinderella Castle",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Hub",
+      "aliases": [
+        "Castle"
+      ],
+      "keywords": [
+        "Castle",
+        "Cinderella Castle",
+        "fireworks",
+        "projection"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "mk_country_bears",
+      "name": "Country Bear Musical Jamboree",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Frontierland",
+      "aliases": [
+        "Country Bears",
+        "CBJ"
+      ],
+      "keywords": [
+        "CBJ",
+        "Country Bear Musical Jamboree",
+        "Country Bears"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_cosmic_rewind",
+      "name": "Guardians of the Galaxy: Cosmic Rewind",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Discovery",
+      "aliases": [
+        "Cosmic Rewind",
+        "Guardians",
+        "GOTG",
+        "Guardians ride"
+      ],
+      "keywords": [
+        "Cosmic Rewind",
+        "GOTG",
+        "Guardians",
+        "Guardians of the Galaxy: Cosmic Rewind",
+        "Guardians ride",
+        "Nova Corps",
+        "Starblaster",
+        "virtual queue"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_spaceship_earth",
+      "name": "Spaceship Earth",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Celebration",
+      "aliases": [
+        "SSE",
+        "EPCOT ball",
+        "geosphere"
+      ],
+      "keywords": [
+        "EPCOT ball",
+        "SSE",
+        "Spaceship Earth",
+        "geosphere"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_test_track",
+      "name": "Test Track",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Discovery",
+      "aliases": [
+        "TT"
+      ],
+      "keywords": [
+        "Chevrolet",
+        "TT",
+        "Test Track",
+        "reimagining"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_living_with_land",
+      "name": "Living with the Land",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Nature",
+      "aliases": [
+        "LWTL",
+        "The Land boat ride"
+      ],
+      "keywords": [
+        "LWTL",
+        "Living with the Land",
+        "The Land boat ride"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_frozen",
+      "name": "Frozen Ever After",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "Norway",
+      "aliases": [
+        "Frozen ride",
+        "FEA"
+      ],
+      "keywords": [
+        "FEA",
+        "Frozen Ever After",
+        "Frozen ride"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_remy",
+      "name": "Remy's Ratatouille Adventure",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "France",
+      "aliases": [
+        "Remy",
+        "Ratatouille ride"
+      ],
+      "keywords": [
+        "Ratatouille ride",
+        "Remy",
+        "Remy's Ratatouille Adventure"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_journey_water",
+      "name": "Journey of Water, Inspired by Moana",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Nature",
+      "aliases": [
+        "Journey of Water",
+        "Moana water trail"
+      ],
+      "keywords": [
+        "Journey of Water",
+        "Journey of Water, Inspired by Moana",
+        "Moana water trail"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_luminous",
+      "name": "Luminous The Symphony of Us",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Showcase Lagoon",
+      "aliases": [
+        "Luminous",
+        "EPCOT fireworks"
+      ],
+      "keywords": [
+        "EPCOT fireworks",
+        "Luminous",
+        "Luminous The Symphony of Us"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_rise",
+      "name": "Star Wars: Rise of the Resistance",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Galaxy's Edge",
+      "aliases": [
+        "Rise",
+        "ROTR"
+      ],
+      "keywords": [
+        "ROTR",
+        "Rise",
+        "Star Wars: Rise of the Resistance",
+        "boarding group"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_millennium_falcon",
+      "name": "Millennium Falcon: Smugglers Run",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Galaxy's Edge",
+      "aliases": [
+        "Smugglers Run",
+        "Falcon ride"
+      ],
+      "keywords": [
+        "Falcon ride",
+        "Millennium Falcon: Smugglers Run",
+        "Smugglers Run"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_slinky",
+      "name": "Slinky Dog Dash",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Toy Story Land",
+      "aliases": [
+        "Slinky",
+        "SDD"
+      ],
+      "keywords": [
+        "SDD",
+        "Slinky",
+        "Slinky Dog Dash"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_tower",
+      "name": "The Twilight Zone Tower of Terror",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Sunset Boulevard",
+      "aliases": [
+        "Tower of Terror",
+        "TOT"
+      ],
+      "keywords": [
+        "TOT",
+        "The Twilight Zone Tower of Terror",
+        "Tower of Terror"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_rock_n_roller",
+      "name": "Rock 'n' Roller Coaster Starring Aerosmith",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Sunset Boulevard",
+      "aliases": [
+        "Rock n Roller Coaster",
+        "RnRC",
+        "Aerosmith coaster"
+      ],
+      "keywords": [
+        "Aerosmith coaster",
+        "RnRC",
+        "Rock 'n' Roller Coaster Starring Aerosmith",
+        "Rock n Roller Coaster"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_runaway_railway",
+      "name": "Mickey & Minnie's Runaway Railway",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Hollywood Boulevard",
+      "aliases": [
+        "Runaway Railway",
+        "MMRR"
+      ],
+      "keywords": [
+        "MMRR",
+        "Mickey & Minnie's Runaway Railway",
+        "Runaway Railway"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dhs_fantasmic",
+      "name": "Fantasmic!",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Hollywood Hills Amphitheater",
+      "aliases": [
+        "Fantasmic"
+      ],
+      "keywords": [
+        "Fantasmic",
+        "Fantasmic!"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_flight_passage",
+      "name": "Avatar Flight of Passage",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Pandora",
+      "aliases": [
+        "Flight of Passage",
+        "FOP"
+      ],
+      "keywords": [
+        "Avatar Flight of Passage",
+        "FOP",
+        "Flight of Passage"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_navi",
+      "name": "Na'vi River Journey",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Pandora",
+      "aliases": [
+        "Navi River Journey"
+      ],
+      "keywords": [
+        "Na'vi River Journey",
+        "Navi River Journey"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_everest",
+      "name": "Expedition Everest",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Asia",
+      "aliases": [
+        "Everest",
+        "EE",
+        "Yeti ride"
+      ],
+      "keywords": [
+        "EE",
+        "Everest",
+        "Expedition Everest",
+        "Yeti ride"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_safari",
+      "name": "Kilimanjaro Safaris",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Africa",
+      "aliases": [
+        "Safari",
+        "KS"
+      ],
+      "keywords": [
+        "KS",
+        "Kilimanjaro Safaris",
+        "Safari"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_tree_of_life",
+      "name": "Tree of Life",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Discovery Island",
+      "aliases": [
+        "Animal Kingdom tree"
+      ],
+      "keywords": [
+        "Animal Kingdom tree",
+        "Tree of Life"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_dinosaur",
+      "name": "DINOSAUR",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "DinoLand U.S.A.",
+      "aliases": [
+        "Dinosaur ride"
+      ],
+      "keywords": [
+        "DINOSAUR",
+        "Dinosaur ride",
+        "Tropical Americas",
+        "closing"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dak_zootopia",
+      "name": "Zootopia: Better Zoogether!",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Discovery Island",
+      "aliases": [
+        "Better Zoogether",
+        "Zootopia show"
+      ],
+      "keywords": [
+        "Better Zoogether",
+        "Zootopia show",
+        "Zootopia: Better Zoogether!"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_small_world",
+      "name": "it's a small world",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["it's a small world"],
+      "keywords": ["it's a small world", "small world ride"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_peter_pan",
+      "name": "Peter Pan's Flight",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["Peter Pan's Flight"],
+      "keywords": ["Peter Pan's Flight"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_little_mermaid",
+      "name": "Under the Sea ~ Journey of the Little Mermaid",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["Journey of the Little Mermaid", "Little Mermaid ride"],
+      "keywords": ["Journey of the Little Mermaid", "Under the Sea Journey of the Little Mermaid"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_buzz_lightyear",
+      "name": "Buzz Lightyear's Space Ranger Spin",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": ["Buzz Lightyear's Space Ranger Spin", "Buzz Lightyear ride"],
+      "keywords": ["Buzz Lightyear's Space Ranger Spin", "Space Ranger Spin"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_barnstormer",
+      "name": "The Barnstormer",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["The Barnstormer"],
+      "keywords": ["The Barnstormer"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_dumbo",
+      "name": "Dumbo the Flying Elephant",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["Dumbo the Flying Elephant", "Dumbo ride"],
+      "keywords": ["Dumbo the Flying Elephant"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_carrousel",
+      "name": "Prince Charming Regal Carrousel",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["Prince Charming Regal Carrousel"],
+      "keywords": ["Prince Charming Regal Carrousel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_carousel_of_progress",
+      "name": "Walt Disney's Carousel of Progress",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": ["Carousel of Progress"],
+      "keywords": ["Carousel of Progress"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_winnie_the_pooh",
+      "name": "The Many Adventures of Winnie the Pooh",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Fantasyland",
+      "aliases": ["Many Adventures of Winnie the Pooh", "Winnie the Pooh ride"],
+      "keywords": ["Many Adventures of Winnie the Pooh"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_tiki_room",
+      "name": "Walt Disney's Enchanted Tiki Room",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Adventureland",
+      "aliases": ["Enchanted Tiki Room"],
+      "keywords": ["Enchanted Tiki Room"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_liberty_riverboat",
+      "name": "Liberty Square Riverboat",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Liberty Square",
+      "aliases": ["Liberty Square Riverboat"],
+      "keywords": ["Liberty Square Riverboat"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_hall_of_presidents",
+      "name": "The Hall of Presidents",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Liberty Square",
+      "aliases": ["Hall of Presidents"],
+      "keywords": ["Hall of Presidents"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_swiss_family_treehouse",
+      "name": "Swiss Family Treehouse",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Adventureland",
+      "aliases": ["Swiss Family Treehouse"],
+      "keywords": ["Swiss Family Treehouse"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_tomorrowland_speedway",
+      "name": "Tomorrowland Speedway",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": ["Tomorrowland Speedway"],
+      "keywords": ["Tomorrowland Speedway"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_astro_orbiter",
+      "name": "Astro Orbiter",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": ["Astro Orbiter"],
+      "keywords": ["Astro Orbiter"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "wdw_laugh_floor",
+      "name": "Monsters, Inc. Laugh Floor",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": "Tomorrowland",
+      "aliases": ["Monsters Inc Laugh Floor", "Laugh Floor"],
+      "keywords": ["Monsters, Inc. Laugh Floor", "Laugh Floor"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_soarin",
+      "name": "Soarin' Around the World",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Nature",
+      "aliases": ["Soarin'", "Soarin Around the World"],
+      "keywords": ["Soarin' Around the World", "Soarin'"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_mission_space",
+      "name": "Mission: SPACE",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Discovery",
+      "aliases": ["Mission Space"],
+      "keywords": ["Mission: SPACE", "Mission Space"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_seas_nemo",
+      "name": "The Seas with Nemo & Friends",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Nature",
+      "aliases": ["Seas with Nemo and Friends"],
+      "keywords": ["The Seas with Nemo & Friends", "Seas with Nemo"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_gran_fiesta_tour",
+      "name": "Gran Fiesta Tour Starring The Three Caballeros",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Showcase",
+      "aliases": ["Gran Fiesta Tour"],
+      "keywords": ["Gran Fiesta Tour"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_american_adventure",
+      "name": "The American Adventure",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Showcase",
+      "aliases": ["American Adventure"],
+      "keywords": ["The American Adventure"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_turtle_talk",
+      "name": "Turtle Talk with Crush",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Nature",
+      "aliases": ["Turtle Talk with Crush"],
+      "keywords": ["Turtle Talk with Crush", "Turtle Talk"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "epcot_figment",
+      "name": "Journey Into Imagination with Figment",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": "World Celebration",
+      "aliases": ["Journey Into Imagination with Figment", "Figment ride"],
+      "keywords": ["Journey Into Imagination", "Figment"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_toy_story_mania",
+      "name": "Toy Story Mania!",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Toy Story Land",
+      "aliases": ["Toy Story Mania"],
+      "keywords": ["Toy Story Mania"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_alien_swirling_saucers",
+      "name": "Alien Swirling Saucers",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Toy Story Land",
+      "aliases": ["Alien Swirling Saucers"],
+      "keywords": ["Alien Swirling Saucers"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_star_tours",
+      "name": "Star Tours – The Adventures Continue",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Echo Lake",
+      "aliases": ["Star Tours"],
+      "keywords": ["Star Tours"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_beauty_and_the_beast",
+      "name": "Beauty and the Beast Live on Stage",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Sunset Boulevard",
+      "aliases": ["Beauty and the Beast Live on Stage"],
+      "keywords": ["Beauty and the Beast Live on Stage"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_indiana_jones_stunt",
+      "name": "Indiana Jones Epic Stunt Spectacular",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Echo Lake",
+      "aliases": ["Indiana Jones Epic Stunt Spectacular", "Indiana Jones Stunt Show"],
+      "keywords": ["Indiana Jones Epic Stunt Spectacular"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "hs_lightning_mcqueen",
+      "name": "Lightning McQueen's Racing Academy",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": "Sunset Boulevard",
+      "aliases": ["Lightning McQueen's Racing Academy"],
+      "keywords": ["Lightning McQueen's Racing Academy"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_kali_river_rapids",
+      "name": "Kali River Rapids",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Asia",
+      "aliases": ["Kali River Rapids"],
+      "keywords": ["Kali River Rapids"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_festival_of_lion_king",
+      "name": "Festival of the Lion King",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Africa",
+      "aliases": ["Festival of the Lion King"],
+      "keywords": ["Festival of the Lion King"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_wildlife_express",
+      "name": "Wildlife Express Train",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Africa",
+      "aliases": ["Wildlife Express Train"],
+      "keywords": ["Wildlife Express Train"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_gorilla_falls",
+      "name": "Gorilla Falls Exploration Trail",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Africa",
+      "aliases": ["Gorilla Falls Exploration Trail"],
+      "keywords": ["Gorilla Falls Exploration Trail"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_maharajah_jungle_trek",
+      "name": "Maharajah Jungle Trek",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Asia",
+      "aliases": ["Maharajah Jungle Trek"],
+      "keywords": ["Maharajah Jungle Trek"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_feathered_friends",
+      "name": "Feathered Friends in Flight",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Asia",
+      "aliases": ["Feathered Friends in Flight"],
+      "keywords": ["Feathered Friends in Flight"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for attraction coverage completeness."
+    },
+    {
+      "id": "dak_savanna",
+      "name": "Kilimanjaro Safaris Savanna",
+      "type": "attraction",
+      "locationId": "wdw",
+      "parkId": "wdw_animal_kingdom",
+      "land": "Africa",
+      "aliases": ["the Savanna", "Animal Kingdom Savanna"],
+      "keywords": ["Animal Kingdom Savanna", "Kilimanjaro Safaris Savanna"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Landmark/viewing area, not a ride — kept keywords specific since 'savanna' alone is too generic a word to gate on."
+    },
+    {
+      "id": "wdw_poly",
+      "name": "Disney's Polynesian Village Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Polynesian Village Resort"
+      ],
+      "keywords": [
+        "Disney's Polynesian Village Resort",
+        "Polynesian Village Resort",
+        "Polynesian Resort"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_contemporary",
+      "name": "Disney's Contemporary Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Contemporary Resort"
+      ],
+      "keywords": [
+        "Contemporary Resort",
+        "Disney's Contemporary Resort"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_grand_floridian",
+      "name": "Disney's Grand Floridian Resort & Spa",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Grand Floridian Resort & Spa"
+      ],
+      "keywords": [
+        "Disney's Grand Floridian Resort & Spa",
+        "Grand Floridian Resort & Spa",
+        "Grand Floridian"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_wilderness_lodge",
+      "name": "Disney's Wilderness Lodge",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Wilderness Lodge"
+      ],
+      "keywords": [
+        "Disney's Wilderness Lodge",
+        "Wilderness Lodge"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_animal_kingdom_lodge",
+      "name": "Disney's Animal Kingdom Lodge",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Animal Kingdom Lodge"
+      ],
+      "keywords": [
+        "Animal Kingdom Lodge",
+        "Disney's Animal Kingdom Lodge"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_boardwalk",
+      "name": "Disney's BoardWalk Inn",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "BoardWalk Inn"
+      ],
+      "keywords": [
+        "BoardWalk Inn",
+        "Disney's BoardWalk Inn"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_yacht_club",
+      "name": "Disney's Yacht Club Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Yacht Club Resort"
+      ],
+      "keywords": [
+        "Disney's Yacht Club Resort",
+        "Yacht Club Resort",
+        "Yacht Club"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_beach_club",
+      "name": "Disney's Beach Club Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Beach Club Resort"
+      ],
+      "keywords": [
+        "Beach Club Resort",
+        "Disney's Beach Club Resort",
+        "Beach Club"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_riviera",
+      "name": "Disney's Riviera Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Riviera Resort"
+      ],
+      "keywords": [
+        "Disney's Riviera Resort",
+        "Riviera Resort"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_coronado",
+      "name": "Disney's Coronado Springs Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Coronado Springs Resort"
+      ],
+      "keywords": [
+        "Coronado Springs Resort",
+        "Disney's Coronado Springs Resort",
+        "Coronado Springs"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_pop_century",
+      "name": "Disney's Pop Century Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Pop Century Resort"
+      ],
+      "keywords": [
+        "Disney's Pop Century Resort",
+        "Pop Century Resort",
+        "Pop Century"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_art_animation",
+      "name": "Disney's Art of Animation Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Art of Animation Resort"
+      ],
+      "keywords": [
+        "Art of Animation Resort",
+        "Disney's Art of Animation Resort",
+        "Art of Animation"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_mnsshp",
+      "name": "Mickey's Not-So-Scary Halloween Party",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": null,
+      "aliases": [
+        "Mickey's Not-So-Scary Halloween Party"
+      ],
+      "keywords": [
+        "Mickey's Not-So-Scary Halloween Party"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_mvmcp",
+      "name": "Mickey's Very Merry Christmas Party",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": null,
+      "aliases": [
+        "Mickey's Very Merry Christmas Party"
+      ],
+      "keywords": [
+        "Mickey's Very Merry Christmas Party"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_food_wine",
+      "name": "EPCOT International Food & Wine Festival",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": null,
+      "aliases": [
+        "Food & Wine Festival"
+      ],
+      "keywords": [
+        "EPCOT International Food & Wine Festival",
+        "Food & Wine Festival"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_festival_arts",
+      "name": "EPCOT International Festival of the Arts",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": null,
+      "aliases": [
+        "Festival of the Arts"
+      ],
+      "keywords": [
+        "EPCOT International Festival of the Arts",
+        "Festival of the Arts"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_flower_garden",
+      "name": "EPCOT International Flower & Garden Festival",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": null,
+      "aliases": [
+        "Flower & Garden Festival"
+      ],
+      "keywords": [
+        "EPCOT International Flower & Garden Festival",
+        "Flower & Garden Festival"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "epcot_festival_holidays",
+      "name": "EPCOT International Festival of the Holidays",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_epcot",
+      "land": null,
+      "aliases": [
+        "Festival of the Holidays"
+      ],
+      "keywords": [
+        "EPCOT International Festival of the Holidays",
+        "Festival of the Holidays"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_h2o_glow",
+      "name": "Disney H2O Glow After Hours",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_typhoon_lagoon",
+      "land": null,
+      "aliases": ["H2O Glow After Hours", "H2O Glow Nights"],
+      "keywords": ["Disney H2O Glow After Hours", "H2O Glow After Hours", "H2O Glow Nights"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours event coverage."
+    },
+    {
+      "id": "wdw_villains_after_hours",
+      "name": "Disney Villains After Hours",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_magic_kingdom",
+      "land": null,
+      "aliases": ["Villains After Hours"],
+      "keywords": ["Disney Villains After Hours", "Villains After Hours"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours event coverage."
+    },
+    {
+      "id": "wdw_jollywood_nights",
+      "name": "Disney Jollywood Nights",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": "wdw_hollywood_studios",
+      "land": null,
+      "aliases": ["Jollywood Nights"],
+      "keywords": ["Disney Jollywood Nights", "Jollywood Nights"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours event coverage."
+    },
+    {
+      "id": "wdw_marathon_weekend",
+      "name": "Walt Disney World Marathon Weekend",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Walt Disney World Marathon Weekend", "WDW Marathon Weekend"],
+      "keywords": ["Walt Disney World Marathon Weekend", "Disney Marathon Weekend"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "runDisney race weekend, added for event coverage."
+    },
+    {
+      "id": "wdw_princess_half",
+      "name": "Disney Princess Half Marathon Weekend",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Princess Half Marathon Weekend", "Princess Half Marathon"],
+      "keywords": ["Disney Princess Half Marathon", "Princess Half Marathon"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "runDisney race weekend, added for event coverage."
+    },
+    {
+      "id": "wdw_wine_dine_half",
+      "name": "Disney Wine & Dine Half Marathon Weekend",
+      "type": "event_or_festival",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Wine & Dine Half Marathon Weekend", "Wine and Dine Half Marathon"],
+      "keywords": ["Wine & Dine Half Marathon", "Wine and Dine Half Marathon"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "runDisney race weekend, added for event coverage."
+    },
+    {
+      "id": "dlr_half_marathon",
+      "name": "Disneyland Half Marathon Weekend",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disneyland Half Marathon Weekend", "Disneyland Half Marathon"],
+      "keywords": ["Disneyland Half Marathon"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "runDisney race weekend, added for event coverage."
+    },
+    {
+      "id": "dlr_oogie_boogie_bash",
+      "name": "Oogie Boogie Bash – A Disney Halloween Party",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": null,
+      "aliases": ["Oogie Boogie Bash"],
+      "keywords": ["Oogie Boogie Bash"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours/event coverage."
+    },
+    {
+      "id": "dlr_sweethearts_nite",
+      "name": "Disneyland After Dark: Sweethearts' Nite",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": null,
+      "aliases": ["Sweethearts' Nite", "Sweethearts Nite"],
+      "keywords": ["Sweethearts' Nite", "Disneyland After Dark Sweethearts"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours event coverage."
+    },
+    {
+      "id": "dlr_pride_nite",
+      "name": "Disneyland After Dark: Pride Nite",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": null,
+      "aliases": ["Pride Nite"],
+      "keywords": ["Pride Nite", "Disneyland After Dark Pride"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for after-hours event coverage."
+    },
+    {
+      "id": "dca_food_wine",
+      "name": "Disney California Adventure Food & Wine Festival",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": null,
+      "aliases": ["DCA Food & Wine Festival"],
+      "keywords": ["California Adventure Food & Wine Festival", "DCA Food & Wine"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for festival coverage."
+    },
+    {
+      "id": "dca_lunar_new_year",
+      "name": "Lunar New Year at Disney California Adventure",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": null,
+      "aliases": ["Lunar New Year"],
+      "keywords": ["Lunar New Year"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for festival coverage."
+    },
+    {
+      "id": "dca_festival_of_holidays",
+      "name": "Disney California Adventure Festival of Holidays",
+      "type": "event_or_festival",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": null,
+      "aliases": ["DCA Festival of Holidays"],
+      "keywords": ["California Adventure Festival of Holidays", "Festival of Holidays"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added for festival coverage."
+    },
+    {
+      "id": "dlr_disneyland",
+      "name": "Disneyland Park",
+      "type": "park_or_district",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disneyland"
+      ],
+      "keywords": [
+        "Disneyland",
+        "Disneyland Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlr_california_adventure",
+      "name": "Disney California Adventure Park",
+      "type": "park_or_district",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disney California Adventure"
+      ],
+      "keywords": [
+        "Disney California Adventure",
+        "Disney California Adventure Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlr_downtown_disney",
+      "name": "Downtown Disney District",
+      "type": "park_or_district",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Downtown Disney District"
+      ],
+      "keywords": [
+        "Downtown Disney District"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_space_mountain",
+      "name": "Space Mountain",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "Tomorrowland",
+      "aliases": [
+        "Hyperspace Mountain"
+      ],
+      "keywords": [
+        "Hyperspace Mountain",
+        "Space Mountain"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_matterhorn",
+      "name": "Matterhorn Bobsleds",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "Fantasyland",
+      "aliases": [
+        "Matterhorn"
+      ],
+      "keywords": [
+        "Matterhorn",
+        "Matterhorn Bobsleds"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_indiana_jones",
+      "name": "Indiana Jones Adventure",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "Adventureland",
+      "aliases": [
+        "Indy",
+        "Indiana Jones ride"
+      ],
+      "keywords": [
+        "Indiana Jones Adventure",
+        "Indiana Jones ride",
+        "Indy"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_tiana",
+      "name": "Tiana's Bayou Adventure",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "Bayou Country",
+      "aliases": [
+        "Tianas Bayou Adventure",
+        "Tiana ride"
+      ],
+      "keywords": [
+        "Tiana ride",
+        "Tiana's Bayou Adventure",
+        "Tianas Bayou Adventure"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_pirates",
+      "name": "Pirates of the Caribbean",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "New Orleans Square",
+      "aliases": [
+        "Pirates",
+        "POTC"
+      ],
+      "keywords": [
+        "POTC",
+        "Pirates",
+        "Pirates of the Caribbean"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_haunted_mansion",
+      "name": "Haunted Mansion",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "New Orleans Square",
+      "aliases": [
+        "Haunted Mansion Holiday"
+      ],
+      "keywords": [
+        "Haunted Mansion",
+        "Haunted Mansion Holiday"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dl_rise",
+      "name": "Star Wars: Rise of the Resistance",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_disneyland",
+      "land": "Galaxy's Edge",
+      "aliases": [
+        "Rise",
+        "ROTR"
+      ],
+      "keywords": [
+        "ROTR",
+        "Rise",
+        "Star Wars: Rise of the Resistance"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dca_radiator",
+      "name": "Radiator Springs Racers",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": "Cars Land",
+      "aliases": [
+        "RSR"
+      ],
+      "keywords": [
+        "RSR",
+        "Radiator Springs Racers"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dca_incredicoaster",
+      "name": "Incredicoaster",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": "Pixar Pier",
+      "aliases": [
+        "California Screamin"
+      ],
+      "keywords": [
+        "California Screamin",
+        "Incredicoaster"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dca_guardians",
+      "name": "Guardians of the Galaxy \u2013 Mission: BREAKOUT!",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": "Avengers Campus",
+      "aliases": [
+        "Mission Breakout",
+        "Guardians tower"
+      ],
+      "keywords": [
+        "Guardians of the Galaxy \u2013 Mission: BREAKOUT!",
+        "Guardians tower",
+        "Mission Breakout"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dca_web_slingers",
+      "name": "WEB SLINGERS: A Spider-Man Adventure",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": "Avengers Campus",
+      "aliases": [
+        "Web Slingers",
+        "Spider-Man ride"
+      ],
+      "keywords": [
+        "Spider-Man ride",
+        "WEB SLINGERS: A Spider-Man Adventure",
+        "Web Slingers"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dca_world_color",
+      "name": "World of Color",
+      "type": "attraction",
+      "locationId": "dlr",
+      "parkId": "dlr_california_adventure",
+      "land": "Paradise Gardens Park",
+      "aliases": [
+        "WOC"
+      ],
+      "keywords": [
+        "WOC",
+        "World of Color"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlr_grand_californian",
+      "name": "Disney's Grand Californian Hotel & Spa",
+      "type": "resort_hotel",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Grand Californian Hotel & Spa"
+      ],
+      "keywords": [
+        "Disney's Grand Californian Hotel & Spa",
+        "Grand Californian Hotel & Spa",
+        "Grand Californian"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlr_disneyland_hotel",
+      "name": "Disneyland Hotel",
+      "type": "resort_hotel",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disneyland Hotel"
+      ],
+      "keywords": [
+        "Disneyland Hotel"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlr_pixar_place",
+      "name": "Pixar Place Hotel",
+      "type": "resort_hotel",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Pixar Place Hotel"
+      ],
+      "keywords": [
+        "Pixar Place Hotel"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlp_disneyland_park",
+      "name": "Disneyland Park Paris",
+      "type": "park_or_district",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disneyland Paris"
+      ],
+      "keywords": [
+        "Disneyland Paris",
+        "Disneyland Park Paris"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlp_walt_disney_studios",
+      "name": "Walt Disney Studios Park",
+      "type": "park_or_district",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Walt Disney Studios"
+      ],
+      "keywords": [
+        "Walt Disney Studios",
+        "Walt Disney Studios Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlp_disney_village",
+      "name": "Disney Village",
+      "type": "park_or_district",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disney Village"
+      ],
+      "keywords": [
+        "Disney Village"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tdr_tokyo_disneyland",
+      "name": "Tokyo Disneyland",
+      "type": "park_or_district",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Tokyo Disneyland"
+      ],
+      "keywords": [
+        "Tokyo Disneyland"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tdr_tokyo_disneysea",
+      "name": "Tokyo DisneySea",
+      "type": "park_or_district",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Tokyo DisneySea"
+      ],
+      "keywords": [
+        "Tokyo DisneySea"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "hkdl_park",
+      "name": "Hong Kong Disneyland Park",
+      "type": "park_or_district",
+      "locationId": "hkdl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Hong Kong Disneyland"
+      ],
+      "keywords": [
+        "Hong Kong Disneyland",
+        "Hong Kong Disneyland Park"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "shdr_park",
+      "name": "Shanghai Disneyland",
+      "type": "park_or_district",
+      "locationId": "shdr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Shanghai Disneyland"
+      ],
+      "keywords": [
+        "Shanghai Disneyland"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "shdr_disneytown",
+      "name": "Disneytown",
+      "type": "park_or_district",
+      "locationId": "shdr",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Disneytown"
+      ],
+      "keywords": [
+        "Disneytown"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tds_fantasy_springs",
+      "name": "Fantasy Springs",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "Fantasy Springs",
+      "aliases": [
+        "Frozen Kingdom",
+        "Rapunzel's Forest",
+        "Peter Pan's Never Land"
+      ],
+      "keywords": [
+        "Fantasy Springs",
+        "Frozen Kingdom",
+        "Peter Pan's Never Land",
+        "Rapunzel's Forest"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tds_soaring",
+      "name": "Soaring: Fantastic Flight",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "Mediterranean Harbor",
+      "aliases": [
+        "Soaring Tokyo"
+      ],
+      "keywords": [
+        "Soaring Tokyo",
+        "Soaring: Fantastic Flight"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tdl_baymax",
+      "name": "The Happy Ride with Baymax",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Tomorrowland",
+      "aliases": [
+        "Baymax ride"
+      ],
+      "keywords": [
+        "Baymax ride",
+        "The Happy Ride with Baymax"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlp_avengers",
+      "name": "Avengers Campus Paris",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_walt_disney_studios",
+      "land": "Avengers Campus",
+      "aliases": [
+        "Marvel Paris"
+      ],
+      "keywords": [
+        "Avengers Campus Paris",
+        "Marvel Paris"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dlp_crush",
+      "name": "Crush's Coaster",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_walt_disney_studios",
+      "land": "Worlds of Pixar",
+      "aliases": [
+        "Crush Coaster"
+      ],
+      "keywords": [
+        "Crush Coaster",
+        "Crush's Coaster"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "hkdl_frozen",
+      "name": "World of Frozen",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "World of Frozen",
+      "aliases": [
+        "Frozen Hong Kong",
+        "Arendelle Hong Kong"
+      ],
+      "keywords": [
+        "Arendelle Hong Kong",
+        "Frozen Hong Kong",
+        "World of Frozen"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "hkdl_mystic_manor",
+      "name": "Mystic Manor",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "Mystic Point",
+      "aliases": [
+        "Mystic Manor ride"
+      ],
+      "keywords": [
+        "Mystic Manor",
+        "Mystic Manor ride"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "shdr_zootopia",
+      "name": "Zootopia Land",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Zootopia",
+      "aliases": [
+        "Zootopia Shanghai"
+      ],
+      "keywords": [
+        "Zootopia Land",
+        "Zootopia Shanghai"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "shdr_tron",
+      "name": "TRON Lightcycle Power Run",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Tomorrowland",
+      "aliases": [
+        "TRON Shanghai"
+      ],
+      "keywords": [
+        "TRON Lightcycle Power Run",
+        "TRON Shanghai"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "shdr_pirates",
+      "name": "Pirates of the Caribbean: Battle for the Sunken Treasure",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Treasure Cove",
+      "aliases": [
+        "Shanghai Pirates"
+      ],
+      "keywords": [
+        "Pirates of the Caribbean: Battle for the Sunken Treasure",
+        "Shanghai Pirates"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "tdr_big_thunder_mountain",
+      "name": "Big Thunder Mountain (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Westernland",
+      "aliases": ["Big Thunder Mountain"],
+      "keywords": ["Tokyo Big Thunder Mountain", "Tokyo Disneyland Big Thunder Mountain"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/DLR; keywords kept resort-qualified to avoid cross-attribution."
+    },
+    {
+      "id": "tdr_splash_mountain",
+      "name": "Splash Mountain (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Critter Country",
+      "aliases": ["Splash Mountain"],
+      "keywords": ["Tokyo Splash Mountain", "Tokyo Disneyland Splash Mountain"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Still operating at Tokyo Disneyland (unlike WDW's replaced version); keywords kept resort-qualified."
+    },
+    {
+      "id": "tdr_pirates",
+      "name": "Pirates of the Caribbean (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Adventureland",
+      "aliases": ["Pirates of the Caribbean"],
+      "keywords": ["Tokyo Pirates of the Caribbean", "Tokyo Disneyland Pirates"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/DLR; keywords kept resort-qualified to avoid cross-attribution."
+    },
+    {
+      "id": "tdr_haunted_mansion",
+      "name": "Haunted Mansion (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Fantasyland",
+      "aliases": ["Haunted Mansion"],
+      "keywords": ["Tokyo Haunted Mansion", "Tokyo Disneyland Haunted Mansion"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW; keywords kept resort-qualified to avoid cross-attribution."
+    },
+    {
+      "id": "tdr_small_world",
+      "name": "it's a small world (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Fantasyland",
+      "aliases": ["it's a small world"],
+      "keywords": ["Tokyo small world", "Tokyo Disneyland it's a small world"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW; keywords kept resort-qualified to avoid cross-attribution."
+    },
+    {
+      "id": "tdr_peter_pan",
+      "name": "Peter Pan's Flight (Tokyo Disneyland)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Fantasyland",
+      "aliases": ["Peter Pan's Flight"],
+      "keywords": ["Tokyo Peter Pan's Flight", "Tokyo Disneyland Peter Pan"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW; keywords kept resort-qualified to avoid cross-attribution."
+    },
+    {
+      "id": "tdr_hunny_hunt",
+      "name": "Pooh's Hunny Hunt",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Fantasyland",
+      "aliases": ["Hunny Hunt"],
+      "keywords": ["Pooh's Hunny Hunt", "Hunny Hunt"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Tokyo Disneyland."
+    },
+    {
+      "id": "tdr_ride_and_go_seek",
+      "name": "Monsters, Inc. Ride & Go Seek!",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneyland",
+      "land": "Tomorrowland",
+      "aliases": ["Ride & Go Seek"],
+      "keywords": ["Monsters, Inc. Ride & Go Seek", "Ride & Go Seek"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Tokyo Disneyland."
+    },
+    {
+      "id": "tds_journey_center_earth",
+      "name": "Journey to the Center of the Earth",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "Mysterious Island",
+      "aliases": ["Journey to the Center of the Earth"],
+      "keywords": ["Journey to the Center of the Earth"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Tokyo DisneySea."
+    },
+    {
+      "id": "tds_indiana_jones",
+      "name": "Indiana Jones Adventure: Temple of the Crystal Skull",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "Lost River Delta",
+      "aliases": ["Temple of the Crystal Skull"],
+      "keywords": ["Temple of the Crystal Skull", "Indiana Jones Adventure Temple of the Crystal Skull"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Subtitle distinguishes it from Disneyland Anaheim's Indiana Jones Adventure."
+    },
+    {
+      "id": "tds_tower_of_terror",
+      "name": "Tower of Terror (Tokyo DisneySea)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "American Waterfront",
+      "aliases": ["Tower of Terror"],
+      "keywords": ["Tokyo DisneySea Tower of Terror", "DisneySea Tower of Terror"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW's Twilight Zone Tower of Terror; keywords kept resort-qualified."
+    },
+    {
+      "id": "tds_toy_story_mania",
+      "name": "Toy Story Mania! (Tokyo DisneySea)",
+      "type": "attraction_or_land",
+      "locationId": "tdr",
+      "parkId": "tdr_tokyo_disneysea",
+      "land": "American Waterfront",
+      "aliases": ["Toy Story Mania"],
+      "keywords": ["Tokyo DisneySea Toy Story Mania"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW's Toy Story Mania!; keywords kept resort-qualified."
+    },
+    {
+      "id": "dlp_big_thunder_mountain",
+      "name": "Big Thunder Mountain (Disneyland Paris)",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_disneyland_park",
+      "land": "Frontierland",
+      "aliases": ["Big Thunder Mountain"],
+      "keywords": ["Disneyland Paris Big Thunder Mountain"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/DLR/Tokyo; keywords kept resort-qualified."
+    },
+    {
+      "id": "dlp_pirates",
+      "name": "Pirates of the Caribbean (Disneyland Paris)",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_disneyland_park",
+      "land": "Adventureland",
+      "aliases": ["Pirates of the Caribbean"],
+      "keywords": ["Disneyland Paris Pirates of the Caribbean"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/DLR/Tokyo; keywords kept resort-qualified."
+    },
+    {
+      "id": "dlp_phantom_manor",
+      "name": "Phantom Manor",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_disneyland_park",
+      "land": "Frontierland",
+      "aliases": ["Phantom Manor"],
+      "keywords": ["Phantom Manor"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris's own haunted-house attraction, distinct from the Haunted Mansion."
+    },
+    {
+      "id": "dlp_small_world",
+      "name": "it's a small world (Disneyland Paris)",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_disneyland_park",
+      "land": "Fantasyland",
+      "aliases": ["it's a small world"],
+      "keywords": ["Disneyland Paris small world"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/Tokyo; keywords kept resort-qualified."
+    },
+    {
+      "id": "dlp_peter_pan",
+      "name": "Peter Pan's Flight (Disneyland Paris)",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_disneyland_park",
+      "land": "Fantasyland",
+      "aliases": ["Peter Pan's Flight"],
+      "keywords": ["Disneyland Paris Peter Pan's Flight"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Ride name is shared with WDW/Tokyo; keywords kept resort-qualified."
+    },
+    {
+      "id": "dlp_ratatouille",
+      "name": "Ratatouille: The Adventure",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_walt_disney_studios",
+      "land": "La Place de Remy",
+      "aliases": ["Ratatouille Adventure"],
+      "keywords": ["Ratatouille: The Adventure", "Ratatouille Adventure"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Walt Disney Studios Park, Paris."
+    },
+    {
+      "id": "dlp_cars_road_trip",
+      "name": "Cars Road Trip",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_walt_disney_studios",
+      "land": null,
+      "aliases": ["Cars Road Trip"],
+      "keywords": ["Cars Road Trip"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Walt Disney Studios Park, Paris."
+    },
+    {
+      "id": "dlp_web_adventure",
+      "name": "Spider-Man W.E.B. Adventure",
+      "type": "attraction_or_land",
+      "locationId": "dlp",
+      "parkId": "dlp_walt_disney_studios",
+      "land": "Avengers Campus Paris",
+      "aliases": ["W.E.B. Adventure"],
+      "keywords": ["Spider-Man W.E.B. Adventure", "WEB Adventure"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Part of Avengers Campus Paris, added as its own entity for attraction-level news coverage."
+    },
+    {
+      "id": "hkdl_big_grizzly",
+      "name": "Big Grizzly Mountain Runaway Mine Cars",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "Grizzly Gulch",
+      "aliases": ["Big Grizzly Mountain"],
+      "keywords": ["Big Grizzly Mountain", "Big Grizzly Mountain Runaway Mine Cars"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Hong Kong Disneyland."
+    },
+    {
+      "id": "hkdl_iron_man",
+      "name": "Iron Man Experience",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "Tomorrowland",
+      "aliases": ["Iron Man Experience"],
+      "keywords": ["Iron Man Experience"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Hong Kong Disneyland."
+    },
+    {
+      "id": "hkdl_ant_man",
+      "name": "Ant-Man and The Wasp: Nano Battle!",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "Tomorrowland",
+      "aliases": ["Nano Battle"],
+      "keywords": ["Ant-Man and The Wasp Nano Battle", "Nano Battle"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Hong Kong Disneyland."
+    },
+    {
+      "id": "hkdl_jungle_river_cruise",
+      "name": "Jungle River Cruise",
+      "type": "attraction_or_land",
+      "locationId": "hkdl",
+      "parkId": "hkdl_park",
+      "land": "Adventureland",
+      "aliases": ["Jungle River Cruise"],
+      "keywords": ["Jungle River Cruise"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Hong Kong Disneyland's version of the Jungle Cruise concept; distinct name avoids collision."
+    },
+    {
+      "id": "shdr_soaring_over_horizon",
+      "name": "Soaring Over the Horizon",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Adventure Isle",
+      "aliases": ["Soaring Over the Horizon"],
+      "keywords": ["Soaring Over the Horizon"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Shanghai Disneyland's Soarin' variant; distinct title avoids collision with WDW/DCA versions."
+    },
+    {
+      "id": "shdr_roaring_rapids",
+      "name": "Roaring Rapids",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Adventure Isle",
+      "aliases": ["Roaring Rapids"],
+      "keywords": ["Roaring Rapids"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Shanghai Disneyland."
+    },
+    {
+      "id": "shdr_camp_discovery",
+      "name": "Camp Discovery",
+      "type": "attraction_or_land",
+      "locationId": "shdr",
+      "parkId": "shdr_park",
+      "land": "Adventure Isle",
+      "aliases": ["Camp Discovery"],
+      "keywords": ["Camp Discovery"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Unique to Shanghai Disneyland."
+    },
+    {
+      "id": "dcl_magic",
+      "name": "Disney Magic",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Magic"
+      ],
+      "keywords": [
+        "Disney Magic",
+        "Magic"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_wonder",
+      "name": "Disney Wonder",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Wonder"
+      ],
+      "keywords": [
+        "Disney Wonder",
+        "Wonder"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_dream",
+      "name": "Disney Dream",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Dream"
+      ],
+      "keywords": [
+        "Disney Dream",
+        "Dream"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_fantasy",
+      "name": "Disney Fantasy",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Fantasy"
+      ],
+      "keywords": [
+        "Disney Fantasy",
+        "Fantasy"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_wish",
+      "name": "Disney Wish",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Wish"
+      ],
+      "keywords": [
+        "Disney Wish",
+        "Wish"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_treasure",
+      "name": "Disney Treasure",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Treasure"
+      ],
+      "keywords": [
+        "Disney Treasure",
+        "Treasure"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_destiny",
+      "name": "Disney Destiny",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Destiny"
+      ],
+      "keywords": [
+        "Destiny",
+        "Disney Destiny"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_adventure",
+      "name": "Disney Adventure",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Adventure"
+      ],
+      "keywords": [
+        "Adventure",
+        "Disney Adventure"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_believe",
+      "name": "Disney Believe",
+      "type": "cruise_ship",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Believe"
+      ],
+      "keywords": [
+        "Believe",
+        "Disney Believe"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_castaway_cay",
+      "name": "Disney Castaway Cay",
+      "type": "cruise_destination",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Castaway Cay"
+      ],
+      "keywords": [
+        "Castaway Cay",
+        "Disney Castaway Cay"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_lighthouse_point",
+      "name": "Disney Lookout Cay at Lighthouse Point",
+      "type": "cruise_destination",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Lookout Cay at Lighthouse Point"
+      ],
+      "keywords": [
+        "Disney Lookout Cay at Lighthouse Point",
+        "Lookout Cay at Lighthouse Point"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "dcl_terminal_port_canaveral",
+      "name": "Port Canaveral Disney Cruise Terminal",
+      "type": "cruise_destination",
+      "locationId": "dcl",
+      "parkId": null,
+      "land": null,
+      "aliases": [
+        "Port Canaveral Cruise Terminal"
+      ],
+      "keywords": [
+        "Port Canaveral Cruise Terminal",
+        "Port Canaveral Disney Cruise Terminal"
+      ],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Phase 2 starter entity. Verify against current official source pages during implementation."
+    },
+    {
+      "id": "wdw_caribbean_beach",
+      "name": "Disney's Caribbean Beach Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Caribbean Beach Resort", "Caribbean Beach"],
+      "keywords": ["Disney's Caribbean Beach Resort", "Caribbean Beach Resort"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Moderate resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_port_orleans_french_quarter",
+      "name": "Disney's Port Orleans Resort – French Quarter",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Port Orleans French Quarter", "Port Orleans Resort French Quarter"],
+      "keywords": ["Port Orleans French Quarter"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Moderate resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_port_orleans_riverside",
+      "name": "Disney's Port Orleans Resort – Riverside",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Port Orleans Riverside", "Port Orleans Resort Riverside"],
+      "keywords": ["Port Orleans Riverside"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Moderate resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_fort_wilderness",
+      "name": "Disney's Fort Wilderness Resort & Campground",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Fort Wilderness Resort", "Fort Wilderness Campground"],
+      "keywords": ["Fort Wilderness"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Cabins and campsites resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_all_star_movies",
+      "name": "Disney's All-Star Movies Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["All-Star Movies Resort", "All-Star Movies"],
+      "keywords": ["All-Star Movies"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Value resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_all_star_music",
+      "name": "Disney's All-Star Music Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["All-Star Music Resort", "All-Star Music"],
+      "keywords": ["All-Star Music"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Value resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_all_star_sports",
+      "name": "Disney's All-Star Sports Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["All-Star Sports Resort", "All-Star Sports"],
+      "keywords": ["All-Star Sports"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Value resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_old_key_west",
+      "name": "Disney's Old Key West Resort",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Old Key West Resort", "Old Key West"],
+      "keywords": ["Old Key West"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney Vacation Club resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_saratoga_springs",
+      "name": "Disney's Saratoga Springs Resort & Spa",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Saratoga Springs Resort", "Saratoga Springs"],
+      "keywords": ["Saratoga Springs"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney Vacation Club resort; added for restaurant/resort news coverage."
+    },
+    {
+      "id": "wdw_swan",
+      "name": "Walt Disney World Swan",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Walt Disney World Swan", "The Swan Hotel"],
+      "keywords": ["Walt Disney World Swan", "Swan Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Marriott-operated hotel on WDW property; covered by Disney news sources."
+    },
+    {
+      "id": "wdw_dolphin",
+      "name": "Walt Disney World Dolphin",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Walt Disney World Dolphin", "The Dolphin Hotel"],
+      "keywords": ["Walt Disney World Dolphin", "Dolphin Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Marriott-operated hotel on WDW property; covered by Disney news sources."
+    },
+    {
+      "id": "wdw_shades_of_green",
+      "name": "Disney's Shades of Green",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Shades of Green"],
+      "keywords": ["Shades of Green"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Military resort on WDW property, operated by the Armed Forces Recreation Center."
+    },
+    {
+      "id": "aulani",
+      "name": "Aulani, A Disney Resort & Spa",
+      "type": "resort_hotel",
+      "locationId": "aulani",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Aulani", "Aulani Resort"],
+      "keywords": ["Aulani"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Standalone Disney Vacation Club resort in Ko Olina, Hawaii — not tied to any theme park."
+    },
+    {
+      "id": "disney_vero_beach",
+      "name": "Disney's Vero Beach Resort",
+      "type": "resort_hotel",
+      "locationId": "vero_beach",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Vero Beach Resort", "Disney Vero Beach"],
+      "keywords": ["Vero Beach Resort", "Disney's Vero Beach"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Standalone Disney Vacation Club resort in Florida, not on any Disney park property."
+    },
+    {
+      "id": "disney_hilton_head",
+      "name": "Disney's Hilton Head Island Resort",
+      "type": "resort_hotel",
+      "locationId": "hilton_head",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hilton Head Island Resort", "Disney Hilton Head"],
+      "keywords": ["Hilton Head Island Resort", "Disney's Hilton Head"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Standalone Disney Vacation Club resort in South Carolina, not on any Disney park property."
+    },
+    {
+      "id": "dlp_disneyland_hotel",
+      "name": "Disneyland Hotel (Paris)",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disneyland Hotel Paris"],
+      "keywords": ["Disneyland Hotel Paris", "Disneyland Paris Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Flagship hotel at Disneyland Paris; keywords disambiguated from the Anaheim Disneyland Hotel."
+    },
+    {
+      "id": "dlp_hotel_new_york",
+      "name": "Disney's Hotel New York – The Art of Marvel",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hotel New York", "Disney's Hotel New York"],
+      "keywords": ["Hotel New York The Art of Marvel", "Disney's Hotel New York"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris resort hotel."
+    },
+    {
+      "id": "dlp_newport_bay_club",
+      "name": "Disney's Newport Bay Club",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Newport Bay Club"],
+      "keywords": ["Newport Bay Club"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris resort hotel."
+    },
+    {
+      "id": "dlp_sequoia_lodge",
+      "name": "Disney's Sequoia Lodge",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Sequoia Lodge"],
+      "keywords": ["Sequoia Lodge"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris resort hotel."
+    },
+    {
+      "id": "dlp_hotel_cheyenne",
+      "name": "Disney's Hotel Cheyenne",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hotel Cheyenne"],
+      "keywords": ["Hotel Cheyenne"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris resort hotel."
+    },
+    {
+      "id": "dlp_hotel_santa_fe",
+      "name": "Disney's Hotel Santa Fe",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hotel Santa Fe"],
+      "keywords": ["Hotel Santa Fe"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris resort hotel."
+    },
+    {
+      "id": "dlp_davy_crockett_ranch",
+      "name": "Disney's Davy Crockett Ranch",
+      "type": "resort_hotel",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Davy Crockett Ranch"],
+      "keywords": ["Davy Crockett Ranch"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disneyland Paris cabins/campground resort."
+    },
+    {
+      "id": "tdr_tokyo_disneyland_hotel",
+      "name": "Tokyo Disneyland Hotel",
+      "type": "resort_hotel",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Tokyo Disneyland Hotel"],
+      "keywords": ["Tokyo Disneyland Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Tokyo Disney Resort hotel."
+    },
+    {
+      "id": "tdr_miracosta",
+      "name": "Tokyo DisneySea Hotel MiraCosta",
+      "type": "resort_hotel",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hotel MiraCosta"],
+      "keywords": ["MiraCosta", "Hotel MiraCosta", "Tokyo DisneySea Hotel MiraCosta"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Tokyo Disney Resort hotel, located inside Tokyo DisneySea."
+    },
+    {
+      "id": "tdr_celebration_hotel",
+      "name": "Tokyo Disney Celebration Hotel",
+      "type": "resort_hotel",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Tokyo Disney Celebration Hotel"],
+      "keywords": ["Tokyo Disney Celebration Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Tokyo Disney Resort hotel."
+    },
+    {
+      "id": "tdr_toy_story_hotel",
+      "name": "Tokyo Disney Resort Toy Story Hotel",
+      "type": "resort_hotel",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Toy Story Hotel"],
+      "keywords": ["Tokyo Disney Resort Toy Story Hotel", "Toy Story Hotel Tokyo"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney reuses the “Toy Story Hotel” name at both Tokyo and Shanghai; keywords kept specific to avoid conflating the two."
+    },
+    {
+      "id": "hkdl_hongkong_disneyland_hotel",
+      "name": "Hong Kong Disneyland Hotel",
+      "type": "resort_hotel",
+      "locationId": "hkdl",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hong Kong Disneyland Hotel"],
+      "keywords": ["Hong Kong Disneyland Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Hong Kong Disneyland Resort hotel."
+    },
+    {
+      "id": "hkdl_explorers_lodge",
+      "name": "Disney Explorers Lodge",
+      "type": "resort_hotel",
+      "locationId": "hkdl",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Explorers Lodge"],
+      "keywords": ["Disney Explorers Lodge", "Explorers Lodge"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Hong Kong Disneyland Resort hotel."
+    },
+    {
+      "id": "shdr_shanghai_disneyland_hotel",
+      "name": "Shanghai Disneyland Hotel",
+      "type": "resort_hotel",
+      "locationId": "shdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Shanghai Disneyland Hotel"],
+      "keywords": ["Shanghai Disneyland Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Shanghai Disney Resort hotel."
+    },
+    {
+      "id": "shdr_toy_story_hotel",
+      "name": "Toy Story Hotel (Shanghai Disney Resort)",
+      "type": "resort_hotel",
+      "locationId": "shdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Toy Story Hotel"],
+      "keywords": ["Shanghai Disney Resort Toy Story Hotel", "Shanghai Toy Story Hotel"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney reuses the “Toy Story Hotel” name at both Tokyo and Shanghai; keywords kept specific to avoid conflating the two."
+    },
+    {
+      "id": "wdw_resort_umbrella",
+      "name": "Walt Disney World Resort",
+      "type": "park_or_district",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Walt Disney World", "Disney World", "WDW"],
+      "keywords": ["Walt Disney World", "Disney World", "WDW"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity — catches headlines that say 'Disney World' generically without naming a specific park."
+    },
+    {
+      "id": "dlr_resort_umbrella",
+      "name": "Disneyland Resort",
+      "type": "park_or_district",
+      "locationId": "dlr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disneyland Resort", "Disneyland"],
+      "keywords": ["Disneyland Resort", "Disneyland"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity — catches generic 'Disneyland' mentions not tied to a specific park."
+    },
+    {
+      "id": "dlp_resort_umbrella",
+      "name": "Disneyland Paris",
+      "type": "park_or_district",
+      "locationId": "dlp",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disneyland Paris"],
+      "keywords": ["Disneyland Paris"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity, distinct from the specific 'Disneyland Park Paris' attraction park."
+    },
+    {
+      "id": "tdr_resort_umbrella",
+      "name": "Tokyo Disney Resort",
+      "type": "park_or_district",
+      "locationId": "tdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Tokyo Disney Resort"],
+      "keywords": ["Tokyo Disney Resort"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity for Tokyo Disneyland + Tokyo DisneySea."
+    },
+    {
+      "id": "hkdl_resort_umbrella",
+      "name": "Hong Kong Disneyland Resort",
+      "type": "park_or_district",
+      "locationId": "hkdl",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Hong Kong Disneyland Resort", "Hong Kong Disneyland"],
+      "keywords": ["Hong Kong Disneyland Resort", "Hong Kong Disneyland"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity, distinct from the specific Hong Kong Disneyland Park."
+    },
+    {
+      "id": "shdr_resort_umbrella",
+      "name": "Shanghai Disney Resort",
+      "type": "park_or_district",
+      "locationId": "shdr",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Shanghai Disney Resort"],
+      "keywords": ["Shanghai Disney Resort", "Shanghai Disneyland Resort"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Resort-wide umbrella entity, distinct from the specific Shanghai Disneyland park."
+    },
+    {
+      "id": "wdw_lakeshore_lodge",
+      "name": "Disney's Lakeshore Lodge",
+      "type": "resort_hotel",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Lakeshore Lodge"],
+      "keywords": ["Lakeshore Lodge", "Disney's Lakeshore Lodge"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Added after being spotted as a real, currently-covered WDW resort missing from the knowledge base — verify details against official source pages."
+    },
+    {
+      "id": "d23_expo",
+      "name": "D23 Expo",
+      "type": "event_or_festival",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["D23 Expo"],
+      "keywords": ["D23 Expo"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney's biennial fan convention — high-volume announcement source, added for event coverage."
+    },
+    {
+      "id": "franchise_star_wars",
+      "name": "Star Wars",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Star Wars"],
+      "keywords": ["Star Wars"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise/media entity — general Disney entertainment news now in scope, not just parks/resorts."
+    },
+    {
+      "id": "franchise_marvel",
+      "name": "Marvel",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Marvel", "Marvel Cinematic Universe", "MCU"],
+      "keywords": ["Marvel Cinematic Universe", "Marvel Studios", "MCU"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Bare 'Marvel' kept out of keywords (too generic/collision-prone); qualified phrases used instead."
+    },
+    {
+      "id": "franchise_pixar",
+      "name": "Pixar",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Pixar"],
+      "keywords": ["Pixar"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Studio brand name, unique enough to safely match bare."
+    },
+    {
+      "id": "franchise_toy_story",
+      "name": "Toy Story",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Toy Story"],
+      "keywords": ["Toy Story"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Covers franchise/film news (e.g. Toy Story 5) separately from the in-park attractions."
+    },
+    {
+      "id": "franchise_frozen",
+      "name": "Frozen",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Frozen"],
+      "keywords": ["Frozen"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Covers franchise/film news separately from the in-park attractions."
+    },
+    {
+      "id": "franchise_moana",
+      "name": "Moana",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Moana"],
+      "keywords": ["Moana"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Covers franchise/film news (e.g. Moana 3) separately from the in-park attractions."
+    },
+    {
+      "id": "franchise_zootopia",
+      "name": "Zootopia",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Zootopia"],
+      "keywords": ["Zootopia"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Coined word, safe to match bare; covers franchise/film news separately from the in-park attractions."
+    },
+    {
+      "id": "franchise_encanto",
+      "name": "Encanto",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Encanto"],
+      "keywords": ["Encanto"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise/media entity."
+    },
+    {
+      "id": "franchise_inside_out",
+      "name": "Inside Out",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Inside Out"],
+      "keywords": ["Inside Out"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise/media entity."
+    },
+    {
+      "id": "franchise_lion_king",
+      "name": "The Lion King",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["The Lion King", "Lion King"],
+      "keywords": ["The Lion King", "Lion King"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise/media entity."
+    },
+    {
+      "id": "franchise_winnie_the_pooh",
+      "name": "Winnie the Pooh",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Winnie the Pooh"],
+      "keywords": ["Winnie the Pooh"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise/media entity, distinct from the in-park attraction entity."
+    },
+    {
+      "id": "franchise_coco",
+      "name": "Coco",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Coco"],
+      "keywords": ["Pixar's Coco", "Coco movie"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Bare 'Coco' excluded from keywords (too generic/collision-prone); qualified phrases used instead."
+    },
+    {
+      "id": "franchise_disney_princess",
+      "name": "Disney Princess",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disney Princess"],
+      "keywords": ["Disney Princess"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Franchise entity; bare 'princess' excluded from keywords as too generic."
+    },
+    {
+      "id": "corp_walt_disney_company",
+      "name": "The Walt Disney Company",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["The Walt Disney Company", "Walt Disney Co."],
+      "keywords": ["The Walt Disney Company", "Walt Disney Co."],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "General corporate news (earnings, executive moves, etc.), now in scope per product decision to include general Disney news."
+    },
+    {
+      "id": "corp_disney_plus",
+      "name": "Disney+",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disney+", "Disney Plus"],
+      "keywords": ["Disney Plus"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "'Disney+' deliberately excluded from keywords — text normalization strips the '+' symbol, degrading it to bare 'disney' and matching almost anything. Only the spelled-out 'Disney Plus' is used for matching."
+    },
+    {
+      "id": "corp_bob_iger",
+      "name": "Bob Iger",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Bob Iger"],
+      "keywords": ["Bob Iger"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney CEO — unique full name, safe to match bare."
+    },
+    {
+      "id": "corp_disney_lorcana",
+      "name": "Disney Lorcana",
+      "type": "franchise_or_media",
+      "locationId": "corporate",
+      "parkId": null,
+      "land": null,
+      "aliases": ["Disney Lorcana", "Lorcana"],
+      "keywords": ["Disney Lorcana", "Lorcana"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Disney's trading card game; unique brand name, safe to match."
+    },
+    {
+      "id": "corp_my_disney_experience",
+      "name": "My Disney Experience",
+      "type": "franchise_or_media",
+      "locationId": "wdw",
+      "parkId": null,
+      "land": null,
+      "aliases": ["My Disney Experience"],
+      "keywords": ["My Disney Experience"],
+      "confidenceBoost": "normal",
+      "activeStatus": "active",
+      "notes": "Official WDW app name; unique phrase, safe to match."
+    }
+  ]
+}

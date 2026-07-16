@@ -1,0 +1,458 @@
+{
+  "common": {
+    "done": "Fine",
+    "back": "Indietro",
+    "refresh": "Aggiorna",
+    "loading": "Caricamento…",
+    "on": "Attivo",
+    "off": "Disattivo",
+    "dismiss": "Chiudi",
+    "search": "Cerca",
+    "welcomeTitle": "Benvenuto su Main Street Gazette",
+    "welcomeLoading": "Caricamento delle notizie dei parchi Disney…"
+  },
+  "time": {
+    "justNow": "Pubblicato appena ora.",
+    "soon": "Pubblicato a breve.",
+    "unknownDate": "Data di pubblicazione sconosciuta.",
+    "past": {
+      "minute_one": "Pubblicato {{count}} minuto fa.",
+      "minute_other": "Pubblicato {{count}} minuti fa.",
+      "hour_one": "Pubblicato {{count}} ora fa.",
+      "hour_other": "Pubblicato {{count}} ore fa.",
+      "day_one": "Pubblicato {{count}} giorno fa.",
+      "day_other": "Pubblicato {{count}} giorni fa.",
+      "week_one": "Pubblicato {{count}} settimana fa.",
+      "week_other": "Pubblicato {{count}} settimane fa.",
+      "month_one": "Pubblicato {{count}} mese fa.",
+      "month_other": "Pubblicato {{count}} mesi fa.",
+      "year_one": "Pubblicato {{count}} anno fa.",
+      "year_other": "Pubblicato {{count}} anni fa."
+    },
+    "future": {
+      "minute_one": "Pubblicato tra {{count}} minuto.",
+      "minute_other": "Pubblicato tra {{count}} minuti.",
+      "hour_one": "Pubblicato tra {{count}} ora.",
+      "hour_other": "Pubblicato tra {{count}} ore.",
+      "day_one": "Pubblicato tra {{count}} giorno.",
+      "day_other": "Pubblicato tra {{count}} giorni.",
+      "week_one": "Pubblicato tra {{count}} settimana.",
+      "week_other": "Pubblicato tra {{count}} settimane.",
+      "month_one": "Pubblicato tra {{count}} mese.",
+      "month_other": "Pubblicato tra {{count}} mesi.",
+      "year_one": "Pubblicato tra {{count}} anno.",
+      "year_other": "Pubblicato tra {{count}} anni."
+    }
+  },
+  "contentType": {
+    "article": "Articolo",
+    "video": "Video",
+    "podcast": "Podcast",
+    "community": "Community"
+  },
+  "sourceType": {
+    "rssArticle": "Notizie",
+    "youtubeChannel": "Video",
+    "podcastRSS": "Podcast",
+    "redditFeed": "Social"
+  },
+  "trustLabel": {
+    "official": "Ufficiale",
+    "verifiedNews": "Notizie verificate",
+    "communitySource": "Fonte della community"
+  },
+  "sourceCategory": {
+    "parksNews": "Notizie parchi",
+    "food": "Cibo",
+    "planning": "Pianificazione",
+    "hotels": "Hotel",
+    "attractions": "Attrazioni",
+    "video": "Video",
+    "podcast": "Podcast",
+    "official": "Ufficiale",
+    "community": "Community",
+    "social": "Social",
+    "international": "Internazionale"
+  },
+  "a11y": {
+    "author": "Autore: {{name}}.",
+    "source": "Fonte: {{name}}.",
+    "unknownSource": "Fonte sconosciuta",
+    "duration": "Durata {{clock}}.",
+    "new": "Nuovo.",
+    "savedLabel": "Salvato.",
+    "downloaded": "Scaricato.",
+    "enabled": "Attivo.",
+    "disabled": "Disattivo.",
+    "sourceLabel": "{{name}}. Fonte {{type}}. {{trust}}. {{state}}",
+    "enableHint": "Tocca due volte per attivare.",
+    "disableHint": "Tocca due volte per disattivare.",
+    "itemHintIos": "Tocca due volte per aprire. Scorri su o giù per Salva, Copia link, Condividi e Segnalibro.",
+    "itemHintIosPodcast": "Tocca due volte per aprire l'episodio. Scorri su o giù per Salva, Copia link, Condividi e Segnalibro.",
+    "itemHintAndroid": "Tocca due volte per aprire. Premi a lungo per più opzioni.",
+    "itemHintAndroidPodcast": "Tocca due volte per aprire l'episodio. Premi a lungo per più opzioni.",
+    "unsave": "Rimuovi dai salvati",
+    "save": "Salva",
+    "expandGroup": "Espandi gruppo",
+    "openInYouTube": "Apri in YouTube",
+    "resumePodcast": "Riprendi podcast",
+    "playPodcast": "Riproduci podcast",
+    "addToQueue": "Aggiungi alla coda"
+  },
+  "greeting": {
+    "morning": "Buongiorno",
+    "afternoon": "Buon pomeriggio",
+    "evening": "Buonasera",
+    "night": "Buonanotte",
+    "morning_name": "Buongiorno, {{name}}",
+    "afternoon_name": "Buon pomeriggio, {{name}}",
+    "evening_name": "Buonasera, {{name}}",
+    "night_name": "Buonanotte, {{name}}"
+  },
+  "tabs": {
+    "news": "Notizie",
+    "parks": "Parchi",
+    "saved": "Salvati",
+    "sources": "Fonti",
+    "settings": "Impostazioni"
+  },
+  "screens": {
+    "today": "Oggi",
+    "story": "Articolo",
+    "player": "Player",
+    "savedStory": "Articolo salvato",
+    "sourceFeed": "Feed fonte",
+    "manageSources": "Gestisci fonti"
+  },
+  "home": {
+    "title": "Main Street Gazette",
+    "timeline": "Timeline",
+    "searchPlaceholder": "Cerca nella timeline",
+    "searchDoneLabel": "Fine ricerca",
+    "searchDoneHint": "Tocca due volte per chiudere il campo di ricerca.",
+    "searchHint": "Inserisci parole per cercare titoli, riepiloghi, fonti e tag.",
+    "sort": {
+      "newestFirst": "Più recenti prima",
+      "oldestFirst": "Più vecchi prima"
+    },
+    "filter": {
+      "all": "Tutti",
+      "article": "Articoli",
+      "video": "Video",
+      "podcast": "Podcast",
+      "social": "Social"
+    },
+    "park": {
+      "all": "Tutti i parchi",
+      "magic_kingdom": "Magic Kingdom",
+      "epcot": "EPCOT",
+      "hollywood_studios": "Hollywood Studios",
+      "animal_kingdom": "Animal Kingdom",
+      "disneyland": "Disneyland",
+      "california_adventure": "Calif. Adventure",
+      "disneyland_paris": "Disneyland Paris",
+      "walt_disney_studios_paris": "WD Studios Paris",
+      "tokyo_disneyland": "Tokyo Disneyland",
+      "tokyo_disneysea": "Tokyo DisneySea",
+      "shanghai_disneyland": "Shanghai",
+      "hong_kong_disneyland": "Hong Kong"
+    },
+    "menu": {
+      "displayStyle": "Stile di visualizzazione",
+      "displayFull": "Completo",
+      "displayMinimal": "Minimale",
+      "filter": "Filtro",
+      "filterLocked": "Articoli (bloccato)",
+      "byPark": "Per parco",
+      "showOnlyNew": "Mostra solo nuovi",
+      "jumpToMarker": "Vai al segnalibro",
+      "jumpToTop": "Vai in cima",
+      "findInTimeline": "Cerca nella timeline",
+      "hideFindInTimeline": "Nascondi ricerca",
+      "closeMenu": "Chiudi menu"
+    },
+    "empty": {
+      "noNewTitle": "Nessuna nuova storia",
+      "todayTitle": "Niente pubblicato oggi",
+      "noStoriesTitle": "Ancora nessuna storia",
+      "noNewBody": "Hai letto tutto fino al tuo segnalibro. Tocca 'Mostra tutto' per vedere storie più vecchie.",
+      "todayBody": "Torna più tardi o scorri per aggiornare.",
+      "noStoriesBody": "Aggiorna o attiva più fonti per le notizie Disney.",
+      "showAll": "Mostra tutto"
+    },
+    "announce": {
+      "jumpedTop": "Saltato all'inizio della timeline.",
+      "noMarker": "Nessun segnalibro impostato.",
+      "jumpedMarker": "Saltato al segnalibro della timeline.",
+      "searchShown": "Campo di ricerca visualizzato. Inserisci i termini di ricerca.",
+      "filterLocked": "Il filtro è bloccato su Articoli mentre è selezionato un parco.",
+      "refreshing": "Aggiornamento articoli…",
+      "refreshedNoNew": "Aggiornato. Nessun nuovo articolo.",
+      "refreshedNew_one": "Aggiornato. {{count}} nuovo articolo.",
+      "refreshedNew_other": "Aggiornato. {{count}} nuovi articoli."
+    }
+  },
+  "onboarding": {
+    "stepProgress": "Passo {{current}} di {{total}}",
+    "back": "Indietro",
+    "continue": "Continua",
+    "loading": "Caricamento�€�",
+    "welcome": {
+      "tagline": "Il tuo universo Disney, tutto in un posto.",
+      "body": "Notizie dei parchi, video, podcast e aggiornamenti della community �€” per i fan Disney.",
+      "getStarted": "Inizia",
+      "getStartedHint": "Tocca due volte per iniziare a configurare il tuo feed."
+    },
+    "sources": {
+      "title": "Cosa vuoi seguire?",
+      "subtitle": "Regola le fonti in qualsiasi momento nelle Impostazioni.",
+      "articles": "Articoli",
+      "articlesDesc": "Notizie dei parchi, cibo, pianificazione e altro dai migliori siti Disney",
+      "videos": "Video",
+      "videosDesc": "Canali YouTube dei migliori creator Disney",
+      "podcasts": "Podcast",
+      "podcastsDesc": "Programmi a tema Disney",
+      "reddit": "Reddit",
+      "redditDesc": "Post delle community Disney su Reddit"
+    },
+    "prefs": {
+      "title": "Alcune preferenze rapide",
+      "subtitle": "Tutto può essere modificato nelle Impostazioni.",
+      "cacheQuestion": "Per quanto tempo conservare gli articoli?",
+      "cacheA11y": "Durata cache articoli",
+      "days30": "30 giorni",
+      "days90": "3 mesi",
+      "days180": "6 mesi",
+      "days365": "1 anno",
+      "days90Star": "3 mesi ★",
+      "days90Recommended": "3 mesi, consigliato",
+      "refreshA11y": "Aggiorna notizie all'apertura",
+      "refreshHint": "Ottieni automaticamente le ultime storie ogni volta che apri Main Street Gazette",
+      "refreshOnLaunch": "Aggiorna all'avvio",
+      "refreshDesc": "Ottieni le ultime storie all'apertura",
+      "appearance": "Aspetto",
+      "appearanceA11y": "Aspetto dell'app",
+      "themeSystem": "Sistema",
+      "themeLight": "Chiaro",
+      "themeDark": "Scuro",
+      "themeGazette": "Gazette",
+      "themeMidnight": "Mezzanotte",
+      "themeFantasy": "Fantasia"
+    },
+    "done": {
+      "title": "Tutto pronto!",
+      "body": "Benvenuto su Main Street Gazette. Il tuo primo aggiornamento notizie è in arrivo.",
+      "startReading": "Inizia a leggere",
+      "startReadingHint": "Tocca due volte per entrare in Main Street Gazette."
+    }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "hi": "Ciao, {{name}}",
+    "section": {
+      "profile": "Profilo",
+      "appearance": "Aspetto",
+      "feed": "Feed",
+      "reading": "Lettura",
+      "cache": "Cache",
+      "accessibility": "Accessibilità",
+      "playback": "Riproduzione",
+      "privacy": "Privacy e informazioni legali"
+    },
+    "profile": {
+      "label": "Il tuo nome (opzionale)",
+      "hint": "Inserisci il tuo nome per personalizzare i saluti. Lascia vuoto per rimuovere."
+    },
+    "theme": {
+      "system": "Sistema",
+      "systemSub": "Segue le impostazioni del dispositivo",
+      "light": "Chiaro",
+      "lightSub": "Bianco pulito",
+      "dark": "Scuro",
+      "darkSub": "Scuro carbone",
+      "gazette": "Gazette",
+      "gazetteSub": "Editoriale seppia caldo",
+      "midnight": "Mezzanotte",
+      "midnightSub": "Blu marino profondo con accenti blu",
+      "fantasy": "Fantasia",
+      "fantasySub": "Viola regale e oro castello"
+    },
+    "feed": {
+      "autoRefreshTitle": "Aggiornamento automatico all'avvio",
+      "autoRefreshDesc": "Recupera i feed attivi all'avvio.",
+      "showOnlyNewTitle": "Mostra solo gli elementi nuovi dal segnalibro",
+      "showOnlyNewDesc": "Nascondi le storie più vecchie.",
+      "sortOrder": "Ordinamento",
+      "newestFirst": "Più recenti prima",
+      "oldestFirst": "Più vecchi prima",
+      "articlePreview": "Anteprima articolo",
+      "line1": "1 riga",
+      "line2": "2 righe",
+      "line3": "3 righe",
+      "line4": "4 righe",
+      "line5": "5 righe",
+      "lineFull": "Completo",
+      "line1A11y": "Anteprima 1 frase",
+      "line2A11y": "Anteprima 2 frasi",
+      "line3A11y": "Anteprima 3 frasi",
+      "line4A11y": "Anteprima 4 frasi",
+      "line5A11y": "Anteprima 5 frasi",
+      "lineFullA11y": "Riepilogo completo"
+    },
+    "reading": {
+      "readerModeTitle": "Modalità lettura",
+      "readerModeDesc": "Apri automaticamente gli articoli nella vista lettura di Safari."
+    },
+    "cache": {
+      "offlineTitle": "Salvataggio offline",
+      "offlineDesc": "Mostra il contenuto memorizzato nella cache senza rete.",
+      "cacheWindow": "Finestra cache",
+      "week1": "1 settimana",
+      "month1": "1 mese",
+      "week1A11y": "Cache 1 settimana",
+      "month1A11y": "Cache 1 mese",
+      "maxCached": "Max elementi in cache",
+      "items100A11y": "Massimo 100 elementi",
+      "items250A11y": "Massimo 250 elementi",
+      "items500A11y": "Massimo 500 elementi",
+      "items1000A11y": "Massimo 1000 elementi"
+    },
+    "access": {
+      "spacingTitle": "Spaziatura migliorata",
+      "spacingDesc": "Più spazio per layout ipovedenti.",
+      "boldTitle": "Metadati in grassetto",
+      "boldDesc": "Rende fonte e ora più facili da scansionare.",
+      "hideThumbnailsTitle": "Nascondi miniature",
+      "hideThumbnailsDesc": "Riduce il disordine visivo nelle righe del feed."
+    },
+    "playback": {
+      "defaultSpeed": "Velocità predefinita"
+    },
+    "privacy": {
+      "disclaimer": "Main Street Gazette memorizza feed, articoli salvati, scelte delle fonti, impostazioni, coda e avanzamento della riproduzione localmente su questo dispositivo. Nessun account, pubblicità, analisi o monitoraggio.",
+      "legal": "Main Street Gazette è un lettore di feed e player podcast indipendente. Non affiliato, approvato o sponsorizzato da Disney o dagli editori elencati.",
+      "privacyPolicy": "Informativa sulla privacy",
+      "support": "Supporto",
+      "privacyPolicyHint": "Tocca due volte per aprire l'informativa sulla privacy.",
+      "supportHint": "Tocca due volte per aprire la pagina di supporto."
+    }
+  },
+  "saved": {
+    "title": "Salvati",
+    "searchPlaceholder": "Cerca nei salvati",
+    "searchA11y": "Cerca articoli salvati",
+    "searchHint": "Inserisci parole per cercare elementi salvati.",
+    "emptyTitle": "Nessun articolo salvato",
+    "emptyBody": "Articoli ed episodi salvati appariranno qui."
+  },
+  "sources": {
+    "title": "Fonti",
+    "searchPlaceholder": "Cerca fonti",
+    "searchA11y": "Cerca fonti attive",
+    "searchHint": "Inserisci parole per filtrare l'elenco delle fonti attive.",
+    "manageLabel": "Gestisci fonti",
+    "manageHint": "Tocca due volte per attivare o disattivare le fonti.",
+    "noEnabled": "Nessuna fonte attiva. Tocca Gestisci fonti.",
+    "noMatch": "Nessuna fonte corrisponde a \"{{query}}\".",
+    "section": {
+      "articles": "Articoli",
+      "international": "Internazionale",
+      "videos": "Video",
+      "podcasts": "Podcast",
+      "social": "Social"
+    },
+    "unread_one": "{{count}} non letto",
+    "unread_other": "{{count}} non letti",
+    "sourceA11y_one": "{{name}}. {{count}} storia non letta.",
+    "sourceA11y_other": "{{name}}. {{count}} storie non lette.",
+    "sourceHint": "Tocca due volte per leggere articoli da questa fonte.",
+    "totalA11y": "Fonti. {{count}} non letti.",
+    "totalBadge": "{{count}} non letti"
+  },
+  "feed": {
+    "play": "Riproduci",
+    "open": "Apri",
+    "addToQueue": "Aggiungi alla coda",
+    "saveForLater": "Salva per dopo",
+    "removeFromSaved": "Rimuovi dai salvati",
+    "copyLink": "Copia link",
+    "viewOnWeb": "Visualizza sul web",
+    "setMarker": "Imposta segnalibro",
+    "share": "Condividi {{type}}",
+    "savedPill": "Salvato",
+    "by": "Di {{name}}",
+    "openArticleHint": "Tocca due volte per aprire in modalità lettura.",
+    "openPodcastHint": "Tocca due volte per riprodurre questo episodio.",
+    "openVideoHint": "Tocca due volte per aprire questo video.",
+    "openAndroid": "Tocca due volte per aprire. Premi a lungo per più opzioni.",
+    "openHintIosArticle": "Tocca due volte per aprire in modalità lettura. Scorri per Salva, Copia link, Condividi e Segnalibro.",
+    "openHintIosPodcast": "Tocca due volte per riprodurre. Scorri per Coda, Salva, Copia link, Condividi e Segnalibro.",
+    "openHintIosVideo": "Tocca due volte per aprire il video. Scorri per Salva, Copia link, Condividi e Segnalibro.",
+    "addToQueueHint": "Tocca due volte per aggiungere alla coda.",
+    "saveHint": "Tocca due volte per salvare questo {{type}}.",
+    "removeHint": "Tocca due volte per rimuovere questo {{type}}.",
+    "copyLinkHint": "Tocca due volte per copiare il link.",
+    "viewOnWebHint": "Tocca due volte per aprire nel browser.",
+    "shareHint": "Tocca due volte per condividere.",
+    "setMarkerHint": "Tocca due volte per impostare un segnalibro.",
+    "linkCopied": "Link copiato."
+  },
+  "errors": {
+    "unableToRefresh": "Impossibile aggiornare i feed.",
+    "unableToLoad": "Impossibile caricare i dati di Main Street Gazette.",
+    "noStories": "L'aggiornamento non ha restituito storie.",
+    "sourceFailed_one": " {{name}} non ha potuto aggiornarsi.",
+    "sourceFailed_other": " {{count}} fonti hanno fallito.",
+    "refreshFailed_one": "Aggiornamento fallito per 1 fonte: {{message}}",
+    "refreshFailed_other": "Aggiornamento fallito per {{count}} fonti. Primo errore: {{message}}"
+  },
+  "refresh": {
+    "noNew": "Nessuna nuova storia.",
+    "noNewWithError": "Nessuna nuova storia.{{error}}",
+    "new_one": "{{count}} nuova storia.",
+    "new_other": "{{count}} nuove storie.",
+    "newWithError_one": "{{count}} nuova storia.{{error}}",
+    "newWithError_other": "{{count}} nuove storie.{{error}}",
+    "failedAnnounce": "Aggiornamento fallito. {{message}}",
+    "articleSaved": "Articolo salvato.",
+    "articleUnsaved": "Articolo rimosso dai salvati.",
+    "checkpointSet": "Segnalibro impostato."
+  },
+  "detail": {
+    "unknownWebsite": "Sito web sconosciuto",
+    "play": "Riproduci",
+    "playing": "In riproduzione",
+    "loading": "Caricamento",
+    "durationText": "Durata {{clock}}.",
+    "sourceText": "Fonte: {{name}}.",
+    "byText": "Di {{name}}.",
+    "saveLabel": "Salva {{type}}",
+    "unsaveLabel": "Rimuovi {{type}}",
+    "saveHint": "Tocca due volte per salvare.",
+    "unsaveHint": "Tocca due volte per rimuovere questo {{type}}.",
+    "playA11y": "Riproduci episodio podcast {{title}}",
+    "playLoadingHint": "Podcast in caricamento.",
+    "playHint": "Tocca due volte per riprodurre questo episodio."
+  },
+  "knowledge": {
+    "location": {
+      "label": "Location",
+      "all": "All Disney",
+      "wdw": "Walt Disney World",
+      "dlr": "Disneyland",
+      "dcl": "Disney Cruise",
+      "international": "International",
+      "a11ySelected": "Showing stories from {{label}}"
+    },
+    "timeline": {
+      "label": "Recency",
+      "all": "Any Time",
+      "now": "Now",
+      "today": "Today",
+      "last_3_days": "Last 3 Days",
+      "week": "This Week",
+      "month": "This Month",
+      "a11ySelected": "Showing stories from {{label}}"
+    }
+  }
+}

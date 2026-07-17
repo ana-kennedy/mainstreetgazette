@@ -91,7 +91,7 @@ function FeedItemCardInner({
   focusRef
 }: FeedItemCardProps) {
   const theme = useTheme();
-  const { playSelect, playSave, playUnsave } = useSounds();
+  const { playSelect, playSave, playUnsave, playArticleOpen } = useSounds();
   const haptics = useHaptics();
   const reduceMotion = useReduceMotion();
   const { isLargeText, isExtraLargeText } = useDynamicType();
@@ -150,7 +150,13 @@ function FeedItemCardInner({
   const hasAccessibilityTopic = isAccessibilityTopic(item);
 
   const handleOpen = async () => {
-    playSelect();
+    // Articles get their own distinct open sound; podcasts get playPodcastPlay when
+    // playback actually starts (see PlaybackContext.tsx), so this stays generic here.
+    if (item.contentType === "article") {
+      playArticleOpen();
+    } else {
+      playSelect();
+    }
     onMarkRead?.(item.id);
     const url = item.externalURL ?? item.canonicalURL;
     if (item.contentType === "article") {

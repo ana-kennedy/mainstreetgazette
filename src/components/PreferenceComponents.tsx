@@ -3,6 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Switch, Text, useTheme } from "react-native-paper";
+import { useSounds } from "../context/SoundContext";
 
 // ── PrefSectionLabel ────────────────────────────────────────────────────────
 
@@ -83,6 +84,7 @@ export function PrefChoiceRow<T extends string>({
   onValueChange: (v: T) => void;
 }) {
   const theme = useTheme();
+  const { playPickerTick } = useSounds();
   return (
     <View style={[styles.choiceRow, { borderColor: theme.colors.outline }]} accessible={false}>
       {options.map((option) => {
@@ -97,7 +99,7 @@ export function PrefChoiceRow<T extends string>({
                 borderColor: theme.colors.outline,
               },
             ]}
-            onPress={() => onValueChange(option.value)}
+            onPress={() => { playPickerTick(); onValueChange(option.value); }}
             accessible
             accessibilityRole="button"
             accessibilityLabel={option.accessibilityLabel}
@@ -134,6 +136,7 @@ export function PrefMultiChoiceRow<T extends string>({
   onToggle: (v: T) => void;
 }) {
   const theme = useTheme();
+  const { playPickerTick } = useSounds();
   return (
     <View style={[styles.choiceRow, { borderColor: theme.colors.outline }]} accessible={false}>
       {options.map((option) => {
@@ -148,7 +151,7 @@ export function PrefMultiChoiceRow<T extends string>({
                 borderColor: theme.colors.outline,
               },
             ]}
-            onPress={() => onToggle(option.value)}
+            onPress={() => { playPickerTick(); onToggle(option.value); }}
             accessible
             accessibilityRole="checkbox"
             accessibilityLabel={option.accessibilityLabel}

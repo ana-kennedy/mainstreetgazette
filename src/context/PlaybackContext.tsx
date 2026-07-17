@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { AccessibilityInfo } from "react-native";
 import type { FeedItem, PlaybackQueueItem } from "../domain/models";
 import { loadPlaybackProgress, loadQueue, savePlaybackProgress, saveQueue } from "../services/storage";
+import { useSounds } from "./SoundContext";
 import {
   addNowPlayingCommandListener,
   clearNowPlayingMetadata,
@@ -55,6 +56,7 @@ interface PlaybackContextValue {
 const PlaybackContext = createContext<PlaybackContextValue | undefined>(undefined);
 
 export function PlaybackProvider({ children }: { children: React.ReactNode }) {
+  const { playPodcastPlay, playPodcastPause } = useSounds();
   // expo-audio: one AudioPlayer at a time; we remove() it before creating the next.
   const playerRef = useRef<AudioPlayer | null>(null);
   // The status-update subscription so we can detach before removing the player.
@@ -154,8 +156,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     if (isLoadingRef.current) return;
     playerRef.current?.play();
     setIsPlaying(true);
+    playPodcastPlay();
     updateNowPlayingElapsed(currentTimeRef.current, currentSpeedRef.current);
-  }, []);
+  }, [playPodcastPlay]);
 
   const playItem = useCallback(
     async (item: FeedItem) => {
@@ -207,6 +210,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           player.seekTo(savedProgress.positionSeconds);
         }
         setIsPlaying(true);
+        playPodcastPlay();
         setNowPlayingMetadata({
           title: item.title,
           artist: item.authorOrChannel ?? undefined,
@@ -233,7 +237,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         setLoadingItemID(null);
       }
     },
-    [currentSpeed, onStatusUpdate, play, setActiveItem, unloadCurrent]
+    [currentSpeed, onStatusUpdate, play, playPodcastPlay, setActiveItem, unloadCurrent]
   );
 
   const pause = useCallback(async () => {
@@ -246,8 +250,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     );
     playerRef.current.pause();
     setIsPlaying(false);
+    playPodcastPause();
     updateNowPlayingElapsed(pos, 0);
-  }, [persistProgress]);
+  }, [persistProgress, playPodcastPause]);
 
   const stop = useCallback(async () => {
     await unloadCurrent();

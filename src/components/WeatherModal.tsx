@@ -34,6 +34,7 @@ import {
 } from "../services/weatherService";
 import type { ParkHours } from "../services/parksService";
 import { useAppContext } from "../context/AppContext";
+import { useSounds } from "../context/SoundContext";
 
 interface WeatherModalProps {
   visible: boolean;
@@ -399,6 +400,7 @@ export function WeatherModal({ visible, onClose }: WeatherModalProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const reduceMotion = useReduceMotion();
+  const { playBack, playScreenClose } = useSounds();
   const [selectedPark, setSelectedPark] = useState<ParkInfo | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -481,10 +483,12 @@ export function WeatherModal({ visible, onClose }: WeatherModalProps) {
 
   const handleBack = () => {
     if (selectedPark !== null) {
+      playBack();
       setSelectedPark(null);
       setWeatherData(null);
       setError(null);
     } else {
+      playScreenClose();
       onClose();
     }
   };

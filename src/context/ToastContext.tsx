@@ -125,6 +125,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       } else if (type === "error") {
         haptics.error();
         sounds.playError();
+      } else {
+        sounds.playTip();
       }
     },
     [haptics, sounds]

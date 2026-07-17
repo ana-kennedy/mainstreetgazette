@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useSounds } from "../context/SoundContext";
 
 interface PlainSearchFieldProps {
   value: string;
@@ -12,12 +13,14 @@ interface PlainSearchFieldProps {
 
 export function PlainSearchField({ value, onChangeText, placeholder, accessibilityLabel, accessibilityHint }: PlainSearchFieldProps) {
   const theme = useTheme();
+  const { playSearch } = useSounds();
 
   return (
     <View style={[styles.wrapper, { borderColor: theme.colors.outline, backgroundColor: theme.colors.surface }]}>
       <TextInput
         value={value}
         onChangeText={onChangeText}
+        onSubmitEditing={() => playSearch()}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.onSurfaceVariant}
         autoCapitalize="none"

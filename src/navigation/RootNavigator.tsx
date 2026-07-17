@@ -329,7 +329,7 @@ function QuickJumpHost() {
 
 export function RootNavigator() {
   const paperTheme = useTheme();
-  const { playConfirm } = useSounds();
+  const { playTabChange } = useSounds();
   const { t } = useTranslation();
   const navigationTheme = {
     ...(paperTheme.dark ? DarkTheme : DefaultTheme),
@@ -349,7 +349,7 @@ export function RootNavigator() {
       <KeyboardShortcutHandler />
       <QuickJumpHost />
       <Tab.Navigator
-        screenListeners={{ tabPress: () => playConfirm() }}
+        screenListeners={{ tabPress: () => playTabChange() }}
         screenOptions={({ route }) => ({
           headerShown: false,
           // Preferences is a real tab route (reachable via each screen's gear icon /

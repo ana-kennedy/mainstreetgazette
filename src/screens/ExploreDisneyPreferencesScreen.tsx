@@ -74,15 +74,17 @@ export function ExploreDisneyPreferencesScreen() {
         <PrefSectionLabel>Park Radio</PrefSectionLabel>
         <PrefGroup>
           <PrefNavRow
-            label="Park Radio (Coming Soon)"
+            label="Park Radio"
             icon="radio"
-            hint="Park Radio isn't available yet."
-            onPress={() => {}}
+            hint="Double tap to open independent station links in the Discover tab."
+            onPress={() => {
+              playConfirm();
+              (navigation.getParent() as any)?.navigate("Discover", { screen: "ParkRadio" });
+            }}
           />
         </PrefGroup>
         <RNText style={[styles.note, { color: theme.colors.onSurfaceVariant }]}>
-          When available, Park Radio will never autoplay by default and can resume your last
-          station.
+          Park Radio never autoplays and opens official listening pages operated by independent stations.
         </RNText>
 
         <Divider style={styles.divider} />

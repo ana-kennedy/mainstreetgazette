@@ -13,7 +13,7 @@ export function NewsTabScreen({ navigation }: Props) {
       onNavigateToPlayer={() => navigation.navigate("Player")}
       onNavigateToStoryDetail={(clusterId) => navigation.navigate("StoryDetail", { clusterId })}
       onOpenPreferences={() =>
-        (navigation.getParent() as any)?.navigate("Preferences", { screen: "NewsPreferences" })
+        (navigation.getParent() as any)?.navigate("Preferences", { screen: "SettingsHome" })
       }
       onOpenFavoritesSetup={() =>
         (navigation.getParent() as any)?.navigate("Preferences", { screen: "MyMagic" })

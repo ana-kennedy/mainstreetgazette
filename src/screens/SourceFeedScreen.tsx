@@ -1,13 +1,14 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
+  AccessibilityInfo,
   FlatList,
   Pressable,
   RefreshControl,
   StyleSheet,
   View
 } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import { EmptyState } from "../components/EmptyState";
 import { FeedItemCard } from "../components/FeedItemCard";
 import { Screen } from "../components/Screen";
@@ -20,18 +21,36 @@ import { sourceTypeDisplayName } from "../utils/formatting";
 type Props = NativeStackScreenProps<SourcesStackParamList, "SourceFeed">;
 
 const PAGE_SIZE = 10;
+const ACCESSIBLE_PAGE_SIZE = 40;
+const PRELOAD_REMAINING_CARD_COUNT = 5;
 
 export function SourceFeedScreen({ route, navigation }: Props) {
   const { source } = route.params;
   const app = useAppContext();
   const { playItem, addToQueue } = usePlayback();
   const theme = useTheme();
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
+  const pageSize = isScreenReaderEnabled || Boolean(app.settings?.simplifiedLayoutEnabled) ? ACCESSIBLE_PAGE_SIZE : PAGE_SIZE;
+  const [visibleCount, setVisibleCount] = useState(() => pageSize);
   const [isUserRefreshing, setIsUserRefreshing] = useState(false);
 
   const listRef = useRef<FlatList<FeedItem>>(null);
   const hasMoreRef = useRef(false);
   const itemsRef = useRef<FeedItem[]>([]);
+
+  React.useEffect(() => {
+    AccessibilityInfo.isScreenReaderEnabled()
+      .then(setIsScreenReaderEnabled)
+      .catch(() => {});
+    const subscription = AccessibilityInfo.addEventListener("screenReaderChanged", setIsScreenReaderEnabled);
+    return () => subscription.remove();
+  }, []);
+
+  React.useEffect(() => {
+    if (pageSize === ACCESSIBLE_PAGE_SIZE) {
+      setVisibleCount((count) => Math.max(count, ACCESSIBLE_PAGE_SIZE));
+    }
+  }, [pageSize]);
 
   const items = useMemo(
     () =>
@@ -63,11 +82,18 @@ export function SourceFeedScreen({ route, navigation }: Props) {
 
   const onEndReached = useCallback(() => {
     if (!hasMoreRef.current) return;
-    setVisibleCount((c) => Math.min(c + PAGE_SIZE, itemsRef.current.length));
-  }, []);
+    setVisibleCount((c) => Math.min(c + pageSize, itemsRef.current.length));
+  }, [pageSize]);
+
+  const handleCardFocus = useCallback((index: number) => {
+    if (!hasMoreRef.current) return;
+    if (displayed.length - index <= PRELOAD_REMAINING_CARD_COUNT) {
+      setVisibleCount((c) => Math.min(c + pageSize, itemsRef.current.length));
+    }
+  }, [displayed.length, pageSize]);
 
   const renderItem = useCallback(
-    ({ item }: { item: FeedItem }) => (
+    ({ item, index }: { item: FeedItem; index: number }) => (
       <FeedItemCard
         item={item}
         settings={app.settings}
@@ -76,12 +102,11 @@ export function SourceFeedScreen({ route, navigation }: Props) {
         onPlay={playItem}
         onQueue={addToQueue}
         onToggleSaved={app.toggleSaved}
-        onMarkRead={app.markAsRead}
-        onMarkUnread={app.markAsUnread}
         onMuteSource={app.muteSource}
+        onAccessibilityFocus={() => handleCardFocus(index)}
       />
     ),
-    [app.settings, app.toggleSaved, app.markAsRead, app.markAsUnread, app.muteSource, handleOpen, playItem, addToQueue, source.name]
+    [app.settings, app.toggleSaved, app.muteSource, handleOpen, playItem, addToQueue, source.name, handleCardFocus]
   );
 
   return (
@@ -114,6 +139,21 @@ export function SourceFeedScreen({ route, navigation }: Props) {
         refreshControl={<RefreshControl refreshing={isUserRefreshing} onRefresh={handleRefresh} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          hasMore ? (
+            <Button
+              mode="outlined"
+              icon="newspaper-plus"
+              onPress={onEndReached}
+              style={styles.loadMoreButton}
+              accessibilityRole="button"
+              accessibilityLabel="Load More Headlines"
+              accessibilityHint="Double tap to show more headlines from this source."
+            >
+              Load More Headlines
+            </Button>
+          ) : null
+        }
         ListEmptyComponent={
           <EmptyState
             title="No stories from this source"
@@ -161,5 +201,9 @@ const styles = StyleSheet.create({
   },
   emptyList: {
     flexGrow: 1
+  },
+  loadMoreButton: {
+    margin: 12,
+    borderRadius: 8
   },
 });

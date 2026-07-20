@@ -21,11 +21,11 @@ export const APP_TIPS: AppTip[] = [
     body: "Rotate two fingers on the screen to open the VoiceOver Rotor. Then swipe up or down to Save, Play, or Expand any article without leaving your reading position.",
   },
   {
-    id: "tip-mark-all-read",
-    icon: "check-all",
+    id: "tip-load-more-headlines",
+    icon: "newspaper-plus",
     category: "navigation",
-    title: "Mark All as Read",
-    body: "Long-press the News header to reveal a timeline menu. Tap Mark All as Read to clear your new-article badges instantly.",
+    title: "Load More Headlines",
+    body: "When more stories are available, use the Load More Headlines button at the end of a feed to disclose the next batch without losing your place.",
   },
   {
     id: "tip-smart-view",

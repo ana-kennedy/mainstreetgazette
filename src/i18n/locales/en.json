@@ -158,8 +158,8 @@
     "sourceLabel": "{{name}}. {{type}} source. {{trust}}. {{state}}",
     "enableHint": "Double tap to enable this source.",
     "disableHint": "Double tap to disable this source.",
-    "itemHintIos": "Double tap to open. Swipe up or down to access Save, Mark Read, Mute Source, Summary, and Share.",
-    "itemHintIosPodcast": "Double tap to open episode. Swipe up or down to access Queue, Save, Mark Read, Mute Source, Summary, and Share.",
+    "itemHintIos": "Double tap to open. Swipe up or down to access Save, Mute Source, Summary, and Share.",
+    "itemHintIosPodcast": "Double tap to open episode. Swipe up or down to access Queue, Save, Mute Source, Summary, and Share.",
     "itemHintAndroid": "Double tap to open. Double tap and hold for more options including Save, Mute Source, and Share.",
     "itemHintAndroidPodcast": "Double tap to open episode. Double tap and hold for more options including Queue, Save, Mute Source, and Share.",
     "unsave": "Unsave",
@@ -239,14 +239,13 @@
       "hong_kong_disneyland": "Hong Kong"
     },
     "menu": {
-      "markAllRead": "Mark all as read",
       "jumpToMarker": "Jump to marker",
       "jumpToTop": "Jump to top",
       "findInTimeline": "Find in timeline",
       "hideFindInTimeline": "Hide find in timeline",
       "closeMenu": "Close menu",
       "moreActions": "More actions",
-      "moreActionsHint": "Double tap for mark all as read, jump to marker, and jump to top."
+      "moreActionsHint": "Double tap for jump to marker and jump to top."
     },
     "editionTitle": "Today's Gazette",
     "editionSummary_one": "{{date}} · {{count}} story in this edition",
@@ -589,9 +588,9 @@
     "openPodcastHint": "Double tap to play this episode.",
     "openVideoHint": "Double tap to open this video.",
     "openAndroid": "Double tap to open. Double tap and hold for more options.",
-    "openHintIosArticle": "Double tap to open in reader view. Swipe up or down to access Save, Mark Read, Summary, Share, and Set Marker.",
-    "openHintIosPodcast": "Double tap to play. Swipe up or down to access Queue, Save, Mark Read, Summary, Share, and Set Marker.",
-    "openHintIosVideo": "Double tap to open video. Swipe up or down to access Save, Mark Read, Share, and Set Marker.",
+    "openHintIosArticle": "Double tap to open in reader view. Swipe up or down to access Save, Summary, and Share.",
+    "openHintIosPodcast": "Double tap to play. Swipe up or down to access Queue, Save, Summary, and Share.",
+    "openHintIosVideo": "Double tap to open video. Swipe up or down to access Save and Share.",
     "addToQueueHint": "Double tap to add this episode to the playback queue.",
     "saveHint": "Double tap to save this {{type}} for later.",
     "removeHint": "Double tap to remove this {{type}} from saved.",
@@ -802,9 +801,7 @@
       "international": "International Resorts",
       "parkSubtitle": "Live park information, Gazette coverage, and planning guidance",
       "dcl": "Disney Cruise Line",
-      "dclSubtitle": "Coming soon",
-      "dclComingSoonTitle": "Disney Cruise Line",
-      "dclComingSoonBody": "Cruise planning information isn't available in the Gazette yet."
+      "dclSubtitle": "Ships, ports, planning, accessibility, dining, entertainment, and Gazette coverage"
     }
   },
   "search": {

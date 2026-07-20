@@ -18,8 +18,15 @@ export function EditorsNote({ children }: EditorsNoteProps) {
         styles.container,
         { backgroundColor: theme.colors.primaryContainer, borderColor: theme.colors.outlineVariant },
       ]}
+      accessible
+      accessibilityRole="text"
+      accessibilityLabel={`Editor's Note. ${children}`}
     >
-      <View style={styles.labelRow}>
+      <View
+        style={styles.labelRow}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
         <MaterialCommunityIcons
           name="feather"
           size={14}
@@ -34,7 +41,13 @@ export function EditorsNote({ children }: EditorsNoteProps) {
           Editor's Note
         </Text>
       </View>
-      <Text style={[Typography.description, { color: theme.colors.onPrimaryContainer }]}>{children}</Text>
+      <Text
+        style={[Typography.description, { color: theme.colors.onPrimaryContainer }]}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        {children}
+      </Text>
     </View>
   );
 }

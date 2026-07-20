@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { DarkTheme, DefaultTheme, NavigationContainer, createNavigationContainerRef, useNavigation } from "@react-navigation/native";
+import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useMemo, useState } from "react";
-import { Platform, Pressable, StyleSheet } from "react-native";
+import React from "react";
+import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 // Loaded at runtime — falls back to MaterialCommunityIcons in Expo Go.
 let SymbolView: React.ComponentType<{
@@ -30,7 +30,15 @@ import { TripCompanionScreen } from "../screens/TripCompanionScreen";
 import { SourcesScreen } from "../screens/SourcesScreen";
 import { SourceFeedScreen } from "../screens/SourceFeedScreen";
 import { SourceManageScreen } from "../screens/SourceManageScreen";
-import { ParksScreen } from "../screens/ParksScreen";
+import {
+  CruiseDashboardScreen,
+  DestinationContentResultsScreen,
+  ParkDashboardScreen,
+  ParksScreen,
+  ResortDashboardScreen,
+  ShipDashboardScreen,
+} from "../screens/ParksScreen";
+import { ParkRadioScreen } from "../screens/ParkRadioScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { MyMagicScreen } from "../screens/MyMagicScreen";
 import { CollectionScreen } from "../screens/CollectionScreen";
@@ -50,7 +58,6 @@ import { AboutGazetteScreen } from "../screens/AboutGazetteScreen";
 import { DeveloperToolsScreen } from "../screens/DeveloperToolsScreen";
 import { EntityGraphScreen } from "../screens/EntityGraphScreen";
 import { PlayerScreen } from "../screens/PlayerScreen";
-import { QuickJumpMenu, type QuickJumpItem } from "../components/QuickJumpMenu";
 import type {
   DiscoverStackParamList,
   ForYouStackParamList,
@@ -64,7 +71,6 @@ const NewsStack = createNativeStackNavigator<NewsStackParamList>();
 const DiscoverStack = createNativeStackNavigator<DiscoverStackParamList>();
 const ForYouStack = createNativeStackNavigator<ForYouStackParamList>();
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
-const navigationRef = createNavigationContainerRef<RootTabParamList>();
 
 function NewsStackNavigator() {
   const { playBack } = useSounds();
@@ -97,6 +103,12 @@ function DiscoverStackNavigator() {
       <DiscoverStack.Screen name="CollectionDetail" component={CollectionScreen as any} options={{ title: t("collections.screenTitle") }} />
       <DiscoverStack.Screen name="EntityProfile" component={EntityProfileScreen} options={({ route }) => ({ title: route.params.entityName, headerShown: true })} />
       <DiscoverStack.Screen name="ParksHome" component={ParksScreen as any} />
+      <DiscoverStack.Screen name="ResortDashboard" component={ResortDashboardScreen} />
+      <DiscoverStack.Screen name="ParkDashboard" component={ParkDashboardScreen} />
+      <DiscoverStack.Screen name="CruiseDashboard" component={CruiseDashboardScreen} />
+      <DiscoverStack.Screen name="ShipDashboard" component={ShipDashboardScreen} />
+      <DiscoverStack.Screen name="DestinationContentResults" component={DestinationContentResultsScreen} />
+      <DiscoverStack.Screen name="ParkRadio" component={ParkRadioScreen} options={{ title: "Park Radio", headerShown: true }} />
       <DiscoverStack.Screen name="EntityGraph" component={EntityGraphScreen as any} options={{ title: "Entity Graph", headerShown: true }} />
       <DiscoverStack.Screen name="SourcesHome" component={SourcesScreen as any} />
       <DiscoverStack.Screen name="SourceFeed" component={SourceFeedScreen as any} options={{ title: t("screens.sourceFeed"), headerShown: true }} />
@@ -250,83 +262,6 @@ function KeyboardShortcutHandler() {
   return null;
 }
 
-function QuickJumpHost() {
-  const theme = useTheme();
-  const [visible, setVisible] = useState(false);
-
-  const jumpTo = (name: keyof RootTabParamList, params?: object) => {
-    if (!navigationRef.isReady()) return;
-    navigationRef.navigate(name as any, params as any);
-  };
-
-  const jumpItems = useMemo<QuickJumpItem[]>(
-    () => [
-      {
-        label: "Latest News",
-        icon: "newspaper-variant-outline",
-        onPress: () => jumpTo("News", { screen: "NewsHome" }),
-      },
-      {
-        label: "Search",
-        icon: "magnify",
-        onPress: () => jumpTo("Discover", { screen: "DiscoverHome" }),
-      },
-      {
-        label: "Disney Destinations",
-        icon: "castle",
-        onPress: () => jumpTo("Discover", { screen: "ParksHome", params: { initialView: "destinations" } }),
-      },
-      {
-        label: "Events",
-        icon: "calendar-month-outline",
-        onPress: () => jumpTo("News", { screen: "NewsHome" }),
-      },
-      {
-        label: "Media",
-        icon: "play-circle-outline",
-        onPress: () => jumpTo("Discover", { screen: "DiscoverHome" }),
-      },
-      {
-        label: "Saved Articles",
-        icon: "bookmark-outline",
-        onPress: () => jumpTo("ForYou", { screen: "ForYouHome" }),
-      },
-      {
-        label: "Settings",
-        icon: "cog-outline",
-        onPress: () => jumpTo("Preferences", { screen: "SettingsHome" }),
-      },
-    ],
-    []
-  );
-
-  return (
-    <>
-      <Pressable
-        onPress={() => setVisible(true)}
-        accessibilityRole="button"
-        accessibilityLabel="Quick Jump"
-        accessibilityHint="Double tap to jump to key app areas."
-        style={({ pressed }) => [
-          styles.quickJumpButton,
-          {
-            backgroundColor: pressed ? theme.colors.primaryContainer : theme.colors.primary,
-          },
-        ]}
-      >
-        <MaterialCommunityIcons
-          name="menu-open"
-          size={24}
-          color={theme.colors.onPrimary}
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-        />
-      </Pressable>
-      <QuickJumpMenu visible={visible} items={jumpItems} onClose={() => setVisible(false)} />
-    </>
-  );
-}
-
 export function RootNavigator() {
   const paperTheme = useTheme();
   const { playTabChange } = useSounds();
@@ -345,9 +280,8 @@ export function RootNavigator() {
   };
 
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+    <NavigationContainer theme={navigationTheme}>
       <KeyboardShortcutHandler />
-      <QuickJumpHost />
       <Tab.Navigator
         screenListeners={{ tabPress: () => playTabChange() }}
         screenOptions={({ route }) => ({
@@ -432,17 +366,3 @@ export function RootNavigator() {
   );
 }
 
-const styles = StyleSheet.create({
-  quickJumpButton: {
-    position: "absolute",
-    right: 16,
-    bottom: 88,
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 20,
-    elevation: 8,
-  },
-});

@@ -15,6 +15,17 @@ export type DiscoverStackParamList = {
   CollectionDetail: { collectionId: string };
   EntityProfile: { entityName: string };
   ParksHome: { initialView?: "hub" | "destinations"; initialResortId?: string } | undefined;
+  ResortDashboard: { destinationId: string; originCardId?: string };
+  ParkDashboard: { destinationId: string; originCardId?: string };
+  CruiseDashboard: { destinationId: "dcl"; originCardId?: string };
+  ShipDashboard: { destinationId: string; originCardId?: string };
+  DestinationContentResults: {
+    destinationId: string;
+    mediaType: "stories" | "podcasts" | "videos" | "community" | "all";
+    title: string;
+    originCardId?: string;
+  };
+  ParkRadio: undefined;
   EntityGraph: undefined;
   SourcesHome: undefined;
   SourceFeed: { source: Source };

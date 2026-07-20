@@ -1,0 +1,175 @@
+{
+  "destinations": [
+    {
+      "id": "wdw",
+      "type": "resort",
+      "name": "Walt Disney World",
+      "description": "Resort-wide coverage across parks, districts, water parks, planning, accessibility, dining, and transportation.",
+      "tagKeys": ["resort:walt_disney_world", "location:wdw"]
+    },
+    {
+      "id": "mk",
+      "type": "theme_park",
+      "name": "Magic Kingdom",
+      "parentId": "wdw",
+      "tagKeys": ["park:magic_kingdom"],
+      "weatherLocationId": "wdw",
+      "waitTimeProviderId": "magic-kingdom"
+    },
+    {
+      "id": "epcot",
+      "type": "theme_park",
+      "name": "EPCOT",
+      "parentId": "wdw",
+      "tagKeys": ["park:epcot"],
+      "weatherLocationId": "wdw",
+      "waitTimeProviderId": "epcot"
+    },
+    {
+      "id": "hollywood-studios",
+      "type": "theme_park",
+      "name": "Disney's Hollywood Studios",
+      "parentId": "wdw",
+      "tagKeys": ["park:hollywood_studios"],
+      "weatherLocationId": "wdw",
+      "waitTimeProviderId": "hollywood-studios"
+    },
+    {
+      "id": "animal-kingdom",
+      "type": "theme_park",
+      "name": "Disney's Animal Kingdom",
+      "parentId": "wdw",
+      "tagKeys": ["park:animal_kingdom"],
+      "weatherLocationId": "wdw",
+      "waitTimeProviderId": "animal-kingdom"
+    },
+    {
+      "id": "disney-springs",
+      "type": "district",
+      "name": "Disney Springs",
+      "parentId": "wdw",
+      "tagKeys": ["district:disney_springs", "resort:walt_disney_world"],
+      "weatherLocationId": "wdw"
+    },
+    {
+      "id": "typhoon-lagoon",
+      "type": "water_park",
+      "name": "Disney's Typhoon Lagoon",
+      "parentId": "wdw",
+      "tagKeys": ["park:typhoon_lagoon"],
+      "weatherLocationId": "wdw"
+    },
+    {
+      "id": "blizzard-beach",
+      "type": "water_park",
+      "name": "Disney's Blizzard Beach",
+      "parentId": "wdw",
+      "tagKeys": ["park:blizzard_beach"],
+      "weatherLocationId": "wdw"
+    },
+    {
+      "id": "dla",
+      "type": "resort",
+      "name": "Disneyland Resort",
+      "description": "Anaheim resort coverage for both parks, Downtown Disney, planning, accessibility, dining, and entertainment.",
+      "tagKeys": ["resort:disneyland_resort", "location:dlr"]
+    },
+    {
+      "id": "disneyland",
+      "type": "theme_park",
+      "name": "Disneyland Park",
+      "parentId": "dla",
+      "tagKeys": ["park:disneyland"]
+    },
+    {
+      "id": "california-adventure",
+      "type": "theme_park",
+      "name": "Disney California Adventure",
+      "parentId": "dla",
+      "tagKeys": ["park:california_adventure"]
+    },
+    {
+      "id": "downtown-disney",
+      "type": "district",
+      "name": "Downtown Disney District",
+      "parentId": "dla",
+      "tagKeys": ["district:downtown_disney", "resort:disneyland_resort"]
+    },
+    {
+      "id": "dlp",
+      "type": "resort",
+      "name": "Disneyland Paris",
+      "tagKeys": ["resort:disneyland_paris", "location:dlp"]
+    },
+    {
+      "id": "disneyland-paris",
+      "type": "theme_park",
+      "name": "Disneyland Park Paris",
+      "parentId": "dlp",
+      "tagKeys": ["park:disneyland_paris"]
+    },
+    {
+      "id": "walt-disney-studios-paris",
+      "type": "theme_park",
+      "name": "Walt Disney Studios Park",
+      "parentId": "dlp",
+      "tagKeys": ["park:walt_disney_studios_paris"]
+    },
+    {
+      "id": "tdr",
+      "type": "resort",
+      "name": "Tokyo Disney Resort",
+      "tagKeys": ["resort:tokyo_disney_resort", "location:tdr"]
+    },
+    {
+      "id": "tokyo-disneyland",
+      "type": "theme_park",
+      "name": "Tokyo Disneyland",
+      "parentId": "tdr",
+      "tagKeys": ["park:tokyo_disneyland"]
+    },
+    {
+      "id": "tokyo-disneysea",
+      "type": "theme_park",
+      "name": "Tokyo DisneySea",
+      "parentId": "tdr",
+      "tagKeys": ["park:tokyo_disneysea"]
+    },
+    {
+      "id": "hkdl",
+      "type": "resort",
+      "name": "Hong Kong Disneyland",
+      "tagKeys": ["resort:hong_kong_disneyland", "park:hong_kong_disneyland"]
+    },
+    {
+      "id": "shdr",
+      "type": "resort",
+      "name": "Shanghai Disney Resort",
+      "tagKeys": ["resort:shanghai_disney_resort", "park:shanghai_disneyland"]
+    },
+    {
+      "id": "dcl",
+      "type": "cruise_line",
+      "name": "Disney Cruise Line",
+      "description": "Cruise Line coverage, ships, destinations, planning, accessibility, dining, entertainment, podcasts, videos, and community.",
+      "tagKeys": ["destination:disney_cruise_line", "location:dcl"]
+    },
+    { "id": "disney-magic", "type": "cruise_ship", "name": "Disney Magic", "parentId": "dcl", "tagKeys": ["ship:disney_magic"] },
+    { "id": "disney-wonder", "type": "cruise_ship", "name": "Disney Wonder", "parentId": "dcl", "tagKeys": ["ship:disney_wonder"] },
+    { "id": "disney-dream", "type": "cruise_ship", "name": "Disney Dream", "parentId": "dcl", "tagKeys": ["ship:disney_dream"] },
+    { "id": "disney-fantasy", "type": "cruise_ship", "name": "Disney Fantasy", "parentId": "dcl", "tagKeys": ["ship:disney_fantasy"] },
+    { "id": "disney-wish", "type": "cruise_ship", "name": "Disney Wish", "parentId": "dcl", "tagKeys": ["ship:disney_wish"] },
+    { "id": "disney-treasure", "type": "cruise_ship", "name": "Disney Treasure", "parentId": "dcl", "tagKeys": ["ship:disney_treasure"] },
+    { "id": "disney-destiny", "type": "cruise_ship", "name": "Disney Destiny", "parentId": "dcl", "tagKeys": ["ship:disney_destiny"] },
+    { "id": "disney-adventure", "type": "cruise_ship", "name": "Disney Adventure", "parentId": "dcl", "tagKeys": ["ship:disney_adventure"] },
+    { "id": "castaway-cay", "type": "private_destination", "name": "Castaway Cay", "parentId": "dcl", "tagKeys": ["port:castaway_cay"] },
+    { "id": "lookout-cay", "type": "private_destination", "name": "Lookout Cay at Lighthouse Point", "parentId": "dcl", "tagKeys": ["port:lookout_cay"] },
+    {
+      "id": "entertainment",
+      "type": "entertainment",
+      "name": "Disney Entertainment",
+      "description": "Movies, streaming, music, games, and company entertainment coverage.",
+      "tagKeys": ["topic:entertainment"]
+    }
+  ]
+}

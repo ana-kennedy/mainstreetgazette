@@ -1,3 +1,5 @@
+import type { ReaderDocument, ReaderStatus } from "../types/readerTypes";
+
 export type AnnouncementLevel = "simple" | "normal" | "all";
 // Phase 07: "standard" replaces the old "comfortable" value (see storage.ts's
 // loadSettings migration) and "spacious" is new.
@@ -68,6 +70,7 @@ export type VideoOpenMode = "inAppBrowser" | "safari" | "youtubeApp";
 export type ContentTier = "fresh" | "remembered" | "archived";
 export type ExploreOpeningView = "liveToday" | "todaysGazette" | "planning" | "parkRadio" | "rememberLast";
 export type WeatherUnitPreference = "auto" | "fahrenheit" | "celsius";
+export type IngestionMode = "live" | "backfill" | "booster" | "migration";
 
 export interface DisneyKnowledgeEntity {
   id: string;
@@ -146,6 +149,10 @@ export interface FeedItem {
   canonicalURL: string;
   externalURL?: string | null;
   publishedAt: string;
+  firstDiscoveredAt?: string;
+  lastUpdatedAt?: string;
+  ingestionMode?: IngestionMode;
+  editionEligible?: boolean;
   authorOrChannel?: string | null;
   durationSeconds?: number | null;
   artworkURL?: string | null;
@@ -158,6 +165,13 @@ export interface FeedItem {
   isDownloaded: boolean;
   downloadState: DownloadState;
   rawContentHash?: string | null;
+  feedSummary?: string | null;
+  readerText?: string | null;
+  readerContent?: ReaderDocument | null;
+  readerStatus?: ReaderStatus;
+  readerFetchedAt?: string | null;
+  readerFailureReason?: string | null;
+  readerWordCount?: number | null;
   trustLabel?: TrustLabel | null;
   tags: string[];
   // Phase 2: Disney knowledge enrichment

@@ -32,7 +32,6 @@ import { Screen } from "../components/Screen";
 import { useAppContext } from "../context/AppContext";
 import { useSounds } from "../context/SoundContext";
 import { usePlayback } from "../context/PlaybackContext";
-import { useToast } from "../context/ToastContext";
 import type { ContentType, FeedItem, LocationFilterKey, ParkFilterKey, TimelineWindow } from "../domain/models";
 import type { StoryCluster } from "../types/storyTypes";
 import { INTERNATIONAL_LOCATION_IDS } from "../services/knowledgeMatcher";
@@ -54,6 +53,7 @@ import {
   timelineFilterToContentScope,
   type ContentScope,
 } from "../utils/contentFilters";
+import { buildEditorsNote } from "../services/editorsNoteService";
 
 function getTimeGreeting(t: TFunction, name?: string): string {
   const hour = new Date().getHours();
@@ -69,6 +69,9 @@ type Filter = "all" | ContentType | "social";
 type DisplayMode = "full" | "minimal";
 
 const PAGE_SIZE = 10;
+const ACCESSIBLE_PAGE_SIZE = 40;
+const PRELOAD_REMAINING_CARD_COUNT = 5;
+const CURRENT_EDITION_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 const SEARCH_FILTER_CHIPS: SearchFilterChip[] = [
   { id: "all", label: "All" },
@@ -93,7 +96,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
   const app = useAppContext();
   const { playRefreshStart } = useSounds();
   const { playItem, addToQueue, isLoading: isPodcastBuffering } = usePlayback();
-  const { showToast } = useToast();
   const theme = useTheme();
   const { t } = useTranslation();
   const { prefs: personalizationPrefs, setNewsFeedMode } = usePersonalization();
@@ -113,7 +115,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [dismissedError, setDismissedError] = useState<string | null>(null);
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [visibleCount, setVisibleCount] = useState(() => screenReaderOptimized ? ACCESSIBLE_PAGE_SIZE : PAGE_SIZE);
   const [pendingFocusItemID, setPendingFocusItemID] = useState<string | null>(null);
   const [pendingScrollItemID, setPendingScrollItemID] = useState<string | null>(null);
   const [selectedSearchFilter, setSelectedSearchFilter] = useState<SearchQuickFilter>("all");
@@ -172,7 +174,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     } else {
       const targetItem = visibleItems[markerIndex];
       setPendingFocusItemID(targetItem.id);
-      setVisibleCount(markerIndex + PAGE_SIZE);
+      setVisibleCount(markerIndex + batchSize);
     }
     AccessibilityInfo.announceForAccessibility(t("home.announce.jumpedMarker"));
   };
@@ -278,17 +280,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     }
   };
 
-  const handleMarkAllAsRead = async () => {
-    const count = await app.markAllAsRead();
-    if (count > 0) {
-      const msg = count === 1
-        ? t("home.announce.markedAllRead_one", { count })
-        : t("home.announce.markedAllRead_other", { count });
-      showToast(msg, "success");
-      AccessibilityInfo.announceForAccessibility(msg);
-    }
-  };
-
   const handleCustomizeFeed = () => {
     onOpenPreferences();
   };
@@ -297,7 +288,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
   // one overflow control instead of living permanently on the header.
   const handleOpenMoreActions = () => {
     const actions = [
-      { label: t("home.menu.markAllRead"), onPress: handleMarkAllAsRead },
       { label: t("home.menu.jumpToMarker"), onPress: handleJumpToMarker },
       { label: t("home.menu.jumpToTop"), onPress: handleJumpToTop },
     ];
@@ -332,14 +322,26 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     }
   }, [personalizationPrefs.newsFeedMode, setNewsFeedMode]);
 
+  const todayEligibleItems = useMemo(() => {
+    const cutoff = Date.now() - CURRENT_EDITION_WINDOW_MS;
+    return app.items.filter((item) => {
+      const publishedTime = new Date(item.publishedAt).getTime();
+      return (
+        Number.isFinite(publishedTime) &&
+        publishedTime >= cutoff &&
+        item.editionEligible === true &&
+        (item.ingestionMode ?? "migration") === "live"
+      );
+    });
+  }, [app.items]);
+
+  const editorsNote = useMemo(() => buildEditorsNote(todayEligibleItems), [todayEligibleItems]);
+
   // Filter base items by mode before applying user filters
   const baseItems = useMemo(() => {
-    if (mode === "today") {
-      const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-      return app.items.filter((item) => new Date(item.publishedAt).getTime() >= cutoff);
-    }
+    if (mode === "today" || newsView === "today" || newsView === "mine") return todayEligibleItems;
     return app.items;
-  }, [app.items, mode]);
+  }, [app.items, mode, newsView, todayEligibleItems]);
 
   // Build lookup structures for story clusters so renderFeedItem can show cluster cards
   const clusterByPrimaryItemID = useMemo(() => {
@@ -586,8 +588,15 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     return sorted;
   }, [baseItems, app.searchQuery, app.settings?.showOnlyNew, app.settings?.showSinceLastVisit, app.settings?.sortOrder, effectiveGroupStories, app.lastVisitTimestamp, effectiveFilter, selectedContentScope, officialSourceIDs, parkFilter, locationFilter, sourceFilter, timelineWindow, allNonPrimaryClusterItemIDs, personalizationOrderedPrimaryIDs, personalizationPrefs]);
 
+  const batchSize = screenReaderOptimized ? ACCESSIBLE_PAGE_SIZE : PAGE_SIZE;
   const displayedItems = useMemo(() => visibleItems.slice(0, visibleCount), [visibleCount, visibleItems]);
   const hasMoreItems = displayedItems.length < visibleItems.length;
+
+  useEffect(() => {
+    if (screenReaderOptimized) {
+      setVisibleCount((count) => Math.max(count, ACCESSIBLE_PAGE_SIZE));
+    }
+  }, [screenReaderOptimized]);
 
   // Keep mutable refs current so stable callbacks can read latest values
   hasMoreItemsRef.current = hasMoreItems;
@@ -651,8 +660,15 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     [showWhyRecommended, personalizationPrefs, favoriteNameMaps, t]
   );
 
+  const handleCardFocus = useCallback((index: number) => {
+    if (!hasMoreItemsRef.current || index < 0) return;
+    if (displayedItems.length - index <= PRELOAD_REMAINING_CARD_COUNT) {
+      setVisibleCount((count) => Math.min(count + batchSize, visibleItemsRef.current.length));
+    }
+  }, [batchSize, displayedItems.length]);
+
   const renderFeedItem = useCallback(
-    ({ item }: { item: FeedItem; index: number }) => {
+    ({ item, index }: { item: FeedItem; index: number }) => {
       const cluster = clusterByPrimaryItemID.get(item.id);
       const isClusterPrimary = effectiveGroupStories && cluster && cluster.sourceCount > 1;
       const card = isClusterPrimary && cluster ? (
@@ -678,10 +694,9 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
           onPlay={playItem}
           onQueue={addToQueue}
           onToggleSaved={app.toggleSaved}
-          onMarkRead={app.markAsRead}
-          onMarkUnread={app.markAsUnread}
           onMuteSource={app.muteSource}
           whyRecommended={getWhyRecommended(feedItemToStoryClusterLike(item))}
+          onAccessibilityFocus={() => handleCardFocus(index)}
         />
       );
 
@@ -690,8 +705,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     [
       app.settings,
       app.toggleSaved,
-      app.markAsRead,
-      app.markAsUnread,
       app.muteSource,
       effectiveGroupStories,
       handleOpenItem,
@@ -701,6 +714,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
       sourceByID,
       clusterByPrimaryItemID,
       getWhyRecommended,
+      handleCardFocus,
     ]
   );
 
@@ -717,7 +731,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     if (anchorID) {
       const idx = visibleItemsRef.current.findIndex((item) => item.id === anchorID);
       if (idx !== -1) {
-        const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
+        const neededCount = Math.ceil((idx + 1) / batchSize) * batchSize;
         setVisibleCount(neededCount);
         pendingScrollOffsetRef.current = null; // re-anchor on filter/sort change, not a restore
         setPendingScrollItemID(anchorID);
@@ -725,9 +739,9 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
         return;
       }
     }
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(batchSize);
     setPendingFocusItemID(null);
-  }, [app.items.length, app.searchQuery, app.settings?.showOnlyNew, app.settings?.showSinceLastVisit, app.settings?.sortOrder, app.settings?.timelineContentFilter, app.settings?.parkFilter, app.settings?.locationFilter, app.settings?.sourceFilter, app.settings?.timelineWindow, resolveAnchorID]);
+  }, [app.items.length, app.searchQuery, app.settings?.showOnlyNew, app.settings?.showSinceLastVisit, app.settings?.sortOrder, app.settings?.timelineContentFilter, app.settings?.parkFilter, app.settings?.locationFilter, app.settings?.sourceFilter, app.settings?.timelineWindow, resolveAnchorID, batchSize]);
 
   useEffect(() => {
     if (!pendingFocusItemID) return;
@@ -763,8 +777,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
   // Silently expand the displayed list — no focus jump (used by infinite scroll)
   const expandItems = useCallback(() => {
     if (!hasMoreItemsRef.current) return;
-    setVisibleCount((c) => Math.min(c + PAGE_SIZE, visibleItemsRef.current.length));
-  }, []);
+    setVisibleCount((c) => Math.min(c + batchSize, visibleItemsRef.current.length));
+  }, [batchSize]);
 
   // Stable onEndReached — fires when scroll is within 50% of list height from bottom
   const onEndReached = useCallback(() => {
@@ -787,9 +801,9 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
       lastDisplayedIDRef.current &&
       viewableItems.some((vi) => vi.isViewable && (vi.item as FeedItem | undefined)?.id === lastDisplayedIDRef.current)
     ) {
-      setVisibleCount((c) => Math.min(c + PAGE_SIZE, visibleItemsRef.current.length));
+      setVisibleCount((c) => Math.min(c + batchSize, visibleItemsRef.current.length));
     }
-  }, []);
+  }, [batchSize]);
 
   // Persist current position when app backgrounds — saves exact pixel offset + anchor item ID,
   // plus its publish date so we can still find a close position if the item itself later
@@ -824,10 +838,10 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
     hasRestoredRef.current = true;
     pendingRestoreIDRef.current = null;
     pendingRestorePublishedAtRef.current = null;
-    const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
+    const neededCount = Math.ceil((idx + 1) / batchSize) * batchSize;
     setVisibleCount((c) => Math.max(c, neededCount));
     setPendingScrollItemID(savedID);
-  }, [app.items.length, resolveAnchorID]);
+  }, [app.items.length, resolveAnchorID, batchSize]);
 
   // Load saved position on mount. On iOS, items often load from cache before AsyncStorage resolves,
   // so we restore immediately if items are already available rather than waiting for app.items.length
@@ -842,7 +856,7 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
         const idx = resolvedID ? visibleItemsRef.current.findIndex((item) => item.id === resolvedID) : -1;
         if (idx !== -1 && resolvedID) {
           hasRestoredRef.current = true;
-          const neededCount = Math.ceil((idx + 1) / PAGE_SIZE) * PAGE_SIZE;
+          const neededCount = Math.ceil((idx + 1) / batchSize) * batchSize;
           setVisibleCount((c) => Math.max(c, neededCount));
           setPendingScrollItemID(resolvedID);
         }
@@ -911,10 +925,6 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
           accessible
           accessibilityRole="header"
           accessibilityLabel={screenTitle}
-          accessibilityActions={[{ name: "markAllRead", label: t("home.menu.markAllRead") }]}
-          onAccessibilityAction={({ nativeEvent: { actionName } }) => {
-            if (actionName === "markAllRead") { handleMarkAllAsRead(); }
-          }}
         >
           {mode === "allUnread" ? (
             <MsgHeaderBanner
@@ -1063,10 +1073,8 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
           </>
         ) : null}
 
-        {/* Editor's Note has no content source yet — the slot stays hidden (AdaptiveSection,
-            Constitution rule 4) until real editorial copy exists. See PHASE_02_RESULTS.md. */}
-        <AdaptiveSection itemCount={0}>
-          <EditorsNote>{""}</EditorsNote>
+        <AdaptiveSection itemCount={editorsNote?.itemCount ?? 0}>
+          {editorsNote ? <EditorsNote>{editorsNote.text}</EditorsNote> : null}
         </AdaptiveSection>
 
         {app.errorMessage && dismissedError !== app.errorMessage ? (
@@ -1167,6 +1175,21 @@ export function NewsScreenCore({ mode, onNavigateToDetail, onNavigateToPlayer, o
               }
               onAction={isOnlyNewEmpty ? showAllItems : isFavoritesEmpty ? onOpenFavoritesSetup : app.refresh}
             />
+          }
+          ListFooterComponent={
+            hasMoreItems ? (
+              <Button
+                mode="outlined"
+                icon="newspaper-plus"
+                onPress={expandItems}
+                style={styles.loadMoreButton}
+                accessibilityRole="button"
+                accessibilityLabel="Load More Headlines"
+                accessibilityHint="Double tap to show more headlines."
+              >
+                Load More Headlines
+              </Button>
+            ) : null
           }
           contentContainerStyle={visibleItems.length === 0 ? styles.emptyList : styles.list}
         />

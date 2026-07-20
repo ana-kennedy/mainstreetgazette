@@ -12,6 +12,8 @@ import { useHandoff } from "../hooks/useHandoff";
 import type { NewsStackParamList, SavedStackParamList, SourcesStackParamList } from "../navigation/types";
 import { isFoundationModelsAvailable, summarizeArticle } from "../services/foundationModels";
 import { isTranslationAvailable, translateText } from "../services/articleTranslation";
+import { readerService } from "../services/reader/readerService";
+import type { ReaderBlock, ReaderRecord, ReaderStatus } from "../types/readerTypes";
 import { clockString, contentTypeDisplayName, relativePublishedText, trustLabelDisplayName } from "../utils/formatting";
 
 type Props =
@@ -29,6 +31,56 @@ interface DetailAction {
   hint: string;
   disabled?: boolean;
   loading?: boolean;
+}
+
+function readerStatusMessage(status: ReaderStatus, failureReason?: string): string | null {
+  if (status === "loading") return "Loading full story";
+  if (status === "previewOnly") return "Only a story preview is available.";
+  if (status === "restricted") return "This story requires access on the publisher's website.";
+  if (status === "failed") return "The publisher's page could not be retrieved.";
+  if (failureReason === "lowQuality") return "Only a story preview is available.";
+  return null;
+}
+
+function renderReaderBlock(block: ReaderBlock, index: number) {
+  switch (block.type) {
+    case "heading":
+      return (
+        <Text key={index} variant={block.level === 2 ? "titleMedium" : "titleSmall"} accessibilityRole="header" style={styles.readerHeading}>
+          {block.text}
+        </Text>
+      );
+    case "paragraph":
+      return <Text key={index} variant="bodyLarge">{block.text}</Text>;
+    case "blockquote":
+      return <Text key={index} variant="bodyLarge" style={styles.blockquote}>{block.text}</Text>;
+    case "unorderedList":
+    case "orderedList":
+      return (
+        <View key={index} accessibilityLabel={`${block.items.length} list items`} style={styles.listBlock}>
+          {block.items.map((item, itemIndex) => (
+            <Text key={`${index}-${itemIndex}`} variant="bodyLarge">
+              {block.type === "orderedList" ? `${itemIndex + 1}. ` : "- "}{item}
+            </Text>
+          ))}
+        </View>
+      );
+    case "imageCaption":
+      return <Text key={index} variant="bodyMedium" style={styles.caption}>{block.text}</Text>;
+    case "linkCard":
+      return <Text key={index} variant="bodyLarge">{block.title}</Text>;
+    case "table":
+      return (
+        <View key={index} style={styles.tableBlock}>
+          {block.caption ? <Text variant="labelMedium">{block.caption}</Text> : null}
+          <Text variant="bodyMedium">{[block.headers.join(" | "), ...block.rows.map((row) => row.join(" | "))].join("\n")}</Text>
+        </View>
+      );
+    case "separator":
+      return <Divider key={index} />;
+    default:
+      return null;
+  }
 }
 
 export function FeedDetailScreen({ route, navigation }: Props) {
@@ -68,6 +120,58 @@ export function FeedDetailScreen({ route, navigation }: Props) {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [translatedText, setTranslatedText] = useState<string | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
+  const [readerRecord, setReaderRecord] = useState<ReaderRecord>(() => ({
+    status: current.readerContent ? "available" : current.readerStatus ?? "idle",
+    feedSummary: current.feedSummary ?? current.summary ?? "",
+    document: current.readerContent ?? undefined,
+  }));
+  const [isPreviewExpanded, setIsPreviewExpanded] = useState(!current.readerContent);
+
+  useEffect(() => {
+    if (current.contentType !== "article") return;
+    const controller = new AbortController();
+    let isMounted = true;
+    const feedSummary = current.feedSummary ?? current.summary ?? "";
+
+    setReaderRecord((existing) => ({
+      status: existing.document ? "available" : "loading",
+      feedSummary,
+      document: existing.document,
+    }));
+    AccessibilityInfo.announceForAccessibility("Loading full story");
+
+    readerService
+      .openArticle({
+        itemId: current.id,
+        sourceId: current.sourceID,
+        title: current.title,
+        publishedAt: current.publishedAt,
+        author: current.authorOrChannel,
+        url: current.externalURL ?? current.canonicalURL,
+        feedSummary,
+        signal: controller.signal,
+      })
+      .then((record) => {
+        if (!isMounted) return;
+        setReaderRecord(record);
+        if (record.status === "available") {
+          setIsPreviewExpanded(false);
+          AccessibilityInfo.announceForAccessibility("Full story available.");
+        } else {
+          AccessibilityInfo.announceForAccessibility(readerStatusMessage(record.status, record.failureReason) ?? "Only a story preview is available.");
+        }
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setReaderRecord({ status: "failed", feedSummary, failureReason: "network" });
+        AccessibilityInfo.announceForAccessibility("The publisher's page could not be retrieved.");
+      });
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [current.authorOrChannel, current.canonicalURL, current.contentType, current.externalURL, current.feedSummary, current.id, current.publishedAt, current.sourceID, current.summary, current.title]);
 
   useEffect(() => {
     if (Platform.OS !== "ios") return;
@@ -110,8 +214,11 @@ export function FeedDetailScreen({ route, navigation }: Props) {
     }
   };
 
-  const summaryToShow = aiSummary ?? current.summary;
-  const canGenerateSummary = aiAvailable && !current.summary && !aiSummary && !isGeneratingSummary;
+  const feedSummary = current.feedSummary ?? current.summary;
+  const summaryToShow = aiSummary ?? feedSummary;
+  const summaryLabel = aiSummary ? t("intelligence.summaryLabel") : "Story Preview";
+  const readerStatusText = readerStatusMessage(readerRecord.status, readerRecord.failureReason);
+  const canGenerateSummary = aiAvailable && !feedSummary && !aiSummary && !isGeneratingSummary;
   const canTranslate = translationAvailable && !!summaryToShow && !translatedText && !isTranslating;
 
   // Content-type-aware primary action per temp/03_IMPLEMENTATION_PHASES/PHASE_03_GAZETTE_READER.md
@@ -292,21 +399,53 @@ export function FeedDetailScreen({ route, navigation }: Props) {
         </View>
         <Divider />
 
-        {/* Summary block — RSS summary, AI-generated, and translated variants */}
-        <View style={styles.summaryBlock}>
-          {summaryToShow ? (
-            <Text
-              variant="bodyLarge"
-              accessibilityLabel={aiSummary ? `${t("intelligence.summaryLabel")}: ${aiSummary}` : summaryToShow}
-            >
-              {summaryToShow}
+        {readerStatusText ? (
+          <Text variant="bodyMedium" style={styles.loadingLabel} accessibilityLiveRegion="polite">
+            {readerStatusText}
+          </Text>
+        ) : null}
+
+        {readerRecord.document ? (
+          <View style={styles.readerBlock}>
+            <Text variant="titleLarge" accessibilityRole="header">Full Story</Text>
+            <Text variant="bodySmall" style={styles.loadingLabel}>
+              {readerRecord.document.readingTimeMinutes} min read
+              {readerRecord.document.author ? ` - ${readerRecord.document.author}` : ""}
             </Text>
+            {readerRecord.document.blocks.map(renderReaderBlock)}
+          </View>
+        ) : null}
+
+        {/* Story Preview is separate from full Reader content and remains available. */}
+        <View style={styles.summaryBlock}>
+          {readerRecord.document ? (
+            <Button
+              mode="text"
+              icon={isPreviewExpanded ? "chevron-up" : "chevron-down"}
+              onPress={() => setIsPreviewExpanded((value) => !value)}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: isPreviewExpanded }}
+            >
+              Story Preview
+            </Button>
+          ) : null}
+          {summaryToShow && (!readerRecord.document || isPreviewExpanded) ? (
+            <>
+              <Text variant="labelSmall" accessibilityRole="header" style={styles.previewLabel}>
+                {summaryLabel}
+              </Text>
+              <Text
+                variant="bodyLarge"
+                accessibilityLabel={`${summaryLabel}: ${summaryToShow}`}
+              >
+                {summaryToShow}
+              </Text>
+            </>
           ) : (
             <Text variant="bodyLarge" style={styles.noSummary}>
               No summary was provided by this source.
             </Text>
           )}
-
           {translatedText ? (
             <View style={styles.translatedBlock}>
               <Text variant="labelSmall" style={styles.translatedLabel}>
@@ -426,6 +565,27 @@ const styles = StyleSheet.create({
   summaryBlock: {
     gap: 12
   },
+  readerBlock: {
+    gap: 12
+  },
+  readerHeading: {
+    marginTop: 8
+  },
+  blockquote: {
+    borderLeftWidth: 3,
+    paddingLeft: 12,
+    opacity: 0.85
+  },
+  listBlock: {
+    gap: 6
+  },
+  caption: {
+    fontStyle: "italic",
+    opacity: 0.75
+  },
+  tableBlock: {
+    gap: 6
+  },
   noSummary: {
     opacity: 0.6
   },
@@ -434,6 +594,11 @@ const styles = StyleSheet.create({
   },
   translatedLabel: {
     opacity: 0.6,
+    textTransform: "uppercase",
+    letterSpacing: 0.5
+  },
+  previewLabel: {
+    opacity: 0.7,
     textTransform: "uppercase",
     letterSpacing: 0.5
   },

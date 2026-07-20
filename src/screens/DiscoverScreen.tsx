@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Alert, FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -42,6 +42,8 @@ export interface DiscoverScreenCoreProps {
   onNavigateToStoryDetail: (clusterId: string) => void;
   onNavigateToCollectionDetail: (collectionId: string) => void;
   onNavigateToParks: (params?: { initialView?: "hub" | "destinations"; initialResortId?: string }) => void;
+  onNavigateToDestination: (destinationId: string, kind: "resort" | "cruise") => void;
+  onNavigateToParkRadio: () => void;
   onOpenPreferences: () => void;
 }
 
@@ -103,6 +105,8 @@ export function DiscoverScreenCore({
   onNavigateToStoryDetail,
   onNavigateToCollectionDetail,
   onNavigateToParks,
+  onNavigateToDestination,
+  onNavigateToParkRadio,
   onOpenPreferences,
 }: DiscoverScreenCoreProps) {
   const app = useAppContext();
@@ -279,14 +283,14 @@ export function DiscoverScreenCore({
         title: t("discover.destinations.wdw"),
         subtitle: t("discover.destinations.parkSubtitle"),
         icon: "castle",
-        onPress: () => onNavigateToParks({ initialView: "destinations", initialResortId: "wdw" }),
+        onPress: () => onNavigateToDestination("wdw", "resort"),
       },
       {
         id: "dla",
         title: t("discover.destinations.dla"),
         subtitle: t("discover.destinations.parkSubtitle"),
         icon: "castle",
-        onPress: () => onNavigateToParks({ initialView: "destinations", initialResortId: "dla" }),
+        onPress: () => onNavigateToDestination("dla", "resort"),
       },
       {
         id: "international",
@@ -300,10 +304,10 @@ export function DiscoverScreenCore({
         title: t("discover.destinations.dcl"),
         subtitle: t("discover.destinations.dclSubtitle"),
         icon: "ferry",
-        onPress: () => Alert.alert(t("discover.destinations.dclComingSoonTitle"), t("discover.destinations.dclComingSoonBody")),
+        onPress: () => onNavigateToDestination("dcl", "cruise"),
       },
     ],
-    [t, onNavigateToParks]
+    [t, onNavigateToDestination, onNavigateToParks]
   );
 
   return (
@@ -395,6 +399,12 @@ export function DiscoverScreenCore({
               subtitle={t("discover.parksSubtitle")}
               icon="castle"
               onPress={() => onNavigateToParks()}
+            />
+            <NavCard
+              title="Park Radio"
+              subtitle="Open independent Disney parks radio stations."
+              icon="radio"
+              onPress={onNavigateToParkRadio}
             />
           </View>
         </ScrollView>

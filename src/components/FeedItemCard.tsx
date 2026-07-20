@@ -18,7 +18,6 @@ import {
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import * as Clipboard from "expo-clipboard";
-import { openBrowserAsync } from "expo-web-browser";
 import type { FeedItem, UserSettings } from "../domain/models";
 import { useSounds } from "../context/SoundContext";
 import { useHaptics } from "../hooks/useHaptics";
@@ -60,6 +59,7 @@ interface FeedItemCardProps {
   onMuteSource?: (sourceID: string) => void;
   whyRecommended?: string;
   focusRef?: React.Ref<View>;
+  onAccessibilityFocus?: () => void;
 }
 
 function TypePill({ label, color, textColor }: { label: string; color: string; textColor: string }) {
@@ -88,7 +88,8 @@ function FeedItemCardInner({
   onMarkUnread,
   onMuteSource,
   whyRecommended,
-  focusRef
+  focusRef,
+  onAccessibilityFocus
 }: FeedItemCardProps) {
   const theme = useTheme();
   const { playSelect, playSave, playUnsave, playArticleOpen } = useSounds();
@@ -157,18 +158,14 @@ function FeedItemCardInner({
     } else {
       playSelect();
     }
-    onMarkRead?.(item.id);
-    const url = item.externalURL ?? item.canonicalURL;
-    if (item.contentType === "article") {
-      await openBrowserAsync(url, Platform.OS === "ios" && (settings?.preferReaderMode ?? true) ? { readerMode: true } : {});
-    } else if (item.contentType === "podcast") {
+    if (item.contentType === "podcast") {
       if (onPlay) {
         onPlay(item);
       } else {
         onOpen(item);
       }
     } else {
-      await openBrowserAsync(url);
+      onOpen(item);
     }
   };
 
@@ -190,12 +187,6 @@ function FeedItemCardInner({
         : t("feed.saveForLater", { type: contentLabel }),
       image: Platform.select({ ios: item.isSaved ? "bookmark.slash" : "bookmark" }),
     },
-    ...(!item.isRead && onMarkRead
-      ? [{ id: "mark-read", title: t("a11y.markRead"), image: Platform.select({ ios: "checkmark.circle" }) }]
-      : []),
-    ...(item.isRead && onMarkUnread
-      ? [{ id: "mark-unread", title: t("a11y.markUnread"), image: Platform.select({ ios: "circle" }) }]
-      : []),
     {
       id: "copy-link",
       title: t("feed.copyLink"),
@@ -225,8 +216,6 @@ function FeedItemCardInner({
         if (item.isSaved) { playUnsave(); haptics.light(); } else { playSave(); haptics.success(); }
         onToggleSaved(item.id);
         break;
-      case "mark-read": onMarkRead?.(item.id); break;
-      case "mark-unread": onMarkUnread?.(item.id); break;
       case "copy-link":
         Clipboard.setStringAsync(item.canonicalURL).then(() => {
           AccessibilityInfo.announceForAccessibility(t("feed.linkCopied"));
@@ -264,8 +253,6 @@ function FeedItemCardInner({
           : t("feed.saveForLater", { type: contentLabel }),
         id: "save",
       },
-      ...(!item.isRead && onMarkRead ? [{ label: t("a11y.markRead"), id: "mark-read" }] : []),
-      ...(item.isRead && onMarkUnread ? [{ label: t("a11y.markUnread"), id: "mark-unread" }] : []),
       { label: t("feed.share", { type: contentLabel }), id: "share" },
       ...(onMuteSource ? [{ label: t("feed.muteSource", { name: sourceName }), id: "mute-source" }] : []),
     ];
@@ -306,8 +293,6 @@ function FeedItemCardInner({
         ? [{ name: "queue", label: t("a11y.queue") }]
         : []),
     { name: "save", label: item.isSaved ? t("a11y.unsave") : t("a11y.save") },
-    ...(!item.isRead && onMarkRead ? [{ name: "mark-read", label: t("a11y.markRead") }] : []),
-    ...(item.isRead && onMarkUnread ? [{ name: "mark-unread", label: t("a11y.markUnread") }] : []),
     ...(item.summary ? [{ name: "summary", label: t("a11y.summary") }] : []),
     { name: "share", label: t("a11y.share") },
     ...(onMuteSource ? [{ name: "mute-source", label: t("a11y.muteSource") }] : []),
@@ -322,14 +307,6 @@ function FeedItemCardInner({
       case "save":
         if (item.isSaved) { playUnsave(); haptics.light(); } else { playSave(); haptics.success(); }
         onToggleSaved(item.id);
-        break;
-      case "mark-read":
-        onMarkRead?.(item.id);
-        haptics.light();
-        break;
-      case "mark-unread":
-        onMarkUnread?.(item.id);
-        haptics.light();
         break;
       case "summary":
         if (item.summary) AccessibilityInfo.announceForAccessibility(item.summary);
@@ -371,6 +348,7 @@ function FeedItemCardInner({
       onPress={handleOpen}
       onLongPress={!useNativeMenu ? handleLongPressFallback : undefined}
       delayLongPress={!useNativeMenu ? 500 : undefined}
+      onFocus={onAccessibilityFocus}
       accessible
       accessibilityRole="button"
       accessibilityLabel={whyRecommended ? `${payload.label} ${whyRecommended}.` : payload.label}
@@ -508,7 +486,8 @@ export const FeedItemCard = React.memo(FeedItemCardInner, (prev, next) =>
   prev.onToggleSaved === next.onToggleSaved &&
   prev.onMarkRead === next.onMarkRead &&
   prev.onMarkUnread === next.onMarkUnread &&
-  prev.onMuteSource === next.onMuteSource
+  prev.onMuteSource === next.onMuteSource &&
+  prev.onAccessibilityFocus === next.onAccessibilityFocus
 );
 
 const styles = StyleSheet.create({

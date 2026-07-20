@@ -91,6 +91,7 @@ export function isHighVolumeSource(meta: Pick<import("../domain/models").SourceM
 // flat MAX_ITEMS_PER_SOURCE baseline above).
 const BACKFILL_CEILING = 500;
 const BACKFILL_INCREMENT = 50;
+const CURRENT_EDITION_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export function effectiveItemCap(
   source: Source,
@@ -176,6 +177,26 @@ function firstLink(item: RSSItem): string | null {
 function publishedDate(item: RSSItem): string {
   const parsed = item.published ? new Date(item.published) : null;
   return parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString() : new Date(0).toISOString();
+}
+
+function withIngestionDefaults<T extends FeedItem>(item: T, mode: NonNullable<FeedItem["ingestionMode"]> = "live"): T {
+  const now = new Date().toISOString();
+  const publishedTime = new Date(item.publishedAt).getTime();
+  const isCurrent = Number.isFinite(publishedTime) && Date.now() - publishedTime <= CURRENT_EDITION_WINDOW_MS;
+  const editionEligible = mode === "live" && isCurrent;
+  return {
+    ...item,
+    firstDiscoveredAt: item.firstDiscoveredAt ?? now,
+    lastUpdatedAt: now,
+    ingestionMode: mode,
+    editionEligible,
+    feedSummary: item.feedSummary ?? item.summary ?? null,
+    readerText: item.readerText ?? null,
+    readerStatus: item.readerStatus ?? "idle",
+    readerFetchedAt: item.readerFetchedAt ?? null,
+    readerFailureReason: item.readerFailureReason ?? null,
+    readerWordCount: item.readerWordCount ?? null,
+  };
 }
 
 function itemSummary(item: RSSItem): string | null {
@@ -482,7 +503,7 @@ function parseYouTubeHTMLFallback(source: Source, html: string): FeedItem[] {
     const publishedText = /"publishedTimeText":\{"simpleText":"([^"]+)"/.exec(renderer)?.[1];
     const link = `https://www.youtube.com/watch?v=${videoID}`;
     const thumb = `https://i.ytimg.com/vi/${videoID}/hqdefault.jpg`;
-    items.push({
+    items.push(withIngestionDefaults({
       id: stableHash(`${source.id}|${videoID}`),
       sourceID: source.id,
       sourceType: source.sourceType,
@@ -507,7 +528,7 @@ function parseYouTubeHTMLFallback(source: Source, html: string): FeedItem[] {
       rawContentHash: stableHash(`${title}${videoID}`),
       trustLabel: source.trustLabel,
       tags: applyParkTags(title, ["youtube"]),
-    });
+    }));
   }
 
   return items;
@@ -521,7 +542,7 @@ function normalizeYouTube(source: Source, item: RSSItem): FeedItem | null {
   const thumb = httpsURLOrNull(item.imageUrl) ?? `https://i.ytimg.com/vi/${videoID}/hqdefault.jpg`;
   const summary = itemSummary(item);
 
-  return {
+  return withIngestionDefaults({
     id: stableHash(`${source.id}|${videoID}`),
     sourceID: source.id,
     sourceType: source.sourceType,
@@ -546,7 +567,7 @@ function normalizeYouTube(source: Source, item: RSSItem): FeedItem | null {
     rawContentHash: stableHash(`${title}${videoID}`),
     trustLabel: source.trustLabel,
     tags: applyParkTags(`${title} ${summary ?? ""}`, ["youtube"]),
-  };
+  });
 }
 
 function normalizePodcast(source: Source, feed: RSSFeed, item: RSSItem): FeedItem | null {
@@ -561,7 +582,7 @@ function normalizePodcast(source: Source, feed: RSSFeed, item: RSSItem): FeedIte
   const artwork = itemArtwork(feed, source, item);
   const summary = itemSummary(item);
 
-  return {
+  return withIngestionDefaults({
     id: stableHash(`${source.id}|${guid}`),
     sourceID: source.id,
     sourceType: source.sourceType,
@@ -586,7 +607,7 @@ function normalizePodcast(source: Source, feed: RSSFeed, item: RSSItem): FeedIte
     rawContentHash: stableHash(`${title}${guid}`),
     trustLabel: source.trustLabel,
     tags: applyParkTags(`${title} ${summary ?? ""}`, ["podcast"]),
-  };
+  });
 }
 
 function enrichFeedItem(item: FeedItem, source?: Source): FeedItem {
@@ -642,10 +663,10 @@ function dropIfNotDisneyRelevant(item: FeedItem, source?: Source): FeedItem | nu
   return null;
 }
 
-function parseFeedItems(source: Source, feed: RSSFeed, itemCap: number): FeedItem[] {
+function parseFeedItems(source: Source, feed: RSSFeed, itemCap: number, modeForIndex?: (index: number) => NonNullable<FeedItem["ingestionMode"]>): FeedItem[] {
   const items = Array.isArray(feed.items) ? feed.items : [];
   return recentItemsForSource(source, items, itemCap)
-    .map((item) => {
+    .map((item, index) => {
       let parsed: FeedItem | null;
       if (source.sourceType === "youtubeChannel") {
         parsed = normalizeYouTube(source, item);
@@ -657,7 +678,7 @@ function parseFeedItems(source: Source, feed: RSSFeed, itemCap: number): FeedIte
           parsed = { ...parsed, contentType: "community" as const };
         }
       }
-      const enriched = parsed ? enrichFeedItem(parsed, source) : null;
+      const enriched = parsed ? enrichFeedItem(withIngestionDefaults(parsed, modeForIndex?.(index) ?? parsed.ingestionMode ?? "live"), source) : null;
       return enriched ? dropIfNotDisneyRelevant(enriched, source) : null;
     })
     .filter((item): item is FeedItem => Boolean(item));
@@ -687,7 +708,7 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
           return { items: cachedSourceItems, updatedMeta: { ...meta, failureCount: 0, nextRetryAt: undefined } };
         }
 
-        const parsedFallbackItems = parseYouTubeHTMLFallback(source, html).map((fi) => enrichFeedItem(fi, source));
+        const parsedFallbackItems = parseYouTubeHTMLFallback(source, html).map((fi) => enrichFeedItem(withIngestionDefaults(fi, "live"), source));
         if (parsedFallbackItems.length === 0) throw error;
         const fallbackItems = parsedFallbackItems
           .map((item) => dropIfNotDisneyRelevant(item, source))
@@ -717,7 +738,8 @@ async function fetchSource(source: Source, meta: SourceMeta, previousItems: Feed
       }
 
       const feed = parseFeed(text);
-      const freshItems = parseFeedItems(source, feed, itemCap);
+      const baseline = MAX_ITEMS_PER_SOURCE[source.sourceType];
+      const freshItems = parseFeedItems(source, feed, itemCap, (index) => index >= baseline ? "backfill" : "live");
       // Preserve cached articles that have since left the feed — the global cache
       // window in AppContext (enforceCacheWindow) controls how long they stay.
       const freshIDs = new Set(freshItems.map((item) => item.id));
@@ -757,11 +779,17 @@ function dedupe(items: FeedItem[]): FeedItem[] {
 
 function normalizeSnapshot(rawItems: FeedItem[], savedIDs: string[], checkpointTime: number | null): FeedItem[] {
   return dedupe(rawItems)
-    .map((item) => ({
-      ...item,
-      isSaved: savedIDs.includes(item.id),
-      isNewRelativeToCheckpoint: checkpointTime !== null && new Date(item.publishedAt).getTime() > checkpointTime
-    }))
+    .map((item) => {
+      const normalized = withIngestionDefaults(
+        item,
+        item.ingestionMode ?? (item.firstDiscoveredAt ? "live" : "migration")
+      );
+      return {
+        ...normalized,
+        isSaved: savedIDs.includes(item.id),
+        isNewRelativeToCheckpoint: checkpointTime !== null && new Date(item.publishedAt).getTime() > checkpointTime
+      };
+    })
     .sort((lhs, rhs) => new Date(rhs.publishedAt).getTime() - new Date(lhs.publishedAt).getTime());
 }
 

@@ -145,7 +145,7 @@ export function AboutGazetteScreen() {
           <Divider />
           <SourceRow icon="clock-outline" label="Planning Estimates" desc="Wait time and crowd estimates are informational only, not an official Disney guarantee." />
           <Divider />
-          <SourceRow icon="radio" label="Park Radio" desc="Not yet available in this edition." />
+          <SourceRow icon="radio" label="Park Radio" desc="Park Radio opens official listening pages for independent stations. Main Street Gazette does not operate, relay, record, or control those broadcasts." />
           <Divider />
           <SourceRow icon="newspaper-variant-outline" label="News Publishers" desc="Articles, videos, and podcasts come from the independent and official Disney news sources you've enabled." />
         </View>
